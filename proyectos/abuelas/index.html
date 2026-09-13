@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abuelas de Plaza de Mayo — Germán Gómez Bonelli</title>
+<meta name="description" content="Derechos humanos y comunicación institucional — creación y desarrollo de la cuenta de TikTok.">
+
+<!-- Open Graph / Facebook, LinkedIn, WhatsApp, etc. -- misma imagen (img/logo.png)
+     y mismo titulo/descripcion que <title> y <meta name="description"> de arriba,
+     para no duplicar contenido a mano. og:image usa ruta relativa: funciona para
+     preview local, pero la mayoria de los crawlers (Facebook, LinkedIn, WhatsApp)
+     necesitan una URL absoluta para poder descargar la imagen -- una vez que el
+     sitio tenga dominio propio, cambiar aca (y en twitter:image si se agrega) a
+     algo como https://tu-dominio.com/img/logo.png. -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Abuelas de Plaza de Mayo — Germán Gómez Bonelli">
+<meta property="og:description" content="Derechos humanos y comunicación institucional — creación y desarrollo de la cuenta de TikTok.">
+<meta property="og:image" content="../../img/logo.png">
+<meta property="og:locale" content="es_AR">
+
+<!-- Favicon / isotipo del portfolio -->
+<link rel="icon" type="image/png" href="../../img/logo.png">
+<link rel="apple-touch-icon" href="../../img/logo.png">
+
+<!-- Merriweather (titulos y headings principales, var(--font-display)).
+     Dos pesos: 400 Regular (headings en general) y 700 Bold (titulo del hero).
+     display=optional (antes: swap) -- bugfix del "glitch" reportado por el
+     usuario al cambiar de idioma en las subpaginas: con swap, el navegador
+     pinta primero el fallback (Georgia, bastante mas angosto que
+     Merriweather) y reemplaza la fuente en cuanto termina de bajarla, sin
+     importar cuanto tarde -- ese reemplazo mueve el texto de los headings
+     grandes (hero, eyebrows) y se ve como si la pagina "se redimensionara".
+     Cada cambio de idioma es una navegacion de pagina completa (sitio sin
+     backend, un <html> por idioma), asi que ese salto podia repetirse en
+     cada switch si la fuente no llegaba a tiempo. optional le da al
+     navegador una ventana muy corta para tener la fuente lista ANTES de
+     pintar; si no llega a tiempo usa el fallback para toda esa vista y no
+     la reemplaza despues -- se elimina el salto a costa de, en una
+     conexion muy lenta y sin cache todavia, no mostrar Merriweather en esa
+     carga puntual (con la fuente ya en cache, que es el caso normal
+     navegando el sitio, esto no pasa: se ve igual que con swap). Mismo
+     cambio replicado tal cual en los otros 9 HTML del sitio que cargan
+     esta misma fuente (home ES/EN, los 3 casos ES/EN, el articulo ES/EN),
+     para que el comportamiento sea consistente en todas las paginas. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=optional" rel="stylesheet">
+
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/proyecto.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a href="../../index.html" class="site-header__name">Germán Gómez Bonelli</a>
+
+    <button class="site-header__toggle" data-nav-toggle aria-expanded="false" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="site-header__nav" aria-label="Navegación principal">
+      <a href="../../index.html#trabajo">Trabajo</a>
+      <a href="../../sobre-mi/index.html">Sobre mí</a>
+      <a href="../../index.html#contacto">Contacto</a>
+      <div class="language-switcher" aria-label="Selector de idioma">
+        <span class="language-switcher__item language-switcher__item--active" aria-current="true">ES</span>
+        <span class="language-switcher__sep">/</span>
+        <a class="language-switcher__item" href="../../en/proyectos/abuelas/index.html">EN</a>
+        <span class="language-switcher__sep">/</span>
+        <a class="language-switcher__item" href="../../de/proyectos/abuelas/index.html">DE</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ==========================================================================
+       HERO DEL CASO — reutiliza el mismo componente .case-hero de Andrés
+       Rieznik, con la distribución invertida (.case-hero--reverse: imagen a
+       la izquierda, texto a la derecha) para que no sea una composición
+       idéntica. Mismo sistema, misma jerarquía, variación de layout.
+       ========================================================================== -->
+  <section class="case-hero case-hero--reverse container">
+    <a href="../../index.html#trabajo" class="back-link case-hero__back">← Volver a mis trabajos</a>
+
+    <div class="grid case-hero__grid">
+      <div class="case-hero__content">
+        <span class="eyebrow case-hero__eyebrow">03 / Derechos humanos y comunicación institucional</span>
+        <h1 class="case-hero__title">Abuelas de Plaza de Mayo</h1>
+        <p class="case-hero__lead">Creación y desarrollo de una nueva presencia institucional en TikTok a partir de producción original y trabajo con material de archivo.</p>
+        <p class="case-hero__roles">Prensa y difusión · Estrategia de contenidos · Producción · Grabación · Edición · Archivo · Gestión de TikTok</p>
+
+        <div class="case-hero__stat">
+          <span class="case-hero__stat-value">0 <span class="case-hero__stat-arrow">→</span> 31K</span>
+          <span class="case-hero__stat-caption">Comunidad alcanzada durante aproximadamente un año desde el lanzamiento de la cuenta de TikTok.</span>
+        </div>
+      </div>
+
+      <div class="case-hero__media-col">
+        <!-- IMAGEN PRINCIPAL DEL CASO (4:5)
+             Imagen definitiva: img/abuelas.webp (background-image, no
+             <img>, definida en .case-hero__media--abuelas dentro de
+             proyecto.css). -->
+        <div class="media media--tall case-hero__media case-hero__media--abuelas"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EL PROYECTO -->
+  <section class="case-section fade-in">
+    <div class="grid">
+      <span class="eyebrow case-section__label">El proyecto</span>
+      <div class="case-section__body">
+        <p>Trabajé con Abuelas de Plaza de Mayo dentro del área de Prensa y Difusión, participando en el desarrollo de contenidos para sus plataformas digitales.</p>
+        <p>Durante ese período inicié y administré su cuenta de TikTok desde cero. El trabajo implicó pensar cómo trasladar la identidad, la historia y el trabajo de una institución con décadas de trayectoria a los lenguajes y formatos propios de una plataforma nueva, sin perder el contexto ni la responsabilidad que requieren sus contenidos.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- UNA CUENTA NUEVA
+       Fondo oscuro con hero.webp: mismo .case-dark-band ya usado en
+       Camila Perochena y Andrés Rieznik (wrapper que pinta la imagen +
+       overlay, case-section--dark-hero en la propia sección para los
+       colores de texto). Reutilizado tal cual, sin CSS nuevo para el
+       fondo en sí -- solo se agregan un par de reglas puntuales para
+       .case-stat y la imagen de "Derechos humanos" (ver proyecto.css),
+       que son elementos propios de Abuelas que no existían todavía en
+       una sección oscura. -->
+  <div class="case-dark-band">
+  <section class="case-section case-section--dark-hero fade-in">
+    <div class="grid">
+      <span class="eyebrow case-section__label">Una cuenta nueva</span>
+      <div class="case-section__body">
+        <p>Uno de los principales desafíos fue iniciar la presencia de Abuelas de Plaza de Mayo en TikTok desde cero. Esto implicó experimentar con formatos, ritmos y formas narrativas propias de la plataforma, buscando ampliar la circulación de sus contenidos sin separar las piezas de su contexto histórico e institucional.</p>
+
+        <div class="case-stat">
+          <span class="case-stat-value">0 <span class="case-stat-arrow">→</span> 31K</span>
+          <span class="case-stat-caption">TikTok durante aproximadamente el primer año de la cuenta.</span>
+        </div>
+
+        <!-- Screenshot real de la cuenta/perfil de TikTok: screenshot.png
+             (590x1280px reales, medido con Pillow y visualizado antes de
+             escribir el alt -- es la captura completa del perfil
+             @abuelasdifusion en TikTok, con logo, bio y grilla de videos).
+             Relación de aspecto ~0.46, más angosta/alta que el 9:16
+             estándar del sitio (típico de una captura de pantalla de
+             celular con su propia UI) -- por eso NO usa .media--9-16 con
+             object-fit: cover (recortaría contenido real de la captura),
+             sino .media SIN modificador de proporción + <img> normal en
+             flujo (no absoluto como .case-reel__img), mismo criterio que
+             "sin modificador para que el <img> defina su propia
+             proporción natural" documentado en el comentario de "Más
+             material" más abajo en esta misma página. -->
+        <!-- Animación original del isotipo/logo de la cuenta: todavía no
+             hay ningún video/GIF animado (se buscó mp4/webm/gif en todo
+             el repositorio y no existe ninguno). Por ahora se usa
+             logo.jpg (300x300px reales, cuadrado exacto -- coincide con
+             .media--square sin necesidad de recortar), el mismo isotipo
+             que aparece en el propio screenshot de la cuenta de al lado.
+             Si más adelante aparece la animación real, reemplazar este
+             <img> por:
+               <video class="case-account-media__video" autoplay muted loop playsinline>
+                 <source src="../../img/proyectos/abuelas/logo-animacion.mp4" type="video/mp4">
+               </video>
+             sin controles visibles, para que se lea como una pieza
+             gráfica y no como un reproductor de video. -->
+        <div class="case-account-media">
+          <div class="case-account-media__screenshot">
+            <div class="media">
+              <img src="../../img/proyectos/abuelas/screenshot.png" alt="Captura de pantalla del perfil de TikTok de Abuelas de Plaza de Mayo (@abuelasdifusion), con el logo de la cuenta, la bio y una grilla de videos publicados." loading="lazy" width="590" height="1280">
+            </div>
+          </div>
+          <div class="case-account-media__animation">
+            <div class="media media--square">
+              <img src="../../img/proyectos/abuelas/logo.jpg" alt="Isotipo de la cuenta de Abuelas de Plaza de Mayo: una figura infantil dibujada a mano rodeada por el texto Identidad · Familia · Libertad." loading="lazy" width="300" height="300">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <!-- TRABAJO SELECCIONADO
+       Seis piezas verticales 9:16 de TikTok, con título, thumbnail y
+       link reales (asociación confirmada por el usuario). Reutiliza tal
+       cual .case-reel-grid / .case-reel / .case-reel__title / .case-reel__img
+       (componente real de Andrés/Camila: mismo <a> completo clickeable,
+       mismo hover de opacidad en .case-reel:hover .case-reel__media,
+       mismos breakpoints ya existentes -- 3 columnas de escritorio, 2
+       columnas <=1024px, 1 columna al 80% <=640px). Cero CSS nuevo.
+
+       Thumbnails: 1.png a 6.png (miniaturas reales de los 6 TikToks, NO
+       confundir con 1.jpeg-6.jpeg, que son las imagenes reservadas para el
+       carrusel de "Mas material" -- mismo nombre base, extension distinta
+       a proposito, ver comentario en "MAS MATERIAL" mas abajo). Se habian
+       subido primero por error a img/proyectos/andres-rieznik/, corregido
+       por el usuario, y luego un error mio les puso temporalmente la
+       extension .jpeg equivocada -- corregido de vuelta a .png. object-fit: cover vía .case-reel__img,
+       sin deformar ninguna imagen. -->
+  <section class="case-section case-work fade-in">
+    <div class="grid">
+      <span class="eyebrow case-section__label">Trabajo seleccionado</span>
+      <div class="case-section__body">
+        <p class="case-section__placeholder" style="margin-bottom: 32px;">Seis piezas de TikTok seleccionadas de la cuenta de Abuelas de Plaza de Mayo.</p>
+
+        <div class="case-reel-grid">
+          <a class="case-reel" href="https://vt.tiktok.com/ZSqybe5EJ/" target="_blank" rel="noopener noreferrer" aria-label="Ver Estela y su nieto en TikTok">
+            <span class="eyebrow case-reel__label">TikTok</span>
+            <div class="media media--9-16 case-reel__media">
+              <img class="case-reel__img" src="../../img/proyectos/abuelas/1.png" alt="Miniatura del TikTok — Estela y su nieto" loading="lazy">
+            </div>
+            <div class="case-reel__caption">
+              <span class="case-reel__title">Estela y su nieto</span>
+            </div>
+          </a>
+
+          <a class="case-reel" href="https://vt.tiktok.com/ZSqybjgg2/" target="_blank" rel="noopener noreferrer" aria-label="Ver El nombre de Guillermo en TikTok">
+            <span class="eyebrow case-reel__label">TikTok</span>
+            <div class="media media--9-16 case-reel__media">
+              <img class="case-reel__img" src="../../img/proyectos/abuelas/2.png" alt="Miniatura del TikTok — El nombre de Guillermo" loading="lazy">
+            </div>
+            <div class="case-reel__caption">
+              <span class="case-reel__title">El nombre de Guillermo</span>
+            </div>
+          </a>
+
+          <a class="case-reel" href="https://vt.tiktok.com/ZSqybrYcu/" target="_blank" rel="noopener noreferrer" aria-label="Ver Paula Logares y sus apropiadores en TikTok">
+            <span class="eyebrow case-reel__label">TikTok</span>
+            <div class="media media--9-16 case-reel__media">
+              <img class="case-reel__img" src="../../img/proyectos/abuelas/3.png" alt="Miniatura del TikTok — Paula Logares y sus apropiadores" loading="lazy">
+            </div>
+            <div class="case-reel__caption">
+              <span class="case-reel__title">Paula Logares y sus apropiadores</span>
+            </div>
+          </a>
+
+          <a class="case-reel" href="https://vt.tiktok.com/ZSqyqokrS/" target="_blank" rel="noopener noreferrer" aria-label="Ver La historia del clavito en TikTok">
+            <span class="eyebrow case-reel__label">TikTok</span>
+            <div class="media media--9-16 case-reel__media">
+              <img class="case-reel__img" src="../../img/proyectos/abuelas/4.png" alt="Miniatura del TikTok — La historia del clavito" loading="lazy">
+            </div>
+            <div class="case-reel__caption">
+              <span class="case-reel__title">La historia del clavito</span>
+            </div>
+          </a>
+
+          <a class="case-reel" href="https://vt.tiktok.com/ZSqyqoSCv/" target="_blank" rel="noopener noreferrer" aria-label="Ver La historia de Leonardo en TikTok">
+            <span class="eyebrow case-reel__label">TikTok</span>
+            <div class="media media--9-16 case-reel__media">
+              <img class="case-reel__img" src="../../img/proyectos/abuelas/5.png" alt="Miniatura del TikTok — La historia de Leonardo" loading="lazy">
+            </div>
+            <div class="case-reel__caption">
+              <span class="case-reel__title">La historia de Leonardo</span>
+            </div>
+          </a>
+
+          <a class="case-reel" href="https://vt.tiktok.com/ZSqybSDWR/" target="_blank" rel="noopener noreferrer" aria-label="Ver Estela y el reencuentro en TikTok">
+            <span class="eyebrow case-reel__label">TikTok</span>
+            <div class="media media--9-16 case-reel__media">
+              <img class="case-reel__img" src="../../img/proyectos/abuelas/6.png" alt="Miniatura del TikTok — Estela y el reencuentro" loading="lazy">
+            </div>
+            <div class="case-reel__caption">
+              <span class="case-reel__title">Estela y el reencuentro</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- DERECHOS HUMANOS, CIENCIA E IDENTIDAD
+       .case-work agregado para que el layout de dos columnas tenga ancho
+       real de sobra (columna angosta de .case-section__body por sí sola,
+       ~815px máximo, no alcanza para los ~400-500px de imagen pedidos a
+       35-40% de ancho) -- mismo criterio que "Trabajo seleccionado", no
+       cambia el texto ni el resto del case-section. Textos de los tres
+       <p> sin tocar una sola palabra. indice.jpeg es un archivo real
+       (encontrado en img/proyectos/abuelas/, 6299x7244px reales medidos
+       con Pillow) -- foto de archivo de Mary C. King mostrando un estudio
+       de ADN a las Abuelas Nélida y Estela, según el pie de foto
+       original visible en la propia imagen. Fondo oscuro con hero.webp
+       agregado: mismo .case-dark-band de siempre (Camila/Andrés), sin
+       tocar el ancho case-work ni el resto del layout de dos
+       columnas. -->
+  <div class="case-dark-band">
+  <section class="case-section case-work case-section--dark-hero fade-in">
+    <div class="grid">
+      <span class="eyebrow case-section__label">Derechos humanos, ciencia e identidad</span>
+      <div class="case-section__body">
+        <div class="case-text-media">
+          <div class="case-text-media__text">
+            <p>El trabajo de Abuelas de Plaza de Mayo también muestra hasta qué punto los derechos humanos, la ciencia y las políticas públicas pueden estar profundamente relacionados.</p>
+            <p>La búsqueda de nietos y nietas apropiados durante la última dictadura impulsó la necesidad de desarrollar herramientas que permitieran establecer vínculos biológicos incluso en ausencia de los padres. En ese contexto surgió el llamado índice de abuelidad, asociado al desarrollo de métodos genéticos capaces de determinar relaciones de parentesco entre abuelos y nietos.</p>
+            <p>Este cruce entre derechos humanos, ciencia e identidad es parte de lo que hace específico al trabajo de comunicación de Abuelas: la evidencia científica funciona ahí como una herramienta concreta para restituir identidades y garantizar derechos.</p>
+          </div>
+          <div class="case-text-media__media">
+            <img src="../../img/proyectos/abuelas/indice.jpeg" alt="Fotografía histórica en blanco y negro: la genetista Mary C. King, en Estados Unidos, muestra un estudio de ADN a las Abuelas Nélida y Estela, rodeadas de material de laboratorio frente a una ventana con estanterías de fondo." loading="lazy" width="6299" height="7244">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <!-- MÁS MATERIAL
+       Rediseño: composición editorial de dos columnas dentro de
+       .case-section__body (texto a la izquierda, carrusel a la derecha),
+       tomando tal cual el mismo layout que "Piezas gráficas de
+       lanzamiento" en Andrés Rieznik (.launch-graphics-layout /
+       __text / __media, proyecto.css) -- 3fr/5fr = 37.5%/62.5% de
+       columnas, exactamente en el rango 35-40%/60-65% pedido, cero CSS
+       nuevo para el layout en sí. .case-work agregado a este <section>
+       únicamente para que .case-section__body use el ancho completo del
+       grid (grid-column: 1/span12, mismo criterio que "Trabajo
+       seleccionado" y "Derechos humanos..." de esta misma página) en vez
+       de la columna angosta de 7/12 -- ya no hay un .case-section__label
+       aparte: el eyebrow "Más material" pasó a vivir DENTRO de la columna
+       de texto, junto con título y bajada, según lo pedido (antes estaba
+       arriba de todo el .grid, separado del texto).
+
+       Se eliminó el atributo data-label="Imagen no disponible" de las 7
+       piezas: ese atributo alimentaba el ::after de .media (ver
+       components.css) y aparecía como texto "IMAGEN NO DISPONIBLE" en
+       pantalla. Ahora, si una imagen llegara a fallar, el onerror ya
+       existente la oculta (this.style.display='none') sin generar ningún
+       texto ni tarjeta de reemplazo -- el alt descriptivo se mantiene en
+       el HTML de cualquier forma, por accesibilidad.
+
+       Carrusel en sí sin cambios de fondo: mismas 7 piezas reales
+       (1.jpeg-7.jpeg), mismo modificador .graphic-carousel--natural
+       (altura fija + object-fit: contain, sin recortar/deformar), mismo
+       contador 01/07, mismas flechas, mismo swipe/scroll nativo. Al vivir
+       ahora dentro de .launch-graphics-layout__media, hereda también su
+       ancho de pieza (--carousel-slide-width: 84% de esa columna, ya
+       definido para Andrés) en vez del 55% calculado para la columna
+       angosta anterior -- sigue mostrando una pieza protagonista + peek
+       de la siguiente, ahora sobre una columna más ancha. -->
+  <section class="case-section case-work fade-in">
+    <div class="grid">
+      <div class="case-section__body">
+        <div class="launch-graphics-layout">
+          <div class="launch-graphics-layout__text">
+            <span class="eyebrow case-section__label">Más material</span>
+            <h4 class="project-feature__graphics-title">Archivo, gráfica y memoria</h4>
+            <p class="project-feature__graphics-text">Además de la producción audiovisual, parte del trabajo estuvo vinculada al uso y adaptación de materiales de archivo. Esta selección reúne algunas piezas gráficas e imágenes relacionadas con la historia y la comunicación de Abuelas de Plaza de Mayo, y muestra otra dimensión de los materiales con los que trabajé durante el proyecto.</p>
+          </div>
+
+          <div class="launch-graphics-layout__media">
+            <div class="graphic-carousel graphic-carousel--natural" data-carousel>
+              <div class="graphic-carousel__frame">
+                <div
+                  class="graphic-carousel__viewport"
+                  data-carousel-viewport
+                  tabindex="0"
+                  role="region"
+                  aria-roledescription="carrusel"
+                  aria-label="Más material de archivo del proyecto Abuelas de Plaza de Mayo"
+                >
+                  <ul class="graphic-carousel__track" data-carousel-track>
+                    <li class="graphic-carousel__slide" data-carousel-slide role="group" aria-roledescription="pieza" aria-label="1 de 7">
+                      <button class="graphic-carousel__item" type="button" data-carousel-open aria-label="Ver pieza de archivo 1 en tamaño completo">
+                        <div class="media graphic-carousel__media">
+                          <img class="graphic-carousel__img" data-carousel-img src="../../img/proyectos/abuelas/1.jpeg" alt="Recorte de una revista japonesa sobre los niños desaparecidos en Argentina, con fotos en blanco y negro y relatos en japonés de varios bebés y madres secuestrados durante la última dictadura." loading="eager" width="1524" height="1080" onerror="this.style.display='none';">
+                        </div>
+                      </button>
+                    </li>
+                    <li class="graphic-carousel__slide" data-carousel-slide role="group" aria-roledescription="pieza" aria-label="2 de 7">
+                      <button class="graphic-carousel__item" type="button" data-carousel-open aria-label="Ver pieza de archivo 2 en tamaño completo">
+                        <div class="media graphic-carousel__media">
+                          <img class="graphic-carousel__img" data-carousel-img src="../../img/proyectos/abuelas/2.jpeg" alt="Afiche histórico &quot;Niños desaparecidos&quot; de Abuelas de Plaza de Mayo, con filas de fotos tipo carnet de chicos buscados, el texto &quot;Ya hemos encontrado a 11 niños&quot; y un listado de jóvenes madres secuestradas embarazadas." loading="lazy" width="1080" height="1572" onerror="this.style.display='none';">
+                        </div>
+                      </button>
+                    </li>
+                    <li class="graphic-carousel__slide" data-carousel-slide role="group" aria-roledescription="pieza" aria-label="3 de 7">
+                      <button class="graphic-carousel__item" type="button" data-carousel-open aria-label="Ver pieza de archivo 3 en tamaño completo">
+                        <div class="media graphic-carousel__media">
+                          <img class="graphic-carousel__img" data-carousel-img src="../../img/proyectos/abuelas/3.jpeg" alt="Fotografía en blanco y negro de una pared con el texto pintado a mano &quot;Mi abuela me está buscando, ayúdela a encontrarme, 10 de Diciembre&quot; junto a un niño parado al lado, por el Día Universal de los Derechos Humanos." loading="lazy" width="1492" height="1080" onerror="this.style.display='none';">
+                        </div>
+                      </button>
+                    </li>
+                    <li class="graphic-carousel__slide" data-carousel-slide role="group" aria-roledescription="pieza" aria-label="4 de 7">
+                      <button class="graphic-carousel__item" type="button" data-carousel-open aria-label="Ver pieza de archivo 4 en tamaño completo">
+                        <div class="media graphic-carousel__media">
+                          <img class="graphic-carousel__img" data-carousel-img src="../../img/proyectos/abuelas/4.jpeg" alt="Collage &quot;identidad&quot;: foto de dos hermanas abrazadas en un sillón con flechas manuscritas que señalan rasgos heredados (los ojos del papá, el pelo del abuelo, la nariz y la boca de la mamá, las manos del papá)." loading="lazy" width="1080" height="1516" onerror="this.style.display='none';">
+                        </div>
+                      </button>
+                    </li>
+                    <li class="graphic-carousel__slide" data-carousel-slide role="group" aria-roledescription="pieza" aria-label="5 de 7">
+                      <button class="graphic-carousel__item" type="button" data-carousel-open aria-label="Ver pieza de archivo 5 en tamaño completo">
+                        <div class="media graphic-carousel__media">
+                          <img class="graphic-carousel__img" data-carousel-img src="../../img/proyectos/abuelas/5.jpeg" alt="Fotografía de un afiche pegado en una persiana metálica que anuncia &quot;La muestra sobre el niño desaparecido y nacido en cautiverio&quot;, organizada por Abuelas de Plaza de Mayo en noviembre de 1984." loading="lazy" width="959" height="1400" onerror="this.style.display='none';">
+                        </div>
+                      </button>
+                    </li>
+                    <li class="graphic-carousel__slide" data-carousel-slide role="group" aria-roledescription="pieza" aria-label="6 de 7">
+                      <button class="graphic-carousel__item" type="button" data-carousel-open aria-label="Ver pieza de archivo 6 en tamaño completo">
+                        <div class="media graphic-carousel__media">
+                          <img class="graphic-carousel__img" data-carousel-img src="../../img/proyectos/abuelas/6.jpeg" alt="Pieza gráfica en blanco y negro de una mano abierta con las puntas de los dedos envueltas en tiras de papel con huellas dactilares distintas y el texto &quot;La identidad no se impone&quot;, de Abuelas de Plaza de Mayo." loading="lazy" width="997" height="1481" onerror="this.style.display='none';">
+                        </div>
+                      </button>
+                    </li>
+                    <li class="graphic-carousel__slide" data-carousel-slide role="group" aria-roledescription="pieza" aria-label="7 de 7">
+                      <button class="graphic-carousel__item" type="button" data-carousel-open aria-label="Ver pieza de archivo 7 en tamaño completo">
+                        <div class="media graphic-carousel__media">
+                          <img class="graphic-carousel__img" data-carousel-img src="../../img/proyectos/abuelas/7.jpeg" alt="Ilustración en blanco y negro titulada &quot;Ellas están más allá 2&quot;: un grupo de mujeres con pañuelos en la cabeza caminando juntas de noche, obra de la artista Marta González." loading="lazy" width="1080" height="1482" onerror="this.style.display='none';">
+                        </div>
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+
+                <button class="graphic-carousel__arrow graphic-carousel__arrow--prev" type="button" data-carousel-prev aria-label="Pieza anterior">‹</button>
+                <button class="graphic-carousel__arrow graphic-carousel__arrow--next" type="button" data-carousel-next aria-label="Pieza siguiente">›</button>
+              </div>
+
+              <div class="graphic-carousel__counter" aria-live="polite" aria-atomic="true">
+                <span data-carousel-current>01</span> / <span data-carousel-total>07</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MI ROL
+       Version interactiva (accordion), mismo componente .role-accordion
+       ya usado en Camila Perochena -- reutilizado tal cual (mismas
+       clases, mismo comportamiento, mismo CSS en proyecto.css), sin
+       crear un sistema propio para Abuelas. Andres todavia usa
+       .case-role__list sin cambios. -->
+  <section class="case-section fade-in">
+    <div class="grid">
+      <span class="eyebrow case-section__label">Mi rol</span>
+      <div class="case-section__body">
+        <div class="role-accordion-list">
+          <details class="role-accordion">
+            <summary class="role-accordion__summary">
+              <span class="role-accordion__title">Prensa y difusión</span>
+              <span class="role-accordion__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="role-accordion__content">
+              <p class="role-accordion__description">Formé parte del área de Prensa y Difusión, produciendo contenidos que trasladan el trabajo, la historia y las actividades de la institución a sus plataformas digitales, dentro de una comunicación institucional con identidad y responsabilidad pública definidas.</p>
+            </div>
+          </details>
+
+          <details class="role-accordion">
+            <summary class="role-accordion__summary">
+              <span class="role-accordion__title">Estrategia y desarrollo de contenidos</span>
+              <span class="role-accordion__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="role-accordion__content">
+              <p class="role-accordion__description">Desarrollo de formatos capaces de comunicar el trabajo de Abuelas en redes sociales, contemplando el lenguaje de cada plataforma sin separar los contenidos de su contexto histórico e institucional.</p>
+            </div>
+          </details>
+
+          <details class="role-accordion">
+            <summary class="role-accordion__summary">
+              <span class="role-accordion__title">Creación y administración de TikTok</span>
+              <span class="role-accordion__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="role-accordion__content">
+              <p class="role-accordion__description">Inicié y administré el canal de TikTok de Abuelas desde cero, experimentando con formatos y criterios de publicación propios de la plataforma para construir una presencia institucional donde antes no existía.</p>
+            </div>
+          </details>
+
+          <details class="role-accordion">
+            <summary class="role-accordion__summary">
+              <span class="role-accordion__title">Producción audiovisual</span>
+              <span class="role-accordion__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="role-accordion__content">
+              <p class="role-accordion__description">Desarrollo de piezas audiovisuales para los canales digitales de la institución, combinando planificación, registro y edición, cuidando la claridad y coherencia con la comunicación de Abuelas.</p>
+            </div>
+          </details>
+
+          <details class="role-accordion">
+            <summary class="role-accordion__summary">
+              <span class="role-accordion__title">Grabación</span>
+              <span class="role-accordion__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="role-accordion__content">
+              <p class="role-accordion__description">Registro de contenidos originales, tomando decisiones de encuadre y duración pensadas desde su publicación posterior, para que el formato no dependiera únicamente de la edición.</p>
+            </div>
+          </details>
+
+          <details class="role-accordion">
+            <summary class="role-accordion__summary">
+              <span class="role-accordion__title">Edición</span>
+              <span class="role-accordion__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="role-accordion__content">
+              <p class="role-accordion__description">Edición de ritmo, estructura, subtítulos, imagen y sonido, con especial cuidado en el tratamiento de materiales vinculados a la memoria y los derechos humanos.</p>
+            </div>
+          </details>
+
+          <details class="role-accordion">
+            <summary class="role-accordion__summary">
+              <span class="role-accordion__title">Trabajo con material de archivo</span>
+              <span class="role-accordion__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="role-accordion__content">
+              <p class="role-accordion__description">Recuperación y adaptación de imágenes y registros audiovisuales históricos a nuevas piezas digitales, preservando su contexto, valor documental y relación con la historia narrada.</p>
+            </div>
+          </details>
+
+          <details class="role-accordion">
+            <summary class="role-accordion__summary">
+              <span class="role-accordion__title">Adaptación de contenidos para plataformas digitales</span>
+              <span class="role-accordion__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="role-accordion__content">
+              <p class="role-accordion__description">Adaptación de contenidos institucionales a los formatos y lenguajes de cada plataforma digital, manteniendo la identidad y el sentido del contenido original en cada entorno.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL DEL CASO
+       Abuelas es el último proyecto del recorrido (Andrés → Camila →
+       Abuelas), así que en vez de "Siguiente proyecto" este link cierra
+       el ciclo volviendo al primer caso. -->
+  <nav class="case-final container" aria-label="Navegación entre casos">
+    <a href="../../index.html#trabajo" class="back-link">← Todos los trabajos</a>
+    <a href="../andres-rieznik/index.html" class="arrow-link">Volver al primer proyecto <span class="arrow-link__arrow">→</span></a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <span class="site-footer__name">Germán Gómez Bonelli</span>
+    <a href="../../index.html#trabajo" class="back-link">← Volver a proyectos</a>
+  </div>
+</footer>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

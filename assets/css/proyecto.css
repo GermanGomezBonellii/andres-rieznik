@@ -1,0 +1,1833 @@
+/* ==========================================================================
+   PROYECTO — sistema visual base para las páginas individuales de caso
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   CASE HERO — cabecera enriquecida (categoría + título + bajada + roles +
+   dato principal + imagen 4:5). Usada por primera vez en Andrés Rieznik
+   (primera iteración del caso real). Composición asimétrica en espejo de
+   .profile__grid: contenido 6 columnas / columna de aire / imagen 5
+   columnas.
+
+   Los tres casos desarrollados hasta ahora usan .case-hero: Andrés
+   Rieznik con la composición por defecto, Abuelas de Plaza de Mayo con la
+   variante --reverse (ver más abajo) y Camila Perochena también con la
+   composición por defecto pero con imagen 16:9 en vez de 4:5 (ver
+   .case-hero__media--camila). El patrón anterior, más simple
+   (.case-header + .case-hero-media), ya no lo usa ninguna página en
+   desarrollo -- se deja intacto más abajo por si un futuro proyecto
+   arranca primero como stub, como pasó con los tres anteriores.
+   -------------------------------------------------------------------------- */
+.case-hero {
+  padding-block: clamp(32px, 6vw, 56px) var(--section-space);
+}
+
+.case-hero__back {
+  margin-bottom: clamp(40px, 6vw, 72px);
+}
+
+.case-hero__grid {
+  align-items: start; /* cada columna conserva su alto intrínseco */
+}
+
+.case-hero__content {
+  grid-column: 1 / span 6;
+}
+
+.case-hero__eyebrow {
+  margin-bottom: 18px;
+}
+
+.case-hero__title {
+  font-size: var(--fs-h1);
+  margin-bottom: clamp(24px, 3.5vw, 36px);
+}
+
+.case-hero__lead {
+  font-family: var(--font-body); /* bajada: texto, no titulo */
+  font-size: var(--fs-lead);
+  max-width: 42ch;
+  margin-bottom: 20px;
+}
+
+.case-hero__roles {
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  color: var(--color-muted);
+  margin-bottom: clamp(40px, 6vw, 64px);
+}
+
+/* -- Dato principal (19K -> 480K+), integrado dentro del hero, no como
+   sección aparte. Tamaño moderado a propósito: tiene presencia visual
+   pero no debe competir con el título del caso. -------------------------- */
+.case-hero__stat {
+  padding-top: clamp(24px, 4vw, 40px);
+  border-top: 1px solid var(--color-line);
+  max-width: 42ch;
+}
+
+/* Label de cada métrica (Instagram / TikTok / YouTube) -- reutiliza
+   .eyebrow (sans-serif, mayúsculas, tracking editorial), pero
+   sobreescribe tamaño/peso/color: antes heredaba el tamaño "chico" y el
+   gris tenue de .eyebrow, lo que lo dejaba con menos presencia que la
+   propia unidad ("seguidores"/"suscriptores"). Ahora funciona como
+   título de cada bloque -- claramente más grande y en texto casi negro,
+   pero todavía bastante por debajo del número. */
+.case-hero__stat-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.case-hero__stat-value {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  margin-bottom: 4px; /* antes 10px: ahora .case-hero__stat-unit sigue inmediatamente debajo */
+}
+
+.case-hero__stat-arrow {
+  color: var(--color-accent); /* único detalle celeste del hero, muy puntual */
+}
+
+/* -- Metrica animada (19K -> 480K+ de Andres Rieznik) --------------------
+   ------------------------------------------------------------------------
+   Genérico y reutilizable (.metric-sequence / .metric-start /
+   .metric-arrow / .metric-end), aunque por ahora solo lo usa esta
+   métrica puntual. Vive DENTRO de .case-hero__stat-value sin cambiar esa
+   clase -- mismo font-family/font-size/margin-bottom de siempre, así que
+   el layout general del bloque no se mueve un pixel.
+
+   Estado inicial (sin JS, sin intersección todavía): .metric-start y
+   .metric-end en opacity:0 + una pequeña traslación vertical: el HTML ya
+   trae el texto final completo (accesible / SEO / sin-JS), la animación
+   es puramente visual. Cuando main.js agrega .is-metric-animated a
+   .metric-sequence (al entrar en viewport, una sola vez), cada parte
+   revela con su propio transition-delay para lograr la secuencia
+   19K -> línea -> punta -> 480K+. Solo transform + opacity en todo el
+   bloque, nada de propiedades costosas. */
+.metric-sequence {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.2em;
+}
+
+.metric-start,
+.metric-end {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.45s var(--ease), transform 0.45s var(--ease);
+}
+
+.metric-end {
+  transition-delay: 1.05s; /* arranca justo cuando la línea + punta ya terminaron */
+}
+
+/* La flecha se "dibuja": una línea horizontal (::before) que crece de
+   izquierda a derecha vía transform: scaleX() con transform-origin:
+   left, y una punta (::after, triángulo por border-trick) que aparece
+   recién cuando la línea termina de crecer. El contenedor tiene un ancho
+   fijo (clamp, responsive) porque scaleX necesita una caja con ancho
+   propio para animar -- la línea/punta se dibujan dentro de esa caja vía
+   ::before/::after en vez de depender del carácter "→". */
+.metric-arrow {
+  position: relative;
+  display: inline-block;
+  width: clamp(26px, 6vw, 44px);
+  height: 1em;
+  vertical-align: middle;
+  flex: 0 0 auto;
+}
+
+.metric-arrow::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 2px;
+  background: var(--color-accent);
+  transform: translateY(-50%) scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s var(--ease);
+  transition-delay: 0.45s; /* empieza justo cuando termina de aparecer 19K */
+}
+
+.metric-arrow::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 4px 0 4px 6px;
+  border-color: transparent transparent transparent var(--color-accent);
+  opacity: 0;
+  transform: translateY(-50%) scale(0);
+  transform-origin: center;
+  transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
+  transition-delay: 0.85s; /* aparece justo cuando la línea termina de crecer (0.45s + 0.5s = 0.95s) */
+}
+
+.is-metric-animated .metric-start,
+.is-metric-animated .metric-end {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.is-metric-animated .metric-arrow::before {
+  transform: translateY(-50%) scaleX(1);
+}
+
+.is-metric-animated .metric-arrow::after {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
+
+/* prefers-reduced-motion: el HTML ya trae "19K → 480K+" completo (via
+   .visually-hidden, siempre presente) -- acá alcanza con mostrar también
+   la versión visual ya resuelta, sin transición ni secuencia, sin
+   depender de que main.js llegue a agregar ninguna clase. */
+@media (prefers-reduced-motion: reduce) {
+  .metric-start,
+  .metric-end {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .metric-arrow::before {
+    transform: translateY(-50%) scaleX(1);
+    transition: none;
+  }
+
+  .metric-arrow::after {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+    transition: none;
+  }
+}
+
+/* Unidad de la métrica (seguidores / suscriptores): antes vivía adentro
+   de .case-hero__stat-value, heredando la serif grande y compitiendo
+   visualmente con el número y con la plataforma. Ahora es una etiqueta
+   secundaria propia, sans-serif y notablemente más chica -- de paso esto
+   reduce el espacio vertical extra que generaba antes. */
+.case-hero__stat-unit {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--color-muted);
+  margin-bottom: 10px;
+}
+
+.case-hero__stat-caption {
+  display: block;
+  font-size: var(--fs-small);
+  color: var(--color-muted);
+  max-width: 34ch;
+}
+
+.case-hero__media-col {
+  grid-column: 8 / span 5;
+}
+
+/* Imagen principal del caso de Andrés Rieznik (4:5). Background-image,
+   no <img>: mismo criterio que .hero / .profile__photo. Usa el archivo
+   definitivo img/andres.webp, el mismo que ya se linkea en la preview de
+   la home (.media--andres). */
+.case-hero__media {
+  background-image: url('../../img/andres.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+@media (max-width: 1024px) {
+  .case-hero__content,
+  .case-hero__media-col {
+    grid-column: 1 / span 12;
+  }
+  .case-hero__media-col {
+    margin-top: clamp(32px, 6vw, 48px);
+  }
+}
+
+/* -- Variante --reverse de .case-hero: imagen a la izquierda, contenido a
+   la derecha (espejo de la distribución por defecto). Usada por primera
+   vez en Abuelas de Plaza de Mayo para que el hero no sea una copia
+   exacta del de Andrés Rieznik, reutilizando el mismo componente.
+
+   Antes esto se resolvía sobreescribiendo grid-column en .case-hero__grid
+   (12 columnas) sobre cada hijo por separado -- dos reglas de igual
+   especificidad que dependían de leerse en conjunto para entender que
+   imagen y texto quedaban en la misma fila. Se reemplaza por un grid
+   propio de 2 columnas (grid-template-areas), autocontenido en una sola
+   regla: no hay ambigüedad posible sobre qué bloque va en qué columna, y
+   no interfiere con .case-hero__content / .case-hero__media-col de
+   Andrés ni Camila (que no usan --reverse). Solo aplica en desktop -- en
+   mobile no se toca nada: sigue colapsando mediante la regla compartida
+   de @media (max-width: 1024px) de más arriba, que ya cubre content y
+   media-col para cualquier variante. -------------------------------------- */
+@media (min-width: 1025px) {
+  .case-hero--reverse .case-hero__grid {
+    grid-template-columns: minmax(0, 6fr) minmax(0, 1fr) minmax(0, 5fr);
+    grid-template-areas: "media . content";
+  }
+
+  .case-hero--reverse .case-hero__content {
+    grid-area: content;
+  }
+
+  .case-hero--reverse .case-hero__media-col {
+    grid-area: media;
+  }
+}
+
+/* Imagen principal de Abuelas de Plaza de Mayo -- misma técnica que
+   .case-hero__media (background-image, sin <img>), pero con su propia
+   ruta para no pisar la de Andrés. Usa el archivo definitivo
+   img/abuelas.webp, el mismo que ya se linkea en la preview de la home
+   (.media--abuelas). */
+.case-hero__media--abuelas {
+  background-image: url('../../img/abuelas.webp');
+}
+
+/* Imagen principal de Camila Perochena -- misma técnica, ruta propia.
+   A diferencia de Andrés/Abuelas, el HTML usa .media--16-9 en vez de
+   .media--tall para este caso (material de origen horizontal), así que
+   esta regla solo necesita aportar la imagen. Usa el archivo definitivo
+   img/camila.webp, el mismo que ya se linkea en la preview de la home
+   (.media--camila). */
+.case-hero__media--camila {
+  background-image: url('../../img/camila.webp');
+}
+
+/* -- Variante compacta de .case-hero para Camila Perochena --------------
+   Un solo dato principal (no tres, como Andrés) y una imagen 16:9 en vez
+   de 4:5: la columna izquierda queda bastante más baja que en los otros
+   casos. El padding-bottom compartido de .case-hero (var(--section-space),
+   hasta 160px) sumado a ese contenido más corto dejaba un vacío enorme
+   antes de "El proyecto". Se acota puntualmente acá, sin tocar el resto
+   de .case-hero -- Andrés y Abuelas siguen usando el valor compartido. */
+.case-hero.case-hero--camila {
+  padding-bottom: clamp(80px, 8vw, 120px);
+}
+
+/* Acerca el dato 14K → 100K al bloque de roles de arriba (mismo
+   contenido: línea, número, flecha celeste, descripción -- solo menos
+   aire antes). */
+.case-hero.case-hero--camila .case-hero__stat {
+  padding-top: clamp(16px, 2.5vw, 24px);
+}
+
+/* -- Dato destacado dentro de una sección de texto (no en el hero). Mismo
+   lenguaje visual que .case-hero__stat, pero reutilizable en cualquier
+   .case-section__body -- pensado para futuros casos, no solo Abuelas. --- */
+.case-stat {
+  margin-top: clamp(28px, 4vw, 44px);
+  padding-top: clamp(24px, 4vw, 40px);
+  border-top: 1px solid var(--color-line);
+  max-width: 42ch;
+}
+
+.case-stat-value {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  margin-bottom: 10px;
+}
+
+.case-stat-arrow {
+  color: var(--color-accent); /* mismo detalle celeste puntual que .case-hero__stat-arrow */
+}
+
+.case-stat-caption {
+  display: block;
+  font-size: var(--fs-small);
+  color: var(--color-muted);
+  max-width: 34ch;
+}
+
+/* -- Mi rol: lista simple separada por líneas finas, sin íconos --------- */
+.case-role__list li {
+  padding-block: 16px;
+  border-top: 1px solid var(--color-line);
+  font-size: var(--fs-lead);
+}
+
+.case-role__list li:last-child {
+  border-bottom: 1px solid var(--color-line);
+}
+
+/* -- Mi rol (version interactiva, accordion): mismo lenguaje visual que
+   .case-role__list de arriba -- lineas finas, mucho aire, sin cards, sin
+   fondos individuales, sin border-radius, sin sombras -- pero cada fila
+   es un <details>/<summary> nativo en vez de un <li> estatico: teclado,
+   accesibilidad y funcionamiento sin JS vienen gratis del elemento
+   nativo. Por ahora solo la usa Camila Perochena (prueba del
+   componente); clases deliberadamente genericas para poder reutilizarlo
+   despues en Andres, Abuelas y proyectos futuros sin duplicar CSS. */
+.role-accordion-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.role-accordion {
+  border-top: 1px solid var(--color-line);
+}
+
+.role-accordion-list > .role-accordion:last-child {
+  border-bottom: 1px solid var(--color-line);
+}
+
+.role-accordion__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gutter);
+  padding-block: clamp(18px, 3vw, 26px);
+  cursor: pointer;
+  list-style: none; /* Firefox: oculta el triangulo nativo de <summary> */
+}
+
+/* Chrome / Safari: el triangulo nativo se oculta por aca en vez de por
+   list-style (list-style solo no alcanza en esos motores). */
+.role-accordion__summary::-webkit-details-marker {
+  display: none;
+}
+
+.role-accordion__title {
+  font-size: var(--fs-lead); /* mismo tamaño que tenia cada fila en .case-role__list */
+  color: var(--color-text); /* negro editorial del sitio -- estado normal/cerrado */
+  transition: color 180ms ease;
+}
+
+/* Estados interactivos SOLO del titulo (span .role-accordion__title) --
+   el icono +/- ya tiene su propio color en hover (regla de arriba,
+   .role-accordion__summary:hover .role-accordion__icon) y no se toca; la
+   descripcion, el label "Mi rol" y las lineas divisorias tampoco cambian
+   de color en ningun estado. Jerarquia pedida:
+     - cerrado, sin hover: var(--color-text) (regla de arriba, sin cambios)
+     - hover (abierto o cerrado) o foco por teclado: var(--color-accent) (#74ACDF)
+     - abierto, sin hover/foco: #4F8FC4 (celeste mas oscuro)
+   Cerrar el <details> no necesita una regla propia: como
+   .role-accordion[open] deja de matchear, el titulo vuelve solo al
+   var(--color-text) de la regla base de arriba.
+
+   Nota de especificidad: ".role-accordion__summary:hover .role-accordion__title"
+   y ".role-accordion[open] .role-accordion__title" tienen la MISMA
+   especificidad (3 selectores de clase cada una) -- por eso hace falta la
+   tercera regla combinada de abajo (5 selectores de clase) para que
+   "abierto + hover" le gane de forma explicita a "abierto sin hover",
+   sin depender del orden en que queden escritas. */
+.role-accordion__summary:hover .role-accordion__title,
+.role-accordion__summary:focus-visible .role-accordion__title {
+  color: var(--color-accent); /* #74ACDF */
+}
+
+.role-accordion[open] .role-accordion__title {
+  color: #4F8FC4;
+}
+
+.role-accordion[open] .role-accordion__summary:hover .role-accordion__title,
+.role-accordion[open] .role-accordion__summary:focus-visible .role-accordion__title {
+  color: var(--color-accent); /* #74ACDF -- gana por especificidad sobre la regla de arriba */
+}
+
+.role-accordion__icon {
+  flex-shrink: 0;
+  min-width: 1ch;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: var(--fs-lead);
+  line-height: 1;
+  transition: color 200ms ease;
+}
+
+/* El simbolo se resuelve por CSS a partir del atributo [open] que el
+   navegador ya maneja de forma nativa -- no hace falta JS para
+   alternarlo. */
+.role-accordion__icon::before {
+  content: "+";
+}
+
+.role-accordion[open] .role-accordion__icon::before {
+  content: "\2212"; /* signo menos tipografico (−), no un guion */
+}
+
+.role-accordion__summary:hover .role-accordion__icon {
+  color: var(--color-accent); /* unico acento celeste puntual, igual criterio que el resto del sitio -- no cambia toda la fila */
+}
+
+.role-accordion__content {
+  padding-bottom: clamp(24px, 4vw, 36px);
+}
+
+.role-accordion__description {
+  margin-top: 12px;
+  max-width: 62ch; /* ~60-70 caracteres por linea */
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  color: var(--color-muted);
+}
+
+/* Transicion de apertura: se anima solo la aparicion del contenido
+   (opacity + una traslacion minima) una vez que el navegador ya lo hizo
+   visible de forma nativa -- no se anima la altura de <details>, que
+   requeriria JS o hacks fragiles. Sin animacion de cierre: es el
+   comportamiento nativo estandar y prioriza simplicidad por sobre
+   pulido visual, tal como se pidio. */
+@keyframes role-accordion-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.role-accordion[open] > .role-accordion__content {
+  animation: role-accordion-reveal 280ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .role-accordion[open] > .role-accordion__content {
+    animation: none;
+  }
+}
+
+/* -- Áreas de trabajo: lista numerada, no cards -- pensada para poder
+   agregar/quitar/reordenar bloques sin tocar el layout general. --------- */
+.case-areas__list {
+  display: flex;
+  flex-direction: column;
+}
+
+.case-areas__item {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: var(--gutter);
+  padding-block: clamp(28px, 4vw, 44px);
+  border-top: 1px solid var(--color-line);
+}
+
+.case-areas__item:last-child {
+  border-bottom: 1px solid var(--color-line);
+}
+
+.case-areas__index {
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  color: var(--color-muted-2);
+}
+
+.case-areas__title {
+  font-size: var(--fs-h3);
+  margin-bottom: 10px;
+}
+
+.case-areas__text {
+  max-width: 58ch;
+}
+
+@media (max-width: 768px) {
+  .case-areas__item {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
+/* -- Trabajo seleccionado: variante full-width de .case-section, para que
+   la grilla de media respire más que las secciones de texto de arriba y
+   abajo (variación de ritmo editorial). ----------------------------------- */
+.case-work .case-section__label {
+  grid-column: 1 / -1;
+  margin-bottom: clamp(24px, 4vw, 40px);
+}
+
+.case-work .case-section__body {
+  grid-column: 1 / span 12;
+}
+
+/* -- Una cuenta nueva (Abuelas de Plaza de Mayo): screenshot de la cuenta
+   + animación original del logo, lado a lado en desktop -- pueden tener
+   proporciones distintas a propósito (align-items: start, sin forzar
+   igual altura), la screenshot puede pesar más visualmente (60/40
+   sugerido vía el fr-split de abajo). Sin cards. -------------------------- */
+.case-account-media {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  column-gap: var(--gutter);
+  align-items: start;
+  margin-top: clamp(28px, 4vw, 40px);
+}
+
+@media (max-width: 640px) {
+  .case-account-media {
+    display: block;
+  }
+  .case-account-media__animation {
+    margin-top: clamp(20px, 4vw, 28px);
+  }
+  /* Mobile: la captura ya viene topeada a 300px (.case-account-media__screenshot
+     .media, más abajo) -- acá se le da el mismo tope al logo (por defecto
+     ocupaba el ancho completo de la columna, ~350-390px según el viewport,
+     bastante más grande que la captura de arriba) y se centran los dos
+     bloques con margin-inline: auto, para que queden del mismo ancho, uno
+     debajo del otro con los bordes alineados. El logo es cuadrado (300x300
+     real) así que el tope no lo deforma, solo lo achica proporcionalmente.
+     Escapado a este breakpoint a propósito: en desktop los dos bloques van
+     lado a lado en columnas de distinto ancho (3fr/2fr) y ese layout no se
+     toca -- igualar anchos ahí agrandaría el logo en vez de achicarlo. */
+  .case-account-media__screenshot .media,
+  .case-account-media__animation .media {
+    max-width: 300px;
+    margin-inline: auto;
+  }
+}
+
+/* Video de la animación del logo, cuando exista: sin controles visibles,
+   pensado para leerse como pieza gráfica y no como reproductor (ver
+   comentario HTML en "Una cuenta nueva" con el marcado real a usar). */
+.case-account-media__video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Fix: screenshot.png real (590x1280px) se estaba deformando -- el <img>
+   trae width/height fijos en el HTML (medidos con Pillow) para reservar
+   espacio y evitar salto de layout, pero la regla global "img { max-width:
+   100%; }" (base.css) no incluye height: auto, asi que al achicarse el
+   ancho dentro de la columna de 3fr, el alto se quedaba clavado en el
+   valor del atributo (1280px) en vez de escalar proporcionalmente --
+   mismo criterio ya aplicado en .case-text-media__media img (arriba, para
+   indice.jpeg). Ademas se limita el ancho maximo del contenedor .media a
+   300px para que la captura de telefono se vea a un tamaño de referencia
+   razonable en vez de estirarse a ocupar las 3fr completas de la
+   columna. La animacion del logo (300x300, cuadrada) recibe el mismo
+   width: 100%; height: auto por consistencia / robustez en mobile,
+   aunque al ser cuadrada el bug era menos notorio. */
+.case-account-media__screenshot .media {
+  max-width: 300px;
+}
+
+.case-account-media__screenshot img,
+.case-account-media__animation img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* -- Derechos humanos, ciencia e identidad: texto | imagen (índice de
+   abuelidad, indice.jpeg) -- ~62.5% texto / ~37.5% imagen. Modelo
+   estructural de .source-item (Camila Perochena) pero con la proporción
+   invertida (acá el texto pesa más que la imagen, al revés que ahí).
+   max-width en la imagen: 400-500px pedido, aunque el contenedor real
+   (.case-work ancho completo) ya lo deja bastante por debajo de ese tope
+   en viewports intermedios -- ver comentario HTML de la sección. --------- */
+.case-text-media {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 3fr);
+  column-gap: var(--gutter);
+  align-items: start;
+}
+
+.case-text-media__text {
+  max-width: 62ch;
+}
+
+.case-text-media__media {
+  max-width: 480px;
+  width: 100%;
+}
+
+.case-text-media__media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--color-line);
+}
+
+@media (max-width: 768px) {
+  .case-text-media {
+    display: block;
+  }
+  .case-text-media__text {
+    max-width: none;
+  }
+  .case-text-media__media {
+    margin-top: clamp(20px, 4vw, 28px);
+    max-width: 420px;
+  }
+}
+
+/* -- Más material (Abuelas de Plaza de Mayo, sección todavía comentada en
+   el HTML): carrusel horizontal chico y secundario, sin librerías --
+   scroll-snap nativo. A propósito SIN aspect-ratio fijo en
+   .media-strip__item (el material futuro puede variar de proporción);
+   cada item define su propia proporción con una clase .media existente
+   (media--9-16, media--16-9, media--square, o media a secas). Scrollbar
+   visible a propósito (a diferencia de .graphic-carousel): esto es una
+   navegación secundaria discreta, no una pieza protagonista, así que no
+   hace falta ocultarla. Reutilizable para cualquier otra galería
+   secundaria futura del sitio, no exclusiva de Abuelas. ------------------ */
+.media-strip {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+}
+
+.media-strip__item {
+  flex: 0 0 clamp(260px, 30vw, 360px);
+  scroll-snap-align: start;
+}
+
+/* -- Producción original (.project-feature): bloque editorial para una
+   pieza propia dentro de un caso -- usado primero en el mini documental
+   de Alfabetización (Andrés Rieznik), pensado desde el principio para
+   reutilizarse tal cual en otras piezas de este tipo (la miniserie de 4
+   capítulos, por ejemplo) sin crear un componente nuevo cada vez. Más
+   peso que una tarjeta de .case-reel/.case-media-grid ("Trabajo
+   seleccionado"): el título usa --fs-h2 en vez de --fs-h3/tamaño de
+   caption, pero bastante por debajo del hero (.case-hero__title usa
+   --fs-h1). Vive dentro de .case-section__body, así que hereda la misma
+   columna angosta que el resto del texto del caso -- no se toca el grid
+   de la sección para esto (opción "texto arriba, video grande debajo":
+   es la que mejor dialoga con el resto de la página, que en ningún otro
+   lado usa dos columnas dentro de .case-section__body). */
+.project-feature {
+  margin-top: clamp(40px, 6vw, 64px);
+  padding-top: clamp(32px, 5vw, 48px);
+  border-top: 1px solid var(--color-line);
+}
+
+.project-feature__header {
+  margin-bottom: clamp(20px, 3vw, 28px);
+}
+
+.project-feature__eyebrow {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.project-feature__title {
+  font-size: var(--fs-h2);
+}
+
+/* El espaciado entre párrafos del texto lo resuelve automáticamente
+   .case-section__body p + p (ver arriba) -- .project-feature__text es
+   descendiente de .case-section__body, así que no hace falta duplicar
+   la regla acá. */
+
+.project-feature__role {
+  margin-top: clamp(20px, 3vw, 28px);
+  margin-bottom: clamp(28px, 4vw, 40px);
+  color: var(--color-text);
+}
+
+.project-feature__role .eyebrow {
+  margin-right: 8px;
+}
+
+/* .project-feature__media reutiliza .media + .media--16-9 tal cual (ver
+   components.css): aspect-ratio, overflow y el color de superficie
+   neutro mientras la miniatura carga. Ya no es un <iframe> embebido
+   (devolvía "Error 153" al reproducirse dentro del portfolio) sino un
+   <a> que abre el video en YouTube en una pestaña nueva -- thumbnail +
+   botón de play, sin reproductor que pueda romperse acá adentro. */
+.project-feature__media {
+  display: block;
+  cursor: pointer;
+}
+
+.project-feature__thumb {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s var(--ease);
+}
+
+.project-feature__media:hover .project-feature__thumb {
+  transform: scale(1.025); /* zoom muy sutil, dentro del rango pedido (1.02-1.03) */
+}
+
+/* Botón de play: círculo discreto semitransparente + triángulo dibujado
+   con el truco de bordes de CSS (sin SVG ni íconos externos, mismo
+   criterio que el resto del sitio). Pasa a celeste en hover -- único
+   acento de color, igual criterio que .arrow-link / .case-process__arrow. */
+.project-feature__play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(14, 14, 13, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s var(--ease);
+}
+
+.project-feature__play::before {
+  content: '';
+  width: 0;
+  height: 0;
+  margin-left: 4px; /* centrado óptico del triángulo dentro del círculo */
+  border-style: solid;
+  border-width: 10px 0 10px 16px;
+  border-color: transparent transparent transparent #fff;
+}
+
+.project-feature__media:hover .project-feature__play {
+  background: var(--color-accent);
+}
+
+/* -- Producción original: miniserie (Re-Renacimiento) --------------------
+   Extiende .project-feature sin tocarlo: reutiliza tal cual .media,
+   .media--16-9, .project-feature__media, .project-feature__thumb y
+   .project-feature__play (mismo thumbnail+play+link externo que el
+   documental de Arrecifes). Lo único nuevo es el contenedor de grilla
+   para presentar varios episodios como un solo proyecto, visiblemente
+   más chico que el video grande del documental. */
+.project-series {
+  margin-top: clamp(28px, 4vw, 40px);
+}
+
+.project-series__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 340px));
+  gap: clamp(20px, 3vw, 32px);
+  justify-content: center;
+}
+
+.project-series__episode {
+  display: flex;
+  flex-direction: column;
+}
+
+.project-series__label {
+  margin-top: 10px;
+}
+
+@media (max-width: 640px) {
+  .project-series__grid {
+    grid-template-columns: minmax(0, 340px);
+  }
+}
+
+/* -- Desarrollo de canales: TikTok / YouTube en 2 columnas en desktop --- */
+/* .case-channels__item pasa a display:contents: deja de generar su
+   propia caja de flujo y sus hijos (título/descripción/imagen) pasan a
+   ser items directos de esta grilla. Con grid-auto-flow:column + 3 filas
+   explícitas, cada columna (TikTok/YouTube) reparte sus 3 hijos en fila
+   1/2/3 respectivamente, y como ambas columnas comparten esas mismas 3
+   filas, la fila 3 (las imágenes) arranca exactamente a la misma altura
+   en las dos columnas sin importar que la descripción de una tenga más
+   líneas que la otra -- sin subgrid, sin JS, sin márgenes manuales por
+   plataforma. align-items:start evita que algo se estire o se centre
+   verticalmente dentro de su fila. */
+.case-channels__list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto auto auto;
+  grid-auto-flow: column;
+  column-gap: var(--gutter);
+  align-items: start;
+}
+
+.case-channels__item {
+  display: contents;
+}
+
+/* La línea divisoria y el espacio superior vivían antes en
+   .case-channels__item; con display:contents ese elemento ya no genera
+   caja propia, así que se mueven al título (primer elemento visible de
+   cada columna) para mantener exactamente el mismo resultado visual. */
+.case-channels__name {
+  padding-top: clamp(24px, 4vw, 32px);
+  border-top: 1px solid var(--color-line);
+  font-size: var(--fs-h3);
+  margin-bottom: 10px;
+}
+
+.case-channels__text {
+  color: var(--color-muted);
+  margin-bottom: clamp(20px, 3vw, 28px);
+}
+
+/* Screenshots definitivos de los canales (img/proyectos/andres-rieznik/
+   tiktok.png y youtube.png). Mismo criterio que .media--andres /
+   .media--camila / .media--abuelas: background-image sobre .media--16-9;
+   cover porque el origen no es exactamente 16:9 (~1.5:1 en ambos casos).
+   background-position: top center (antes "center"): prioriza mantener
+   visible la parte superior de cada captura (cabecera de perfil de
+   TikTok, banner de YouTube) y recorta por abajo en vez de recortar
+   parejo arriba y abajo. */
+.case-channels__media--tiktok {
+  background-image: url('../../img/proyectos/andres-rieznik/tiktok.png');
+  background-size: cover;
+  background-position: top center;
+  background-repeat: no-repeat;
+}
+
+.case-channels__media--youtube {
+  background-image: url('../../img/proyectos/andres-rieznik/youtube.png');
+  background-size: cover;
+  background-position: top center;
+  background-repeat: no-repeat;
+}
+
+@media (max-width: 768px) {
+  /* Vuelve a flujo normal de a un item por vez (título/descripción/
+     imagen de TikTok, después título/descripción/imagen de YouTube):
+     con una sola columna, grid-auto-flow:column generaría columnas
+     implícitas extra en vez de apilar -- acá no hace falta compartir
+     filas entre plataformas porque ya están una debajo de la otra. */
+  .case-channels__list {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    grid-auto-flow: row;
+  }
+}
+
+/* -- Navegación final del caso ------------------------------------------- */
+.case-final {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-block: clamp(40px, 6vw, 64px);
+  border-top: 1px solid var(--color-line);
+}
+
+.case-final__next {
+  font-size: var(--fs-small);
+  color: var(--color-muted-2); /* deshabilitado visualmente: todavia no hay siguiente proyecto */
+}
+
+/* --------------------------------------------------------------------------
+   A partir de acá: patrón anterior, más simple (.case-header +
+   .case-hero-media + .case-placeholder-body), usado originalmente por los
+   tres casos mientras eran stubs. Ningún caso en desarrollo lo usa ya --
+   se deja intacto por si un futuro proyecto nuevo arranca primero como
+   stub, como pasó con Andrés, Abuelas y Camila.
+   -------------------------------------------------------------------------- */
+.case-header {
+  padding-block: clamp(32px, 6vw, 56px) clamp(40px, 8vw, 72px);
+}
+
+.case-header__back {
+  margin-bottom: clamp(40px, 6vw, 72px);
+}
+
+.case-header__eyebrow {
+  margin-bottom: 16px;
+}
+
+.case-header__title {
+  font-size: var(--fs-h1);
+  grid-column: 1 / span 9;
+}
+
+/* -- Media principal -------------------------------------------------- */
+.case-hero-media {
+  margin-bottom: var(--section-space);
+}
+
+.case-hero-media .media {
+  min-height: 320px;
+}
+
+/* -- Secciones genéricas de caso ---------------------------------------- */
+.case-section {
+  padding-block: clamp(56px, 9vw, 120px);
+  border-top: 1px solid var(--color-line);
+}
+
+/* CONTENEDOR: .case-section usa un .grid directo como hijo, sin pasar por
+   .container -- por eso su contenido quedaba corriendo borde a borde del
+   viewport (bug presente desde el primer caso desarrollado, Andrés
+   Rieznik, y heredado por Abuelas al reusar el mismo componente). La
+   sección en sí (con su border-top divisorio) puede seguir ocupando todo
+   el ancho -- igual que .profile o .contact en la home, que tampoco
+   limitan su propio ancho -- pero el .grid que contiene el contenido
+   real debe respetar el mismo sistema de .container (assets/css/base.css):
+   mismo max-width, mismo centrado y mismo padding lateral que usan la
+   home, el header y el propio .case-hero de este archivo. Al vivir en
+   assets/css/proyecto.css (compartido por todas las páginas de caso),
+   esto contiene tanto a Abuelas como a Andrés sin tocar ningún HTML. */
+.case-section > .grid,
+.case-work__youtube-band > .grid {
+  /* .case-work__youtube-band > .grid: mismo centrado que .case-section >
+     .grid de arriba -- la banda ahora es full-bleed (ver comentario en esa
+     clase, más abajo en este archivo) y necesita el mismo .grid interno
+     para alinear su contenido con el resto de "Trabajo seleccionado". */
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--margin);
+}
+
+.case-section__label {
+  grid-column: 1 / span 3;
+}
+
+.case-section__body {
+  grid-column: 4 / span 7;
+}
+
+.case-section__body p + p {
+  margin-top: 1.1em;
+}
+
+.case-section__placeholder {
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+/* -- Franja oscura para secciones puntuales dentro de un caso -----------
+   ------------------------------------------------------------------------
+   Misma imagen y misma logica visual que .hero de la home (ver
+   assets/css/home.css): background-image con url('../../img/hero.webp'),
+   background-size: cover, background-position: center, background-repeat:
+   no-repeat. La diferencia es el overlay -- el hero de la home usa un
+   ::before aparte con rgba(0,0,0,.15) porque el propio .hero ocupa casi
+   toda la altura de la pantalla y el titulo es enorme y blanco; acá las
+   franjas son mucho mas bajas (aparece menos imagen visible con "cover")
+   y el texto es de cuerpo, mas chico, así que hace falta mas contraste --
+   0.55 en vez de 0.15, mezclado en el mismo background-image (un
+   linear-gradient encima de la imagen, un solo layer) en vez de un
+   ::before de overlay separado -- misma idea, un paso mas simple.
+
+   El ::before pinta esto de forma explicita, detras del contenido: el
+   wrapper (.case-dark-band) crea su propio contexto de apilamiento
+   (position: relative + isolation: isolate) para que la capa quede
+   contenida ahi adentro; ::before con z-index: 0 se ubica atras de
+   .case-section (z-index: 1) sin tocar z-index negativos. background:
+   #0d0d0d solido en el propio wrapper queda como respaldo mientras
+   hero.webp carga o si la ruta llegara a fallar. */
+.case-dark-band {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #0d0d0d;
+}
+
+.case-dark-band::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url('../../img/hero.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.case-dark-band > .case-section {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+}
+
+/* .case-section--dark-hero queda como estaba pero SOLO para lo que le
+   corresponde de verdad: colores de texto sobre fondo oscuro y quitar el
+   border-top (la separación visual ahora la da el propio cambio de
+   fondo del wrapper). Ya no pinta background acá -- esa responsabilidad
+   pasó por completo a .case-dark-band, para no tener dos sistemas
+   intentando pintar la misma franja. */
+.case-section.case-section--dark-hero {
+  border-top: none;
+  color: #f5f5f3;
+}
+
+.case-section.case-section--dark-hero h2,
+.case-section.case-section--dark-hero h3 {
+  color: #f5f5f3;
+}
+
+/* Labels de sección ("Contenidos de origen" / "Trabajo seleccionado"),
+   metadatos (OLGA, Carlos Pagni) y label de cada reel ("Reel /
+   Instagram") comparten la clase compartida .eyebrow -- blanco
+   secundario para las tres, mismo criterio que el resto del sitio usa
+   para jerarquía secundaria (nunca el celeste, reservado para acentos
+   puntuales de interacción/hover). */
+.case-section--dark-hero .eyebrow {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.case-section--dark-hero .source-item__description,
+.case-section--dark-hero .case-reel__unit,
+.case-section--dark-hero .case-reel__text,
+.case-section--dark-hero .case-section__placeholder {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.case-section--dark-hero .source-item + .source-item {
+  border-top-color: rgba(255, 255, 255, 0.15);
+}
+
+/* "Desarrollo de canales" (Andrés Rieznik) sobre fondo oscuro:
+   .case-channels__name tiene su propia línea divisoria (no depende de
+   .source-item) y .case-channels__text usa el mismo muted que el resto
+   -- mismo criterio de 0.15 / 0.72 que las reglas de arriba, solo que
+   scopeadas a las clases propias de este bloque en vez de .source-item. */
+.case-section--dark-hero .case-channels__name {
+  border-top-color: rgba(255, 255, 255, 0.15);
+}
+
+.case-section--dark-hero .case-channels__text {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+/* "Una cuenta nueva" / "Derechos humanos, ciencia e identidad" (Abuelas
+   de Plaza de Mayo) sobre fondo oscuro: mismo criterio de 0.15 / 0.72 de
+   arriba, aplicado a los elementos propios de estas dos secciones que
+   todavía no existían dentro de un .case-section--dark-hero -- el dato
+   destacado (.case-stat, línea divisoria + caption) y el borde de la
+   imagen de índice de abuelidad (.case-text-media__media img), que en
+   var(--color-line) quedaría demasiado claro/brillante sobre la imagen
+   oscura de fondo. */
+.case-section--dark-hero .case-stat {
+  border-top-color: rgba(255, 255, 255, 0.15);
+}
+
+.case-section--dark-hero .case-stat-caption {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.case-section--dark-hero .case-text-media__media img {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+@media (max-width: 1024px) {
+  .case-header__title {
+    grid-column: 1 / span 12;
+  }
+  .case-section__label {
+    grid-column: 1 / span 12;
+    margin-bottom: 14px;
+  }
+  .case-section__body {
+    grid-column: 1 / span 12;
+  }
+}
+
+/* -- Trabajo seleccionado del caso: grilla mixta 16:9 / 9:16 ------------ */
+.case-media-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--gutter);
+}
+
+.case-media-grid__item--wide {
+  grid-column: span 8;
+}
+
+.case-media-grid__item--tall {
+  grid-column: span 4;
+}
+
+/* Modificador --half (span 6): pensado para una fila de 2 piezas 9:16
+   parejas, usado por primera vez en Camila Perochena. Reutilizable en
+   cualquier caso futuro que necesite ese mismo ritmo. */
+.case-media-grid__item--half {
+  grid-column: span 6;
+}
+
+.case-media-grid__caption {
+  margin-top: 12px;
+  font-size: var(--fs-small);
+  color: var(--color-muted);
+}
+
+/* -- Reels reales de Camila Perochena (Trabajo seleccionado): grilla
+   propia de 3 tarjetas clickeables 9:16, deliberadamente separada de
+   .case-media-grid de arriba (que comparten Andrés y Abuelas) para no
+   afectar esas páginas. Cada .case-reel es un <a> completo -- toda la
+   tarjeta lleva al reel original, no solo el texto "Ver reel". --------- */
+/* Ancho reducido a ~50% del original: antes cada pieza ocupaba 1fr de
+   las 3 columnas del body full-width de "Trabajo seleccionado" (~400 a
+   ~445px reales según el ancho de ventana, medido sobre --container-max:
+   1560px / --margin y --gutter ya maxeados en ese rango). minmax(0, 220px)
+   fija ~220px por pieza (~50% de eso) y justify-content: center las
+   agrupa en el medio de ese mismo ancho de body en vez de estirarlas
+   borde a borde -- el resto queda como espacio negativo alrededor. */
+.case-reel-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 220px));
+  justify-content: center;
+  gap: clamp(2rem, 4vw, 4rem);
+}
+
+.case-reel {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  /* min-width: 0 -- sin esto un <a> como item de grid puede negarse a
+     encogerse por debajo del ancho "natural" de su contenido (comportamiento
+     por defecto de los grid items), lo que podia forzar overflow horizontal
+     dentro de la columna de 220px. */
+  min-width: 0;
+}
+
+.case-reel__label {
+  display: block;
+  margin-bottom: 12px;
+}
+
+.case-reel__media {
+  transition: opacity 0.25s var(--ease);
+}
+
+.case-reel:hover .case-reel__media {
+  opacity: 0.92;
+}
+
+.case-reel__caption {
+  margin-top: 12px;
+}
+
+.case-reel__value {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3vw, 2.4rem); /* antes clamp(1.4rem, 2vw, 1.8rem) -- se agranda porque ahora es la única aparición de esta métrica (ya no se repite arriba, en "Algunas piezas") */
+  line-height: 1.15; /* compacto para que el numero no empuje el bloque, pero sin pegarse a la unidad de abajo */
+  margin-bottom: 0;
+  overflow-wrap: break-word; /* red de seguridad extra contra overflow horizontal en la columna angosta */
+}
+
+/* "visualizaciones" separado del numero en su propio elemento: antes
+   compartia tamaño/tipografia con .case-reel__value dentro del mismo
+   <span>, lo que a 220px de ancho lo hacia demasiado grande y provocaba
+   superposicion con las columnas vecinas. Ahora es texto secundario,
+   sans-serif de cuerpo (se hereda de <body>, no hace falta declararlo),
+   claramente subordinado al numero. */
+.case-reel__unit {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--color-muted);
+  margin-top: 4px;
+  margin-bottom: 10px;
+  overflow-wrap: break-word;
+}
+
+.case-reel__text {
+  display: block;
+  font-size: var(--fs-small);
+  color: var(--color-muted);
+  margin-bottom: 10px;
+}
+
+/* Thumbnails definitivas: <img> absoluto dentro de .case-reel__media
+   (que hereda position: relative + overflow: hidden de .media), en vez
+   de background-image -- los tres archivos de origen son 1080x1698
+   (misma proporción entre sí, pero más "cuadrada" que el 9:16 del
+   contenedor), así que object-fit: cover es lo que evita que se vean
+   estiradas o con recortes distintos entre sí. */
+.case-reel__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+@media (max-width: 1024px) {
+  .case-reel-grid {
+    grid-template-columns: repeat(2, minmax(0, 220px));
+  }
+}
+
+@media (max-width: 640px) {
+  .case-reel-grid {
+    /* Mobile: no se mantiene el ancho fijo de desktop/tablet -- acá se
+       pide que cada pieza ocupe ~70-85% del ancho disponible en vez de
+       un px fijo, ya que el viewport mobile varía mucho más. */
+    grid-template-columns: minmax(0, 80%);
+  }
+}
+
+/* -- Subtítulos que separan los dos bloques de "Trabajo seleccionado"
+   (Andrés Rieznik): .case-work__subhead simple, mismo tamaño que el
+   resto de los subtítulos de sección (--fs-h3). El modificador
+   --divider agrega la línea fina de arriba, reservada para el segundo
+   bloque -- el primero ya queda separado por el propio borde superior
+   de .case-section. ------------------------------------------------- */
+.case-work__subhead {
+  font-size: var(--fs-h3);
+  margin-bottom: clamp(20px, 3vw, 28px);
+}
+
+.case-work__subhead--divider {
+  margin-top: clamp(48px, 7vw, 72px);
+  padding-top: clamp(28px, 4vw, 40px);
+  border-top: 1px solid var(--color-line);
+}
+
+/* -- Franja oscura SOLO para "Recortes en Youtube" (Andrés Rieznik) ------
+   ------------------------------------------------------------------------
+   Mismo criterio de capas que .case-dark-band (wrapper con su propio
+   contexto de apilamiento + ::before con el mismo overlay + hero.webp),
+   pero como copia independiente y con su propia clase: acá el wrapper
+   envuelve un sub-bloque DENTRO de "Trabajo seleccionado" (h3 + grilla),
+   no una <section> completa como en los otros casos, así que no puede
+   reusar ".case-dark-band > .case-section" (no hay ningún .case-section
+   ahí adentro) ni asumir que el color de texto ya viene heredado desde
+   afuera. Se mantiene separada a propósito para no arriesgar efectos
+   secundarios sobre .case-dark-band en uso en Camila y en las otras dos
+   franjas de esta misma página.
+
+   Full-bleed real, sin truco de 100vw: en el HTML, .case-work__youtube-band
+   ya NO vive adentro de .case-section__body (eso hacía que el fondo
+   quedara limitado al ancho de esa columna central, con márgenes blancos
+   a los costados). Ahora es hermano del primer .grid de la sección, así
+   que hereda el ancho completo de <section> igual que .case-dark-band lo
+   hereda de <main> -- ningún .case-section tiene max-width propio, solo su
+   .grid hijo directo lo tiene (ver ".case-section > .grid" más arriba en
+   este archivo, selector extendido para cubrir también este caso).
+   Adentro de la banda se reabre un .grid + .case-section__body que alinea
+   "Recortes en Youtube" exactamente con "Videos para redes" de arriba,
+   pese a que el fondo ahora sí llega de borde a borde. padding-block le da
+   aire arriba/abajo al contenido; el margin-top reemplaza al espacio que
+   antes daba .case-work__subhead--divider (ya no se usa ese modificador
+   en este bloque -- el propio cambio de fondo ahora cumple el rol de
+   separador visual). */
+.case-work__youtube-band {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #0d0d0d;
+  color: #f5f5f3;
+  margin-top: clamp(48px, 7vw, 72px);
+  padding-block: clamp(32px, 5vw, 56px);
+}
+
+.case-work__youtube-band::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url('../../img/hero.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.case-work__youtube-band > * {
+  position: relative;
+  z-index: 1;
+}
+
+.case-work__youtube-band .eyebrow {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.case-work__youtube-band .case-reel__unit {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+/* -- Bugfix: "Trabajo seleccionado" de Andrés Rieznik quedaba vacío en
+   mobile (verificado con Playwright a 390x844: la sección completa mide
+   ~5664px de alto en ese viewport -- 9 tarjetas apiladas en 1 columna,
+   .grid + .case-work__youtube-band, todo dentro del mismo <section
+   class="fade-in">). .fade-in usa IntersectionObserver con threshold:
+   0.15 (ver assets/js/main.js) -- ese umbral es un porcentaje del alto
+   TOTAL del propio elemento observado, no del viewport: acá pedía ~850px
+   de intersección simultánea, pero el viewport mide 844px, así que ni
+   scrolleando el elemento a pantalla completa se llega a alcanzar. La
+   sección se queda para siempre en opacity:0 (su estado inicial),
+   invisible aunque el HTML/CSS del contenido y el fondo estén bien --
+   por eso "el fondo también desaparecía": opacity:0 en el <section>
+   apaga a todos sus descendientes, .case-work__youtube-band::before
+   incluido.
+   Fix acotado, sin tocar el fade-in del resto del sitio: nueva clase
+   .case-work--eager-mobile SOLO en el <section> de esta sección de
+   Andrés (ES y EN, mismo archivo de CSS -- cero JS/CSS duplicado). En
+   mobile queda con opacity/transform fijos, sin depender del observer;
+   en escritorio no cambia nada (la regla vive dentro de la media query
+   de 768px). */
+@media (max-width: 768px) {
+  .case-work--eager-mobile.fade-in {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* -- Título dentro de .case-reel__caption: usado ahora tanto por los 6
+   reels de "Videos para redes" (títulos reales, columna angosta de
+   220px) como por los de "Producciones para YouTube" (columna más
+   ancha). overflow-wrap: break-word evita que un título largo como
+   "Alfabetización para todos y todas" fuerce overflow horizontal o
+   descuadre el ancho fijo de la columna -- mismo criterio que
+   .case-reel__value/__unit más abajo. No lo usan los reels de Camila --
+   si no hay título, simplemente no se incluye el elemento. ------------ */
+.case-reel__title {
+  display: block;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  margin-bottom: 6px;
+  overflow-wrap: break-word;
+}
+
+/* -- Modificador --wide de .case-reel-grid: mismo componente .case-reel,
+   pero pensado para miniaturas 16:9 (.media--16-9) en vez de las 9:16 de
+   arriba -- columnas flexibles en vez del ancho fijo de 220px, que
+   encogería demasiado una miniatura horizontal. Reglas declaradas
+   después de las de .case-reel-grid (incluidas sus media queries) para
+   ganar la cascada en los mismos breakpoints. Solo 3 piezas por ahora,
+   así que no hay wrapping que resolver -- pasa directo a 1 columna en
+   mobile en vez de un paso intermedio de 2 con un ítem suelto. -------- */
+.case-reel-grid--wide {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 1024px) {
+  .case-reel-grid--wide {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .case-reel-grid--wide {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .case-media-grid__item--wide,
+  .case-media-grid__item--tall,
+  .case-media-grid__item--half {
+    grid-column: span 12;
+  }
+}
+
+/* -- Stub de casos sin desarrollar todavía (sin uso actual, ver arriba) --- */
+.case-placeholder-body {
+  padding-block: var(--section-space);
+}
+
+.case-placeholder-body__text {
+  grid-column: 1 / span 7;
+  color: var(--color-muted);
+  font-size: var(--fs-lead);
+  font-family: var(--font-body); /* parrafo descriptivo, no es un titulo */
+}
+
+@media (max-width: 1024px) {
+  .case-placeholder-body__text {
+    grid-column: 1 / span 12;
+  }
+}
+
+/* -- Contenidos de origen: dos fuentes apiladas, texto + captura 16:9 ----
+   Bloque propio, no reutiliza .case-channels__list (ver comentario en el
+   HTML de proyectos/camila-perochena/index.html): cada .source-item es su
+   propia fila de 2 columnas (texto ~38% / captura ~62%), alineadas arriba
+   (align-items: start) para que el título del programa y el borde
+   superior de la captura arranquen en la misma línea visual. Una sola
+   línea divisoria entre los dos orígenes (border-top en el segundo
+   .source-item), sin altura fija: el alto de la sección sale del
+   contenido real, no de un mínimo impuesto. --------------------------- */
+.sources-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.source-item {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 5fr);
+  column-gap: var(--gutter);
+  align-items: start;
+  padding-block: clamp(28px, 4vw, 40px);
+}
+
+.source-item:first-child {
+  padding-top: 0;
+}
+
+.source-item + .source-item {
+  border-top: 1px solid var(--color-line);
+}
+
+.source-item__title {
+  font-size: var(--fs-h3);
+  margin-bottom: 6px;
+}
+
+/* Fuente / conductor: jerarquía claramente secundaria respecto del
+   título -- reutiliza .eyebrow (sans-serif, uppercase, tracking
+   editorial, gris secundario), mismo criterio que el resto del sitio
+   para metadata puntual (categorías, índices, labels). */
+.source-item__meta {
+  margin-bottom: 14px;
+}
+
+.source-item__description {
+  color: var(--color-muted);
+}
+
+.source-item__media {
+  min-width: 0; /* evita que la imagen fuerce el ancho de su columna */
+}
+
+/* Wrapper reutilizable para una captura 16:9: <img> real (no
+   background-image), para conservar el alt como texto accesible --
+   informativa, sin zoom, sin play, sin interacción. background-color de
+   respaldo mientras no exista el archivo (el onerror del <img> la oculta
+   en vez de mostrar el ícono de imagen rota del navegador). */
+.source-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--color-surface);
+}
+
+.source-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+@media (max-width: 768px) {
+  .source-item {
+    grid-template-columns: 1fr;
+    row-gap: 20px;
+  }
+}
+
+
+/* ==========================================================================
+   PIEZAS GRÁFICAS DE LANZAMIENTO (Andrés Rieznik — Alfabetización /
+   Mini documental en Arrecifes): sub-bloque + carrusel editorial.
+   ========================================================================== */
+
+/* Sub-bloque dentro de .project-feature, después del video -- separado
+   por una línea fina más liviana que la que abre todo el feature
+   (border-top de .project-feature), porque es un sub-tema (la difusión
+   gráfica) dentro de la misma pieza, no una sección nueva. */
+.project-feature__graphics {
+  margin-top: clamp(32px, 5vw, 48px);
+  padding-top: clamp(24px, 4vw, 32px);
+  border-top: 1px solid var(--color-line);
+}
+
+.project-feature__graphics-title {
+  font-size: var(--fs-h3);
+  margin-bottom: 8px;
+}
+
+.project-feature__graphics-text {
+  color: var(--color-muted);
+  font-size: var(--fs-small);
+  max-width: 46ch;
+  margin-bottom: clamp(20px, 3vw, 28px);
+}
+
+/* -- Layout de dos columnas para "Piezas gráficas de lanzamiento" -------
+   ------------------------------------------------------------------------
+   Cambio puramente visual/de layout: el funcionamiento del carrusel
+   (navegación, contador, JS) es el mismo de siempre y no se toca acá ni
+   en main.js. Antes el carrusel quedaba angosto (440px, centrado) y
+   debajo del título, con mucho espacio vacío alrededor; ahora va al lado
+   del título en desktop, usando el ancho real disponible de
+   .project-feature__graphics -- la misma columna angosta de
+   .case-section__body que el resto del contenido del caso (no se toca
+   el grid de la sección para esto, igual que .project-feature).
+   align-items: start alinea el techo del texto con el techo del
+   carrusel a propósito -- no se quiere centrado vertical de la columna
+   de texto contra el carrusel. */
+.launch-graphics-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 5fr);
+  column-gap: var(--gutter);
+  align-items: start;
+}
+
+/* El carrusel deja su ancho fijo angosto (440px, pensado para cuando
+   vivía centrado y solo debajo del título) y pasa a ocupar el 100% de
+   su columna -- override scopeado acá adentro, sin tocar los valores
+   por defecto de .graphic-carousel (sigue siendo reutilizable tal cual,
+   con su tamaño original, en cualquier otro lugar del sitio). El slide
+   activo pasa de ~264px a ~420-480px según el viewport, dentro del
+   rango pedido, mantenimiento el peek de la slide siguiente (más
+   angosto que antes a propósito: ahora la protagonista debe notarse
+   todavía más). */
+.launch-graphics-layout__media .graphic-carousel {
+  --carousel-slide-width: 84%;
+  max-width: none;
+  margin-inline: 0;
+}
+
+/* Por debajo de 768px (mismo quiebre que ya usa .graphic-carousel para
+   simplificar su propio comportamiento a una sola slide protagonista,
+   ver más abajo en este archivo) dos columnas ya comprimen demasiado la
+   columna de texto en el ancho angosto de .case-section__body -- se
+   apilan en vez de deformar: Título -> Descripción -> Label -> Carrusel
+   grande, este último casi a ancho completo. */
+@media (max-width: 768px) {
+  .launch-graphics-layout {
+    display: block;
+  }
+
+  .launch-graphics-layout__media {
+    margin-top: clamp(20px, 4vw, 28px);
+  }
+}
+
+/* -- Carrusel "Más material" (Abuelas de Plaza de Mayo): mismo componente
+   .graphic-carousel de arriba, sin CSS ni JS propios -- solo este
+   modificador .graphic-carousel--natural, porque las 7 piezas de archivo
+   de esta galería tienen proporciones muy distintas entre sí (algunas
+   horizontales, la mayoría verticales), a diferencia de las 5 piezas de
+   Andrés Rieznik que comparten una única proporción. En vez de
+   aspect-ratio fijo + img absoluto recortando con cover, se fija una
+   altura y el <img> (ya absoluto por el componente base) usa
+   object-fit: contain -- cada pieza se ve completa, sin recortar ni
+   deformar, dentro de una caja de altura estable para que el carrusel no
+   salte al pasar de una pieza horizontal a una vertical. Altura menor que
+   la del carrusel de Andrés a propósito: esta sección es secundaria,
+   viene después de "Trabajo seleccionado" y no debe competir con los seis
+   TikToks. --carousel-slide-width en 55% da un ancho de pieza de
+   aproximadamente 320-420px en los anchos de escritorio típicos del sitio
+   (columna angosta de .case-section__body, ~745-815px), reduciéndose
+   proporcionalmente en tablet junto con el resto del layout. */
+.graphic-carousel--natural .graphic-carousel__media {
+  aspect-ratio: auto;
+  height: clamp(260px, 30vw, 380px);
+}
+
+.graphic-carousel--natural .graphic-carousel__img {
+  object-fit: contain;
+}
+
+.graphic-carousel--natural {
+  --carousel-slide-width: 55%;
+}
+
+@media (max-width: 768px) {
+  /* Mobile: pieza dominante ocupando 80% del ancho visible (dentro del
+     75-85% pedido), con la siguiente asomando -- swipe táctil intacto,
+     mismo criterio que el resto del componente. */
+  .graphic-carousel--natural .graphic-carousel__slide {
+    flex: 0 0 80%;
+  }
+}
+
+/* -- Carrusel: galería editorial (no un slider genérico) -- una pieza
+   grande protagonista + un "peek" de la próxima. scroll-snap nativo
+   resuelve swipe táctil / scroll de mouse-trackpad sin JS; el JS en
+   main.js solo agrega flechas, contador, arrastre con mouse en desktop
+   y la clase "activa" (protagonismo visual vs. el peek). Sin autoplay.
+   Reutilizable tal cual para cualquier otra galería del sitio. */
+.graphic-carousel {
+  --carousel-slide-width: 60%;
+  max-width: min(440px, 100%);
+  margin-inline: auto;
+}
+
+.graphic-carousel__label {
+  display: block;
+  margin-bottom: 14px;
+}
+
+/* -- Carrusel: galería editorial (no un slider genérico) -- una pieza
+   grande protagonista, con peek de la anterior Y la siguiente a los
+   costados (cuando existan). scroll-snap nativo resuelve swipe táctil /
+   scroll de mouse-trackpad sin JS; el JS en main.js agrega flechas,
+   contador, arrastre con mouse en desktop, navegación exacta de a una
+   slide por click/tecla y la clase "activa". Sin autoplay, sin loop.
+   Reutilizable tal cual para cualquier otra galería del sitio. */
+
+/* .graphic-carousel__frame: contenedor propio solo para el viewport +
+   flechas, con su propio contexto de posicionamiento -- antes las
+   flechas usaban .graphic-carousel entero (que también incluye el
+   contador debajo) como referencia para "top: 50%", así que quedaban
+   centradas contra la altura total del bloque en vez de contra la
+   imagen, un poco más abajo de donde debían verse. Acá quedan
+   centradas exactamente contra la pieza activa. */
+.graphic-carousel__frame {
+  position: relative;
+}
+
+.graphic-carousel__viewport {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Edge/IE legacy */
+}
+
+.graphic-carousel__viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.graphic-carousel__viewport.is-dragging {
+  cursor: grabbing;
+}
+
+.graphic-carousel__viewport:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 3px;
+}
+
+/* Sin padding-right "de relleno": con scroll-snap-align: center y el
+   cálculo de scroll en main.js (centra la slide activa sumando la
+   distancia real entre centros de sus getBoundingClientRect), el propio
+   límite natural del scroll ya resuelve los extremos -- la primera
+   slide queda pegada a la izquierda con peek solo a la derecha, la
+   última pegada a la derecha con peek solo a la izquierda, sin
+   necesitar espacio extra simulado con padding. */
+.graphic-carousel__track {
+  display: flex;
+  gap: 16px;
+}
+
+.graphic-carousel__slide {
+  flex: 0 0 var(--carousel-slide-width);
+  scroll-snap-align: center;
+}
+
+.graphic-carousel__item {
+  display: block;
+  width: 100%;
+  text-align: left;
+}
+
+/* Proporción real medida de los 5 archivos (1.jpeg a 5.jpeg, los cinco
+   exactamente 1047x1280) -- fijada tal cual en vez de una relación
+   redondeada como 4:5, para que el viewport sea estable sin dejar
+   franjas de sobra con object-fit: contain.
+   Jerarquía activa/vecina: escala y opacidad de las vecinas un poco más
+   marcadas que antes (0.96/0.55 -> 0.9/0.45) para que la protagonista
+   se note más ahora que también se ve un costado de la anterior -- sin
+   sombra ni elevación, el sitio no usa cards/shadows en ningún otro
+   componente, así que la jerarquía se resuelve solo con escala +
+   opacidad, coherente con el resto del lenguaje visual. */
+.graphic-carousel__media {
+  aspect-ratio: 1047 / 1280;
+  transform: scale(0.9);
+  opacity: 0.45;
+  transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
+}
+
+.graphic-carousel__slide.is-active .graphic-carousel__media {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.graphic-carousel__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.graphic-carousel__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid var(--color-line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  line-height: 1;
+  color: var(--color-text);
+  transition: background-color 0.2s var(--ease), border-color 0.2s var(--ease), opacity 0.2s var(--ease);
+}
+
+.graphic-carousel__arrow:hover {
+  background: #fff;
+  border-color: var(--color-accent);
+}
+
+.graphic-carousel__arrow:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 2px;
+}
+
+/* Sin loop: al llegar al extremo, la flecha correspondiente se
+   deshabilita (atributo disabled real en el <button>, ver main.js) en
+   vez de dar la vuelta -- pedido explícito por sobre un carrusel
+   infinito. */
+.graphic-carousel__arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+  pointer-events: none;
+}
+
+.graphic-carousel__arrow--prev {
+  left: 10px;
+}
+
+.graphic-carousel__arrow--next {
+  right: 10px;
+}
+
+.graphic-carousel__counter {
+  margin-top: 14px;
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  color: var(--color-muted);
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .graphic-carousel__slide {
+    /* Slide principal más grande y peek más chico que en desktop -- en
+       pantallas angostas, mostrar mucho de la anterior y la siguiente
+       compite con la lectura de la activa en vez de ayudar. */
+    flex: 0 0 86%;
+  }
+  .graphic-carousel__track {
+    gap: 10px;
+  }
+  .graphic-carousel__arrow {
+    /* El swipe táctil ya es suficientemente claro en mobile -- se
+       mantiene el contador, que no depende del mouse. */
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .graphic-carousel__viewport {
+    scroll-behavior: auto;
+  }
+  .graphic-carousel__media {
+    transition: none;
+  }
+}

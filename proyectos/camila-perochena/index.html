@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camila Perochena — Germán Gómez Bonelli</title>
+<meta name="description" content="Historia y comunicación política — edición y adaptación de contenidos para plataformas digitales.">
+
+<!-- Open Graph / Facebook, LinkedIn, WhatsApp, etc. -- misma imagen (img/logo.png)
+     y mismo titulo/descripcion que <title> y <meta name="description"> de arriba,
+     para no duplicar contenido a mano. og:image usa ruta relativa: funciona para
+     preview local, pero la mayoria de los crawlers (Facebook, LinkedIn, WhatsApp)
+     necesitan una URL absoluta para poder descargar la imagen -- una vez que el
+     sitio tenga dominio propio, cambiar aca (y en twitter:image si se agrega) a
+     algo como https://tu-dominio.com/img/logo.png. -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Camila Perochena — Germán Gómez Bonelli">
+<meta property="og:description" content="Historia y comunicación política — edición y adaptación de contenidos para plataformas digitales.">
+<meta property="og:image" content="../../img/logo.png">
+<meta property="og:locale" content="es_AR">
+
+<!-- Favicon / isotipo del portfolio -->
+<link rel="icon" type="image/png" href="../../img/logo.png">
+<link rel="apple-touch-icon" href="../../img/logo.png">
+
+<!-- Merriweather (titulos y headings principales, var(--font-display)).
+     Dos pesos: 400 Regular (headings en general) y 700 Bold (titulo del hero).
+     display=optional (antes: swap) -- bugfix del "glitch" reportado por el
+     usuario al cambiar de idioma en las subpaginas: con swap, el navegador
+     pinta primero el fallback (Georgia, bastante mas angosto que
+     Merriweather) y reemplaza la fuente en cuanto termina de bajarla, sin
+     importar cuanto tarde -- ese reemplazo mueve el texto de los headings
+     grandes (hero, eyebrows) y se ve como si la pagina "se redimensionara".
+     Cada cambio de idioma es una navegacion de pagina completa (sitio sin
+     backend, un <html> por idioma), asi que ese salto podia repetirse en
+     cada switch si la fuente no llegaba a tiempo. optional le da al
+     navegador una ventana muy corta para tener la fuente lista ANTES de
+     pintar; si no llega a tiempo usa el fallback para toda esa vista y no
+     la reemplaza despues -- se elimina el salto a costa de, en una
+     conexion muy lenta y sin cache todavia, no mostrar Merriweather en esa
+     carga puntual (con la fuente ya en cache, que es el caso normal
+     navegando el sitio, esto no pasa: se ve igual que con swap). Mismo
+     cambio replicado tal cual en los otros 9 HTML del sitio que cargan
+     esta misma fuente (home ES/EN, los 3 casos ES/EN, el articulo ES/EN),
+     para que el comportamiento sea consistente en todas las paginas. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=optional" rel="stylesheet">
+
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/proyecto.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a href="../../index.html" class="site-header__name">Germán Gómez Bonelli</a>
+
+    <button class="site-header__toggle" data-nav-toggle aria-expanded="false" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="site-header__nav" aria-label="Navegación principal">
+      <a href="../../index.html#trabajo">Trabajo</a>
+      <a href="../../sobre-mi/index.html">Sobre mí</a>
+      <a href="../../index.html#contacto">Contacto</a>
+      <div class="language-switcher" aria-label="Selector de idioma">
+        <span class="language-switcher__item language-switcher__item--active" aria-current="true">ES</span>
+        <span class="language-switcher__sep">/</span>
+        <a class="language-switcher__item" href="../../en/proyectos/camila-perochena/index.html">EN</a>
+        <span class="language-switcher__sep">/</span>
+        <a class="language-switcher__item" href="../../de/proyectos/camila-perochena/index.html">DE</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ==========================================================================
+       HERO DEL CASO — reutiliza .case-hero (misma composición de base que
+       Andrés Rieznik: contenido a la izquierda, imagen a la derecha), pero
+       con una imagen principal 16:9 en vez de 4:5 -- el material de origen
+       de este caso es audiovisual horizontal (streaming/TV), no vertical.
+       ========================================================================== -->
+  <section class="case-hero case-hero--camila container">
+    <a href="../../index.html#trabajo" class="back-link case-hero__back">← Volver a mis trabajos</a>
+
+    <div class="grid case-hero__grid">
+      <div class="case-hero__content">
+        <span class="eyebrow case-hero__eyebrow">02 / Historia y comunicación política</span>
+        <h1 class="case-hero__title">Camila Perochena</h1>
+        <p class="case-hero__lead">Edición y adaptación de contenidos históricos y políticos para plataformas digitales, a partir de participaciones en streaming y televisión.</p>
+        <p class="case-hero__roles">Edición audiovisual · Selección de contenidos · Desarrollo de formatos · Adaptación multiplataforma</p>
+
+        <div class="case-hero__stat">
+          <span class="case-hero__stat-value">14K <span class="case-hero__stat-arrow">→</span> 100K</span>
+          <span class="case-hero__stat-caption">Evolución de la comunidad durante aproximadamente un año y medio de colaboración.</span>
+        </div>
+      </div>
+
+      <div class="case-hero__media-col">
+        <!-- IMAGEN PRINCIPAL DEL CASO (16:9)
+             Imagen definitiva: img/camila.webp (background-image, no
+             <img>, definida en .case-hero__media--camila dentro de
+             proyecto.css). -->
+        <div class="media media--16-9 case-hero__media case-hero__media--camila"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EL PROYECTO -->
+  <section class="case-section fade-in">
+    <div class="grid">
+      <span class="eyebrow case-section__label">El proyecto</span>
+      <div class="case-section__body">
+        <p>Camila Perochena es historiadora y divulgadora, especializada en historia argentina y mundial. Participa regularmente en espacios de análisis y divulgación como Soñé que volaba, en OLGA, y Odisea Argentina, de Carlos Pagni.</p>
+        <p>Mi trabajo con ella se concentra principalmente en la edición y adaptación de esas intervenciones para plataformas digitales. A partir de materiales originalmente pensados para formatos largos, trabajo en la selección, construcción y edición de fragmentos capaces de funcionar como piezas autónomas sin perder el contexto histórico o argumental.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ALGUNAS PIEZAS
+       Sección con presencia visual fuerte a propósito: tres resultados
+       concretos, full-width dentro del container (.case-work) para que
+       los números tengan aire. Un solo acento celeste, en el número de
+       mayor alcance. -->
+  <!-- TRABAJO SELECCIONADO
+       Sección única: antes esto convivía con un bloque separado
+       "Algunas piezas" que repetía los mismos tres números (3,3M / 1,2M
+       / 600K) como resumen abstracto arriba. Se eliminó esa duplicación
+       -- cada métrica ahora vive integrada directamente en la tarjeta de
+       su reel (.case-reel__value), no repetida en otro lado.
+
+       Tres reels reales de Instagram, cada uno como tarjeta clickeable
+       completa (no embed oficial). Grilla propia .case-reel-grid,
+       independiente de .case-media-grid -- ese componente lo comparten
+       Andrés y Abuelas, así que no se toca acá para no afectar esas
+       páginas. Thumbnails definitivas: los tres archivos de origen
+       (1080x1698 los tres, misma proporción entre sí pero distinta de la
+       9:16 del sitio) se resuelven con <img class="case-reel__img"> +
+       object-fit: cover dentro del contenedor .media--9-16 (mismo
+       aspect-ratio que ya usan Andrés/Abuelas para su imagen principal),
+       así las tres se ven parejas sin deformarse -- ver
+       .case-reel__img en proyecto.css. -->
+  <div class="case-dark-band">
+  <section class="case-section case-work case-section--dark-hero fade-in">
+    <div class="grid">
+      <span class="eyebrow case-section__label">Trabajo seleccionado</span>
+      <div class="case-section__body">
+        <p class="case-section__placeholder" style="margin-bottom: 32px;">Selección de piezas editadas a partir de intervenciones en streaming y televisión.</p>
+
+        <div class="case-reel-grid">
+          <a class="case-reel" href="https://www.instagram.com/reel/DP7VW6REbjH/?utm_source=ig_web_copy_link&amp;igsi=MzRlODBiNWFlZA==" target="_blank" rel="noopener noreferrer">
+            <span class="eyebrow case-reel__label">Reel / Instagram</span>
+            <div class="media media--9-16 case-reel__media">
+              <img class="case-reel__img" src="../../img/proyectos/camila-perochena/reel-01.webp" alt="Miniatura del reel de Instagram — 3,3M visualizaciones" loading="lazy">
+            </div>
+            <div class="case-reel__caption">
+              <span class="case-reel__value">3,3M</span>
+              <span class="case-reel__unit">visualizaciones</span>
+              <span class="case-reel__text">Selección de fragmento · Edición · Adaptación para redes</span>
+              <span class="arrow-link">Ver reel <span class="arrow-link__arrow">↗</span></span>
+            </div>
+          </a>
+
+          <a class="case-reel" href="https://www.instagram.com/reel/DMOSInCRCo_/?utm_source=ig_web_copy_link&amp;igsi=MzRlODBiNWFlZA==" target="_blank" rel="noopener noreferrer">
+            <span class="eyebrow case-reel__label">Reel / Instagram</span>
+            <div class="media media--9-16 case-reel__media">
+              <img class="case-reel__img" src="../../img/proyectos/camila-perochena/reel-02.webp" alt="Miniatura del reel de Instagram — 1,2M visualizaciones" loading="lazy">
+            </div>
+            <div class="case-reel__caption">
+              <span class="case-reel__value">1,2M</span>
+              <span class="case-reel__unit">visualizaciones</span>
+              <span class="case-reel__text">Selección de fragmento · Edición · Adaptación para redes</span>
+              <span class="arrow-link">Ver reel <span class="arrow-link__arrow">↗</span></span>
+            </div>
+          </a>
+
+          <a class="case-reel" href="https://www.instagram.com/reel/DLIZi21xmaV/?utm_source=ig_web_copy_link&amp;igsi=MzRlODBiNWFlZA==" target="_blank" rel="noopener noreferrer">
+            <span class="eyebrow case-reel__label">Reel / Instagram</span>
+            <div class="media media--9-16 case-reel__media">
+              <img class="case-reel__img" src="../../img/proyectos/camila-perochena/reel-03.webp" alt="Miniatura del reel de Instagram — 600K visualizaciones" loading="lazy">
+            </div>
+            <div class="case-reel__caption">
+              <span class="case-reel__value">600K</span>
+              <span class="case-reel__unit">visualizaciones</span>
+              <span class="case-reel__text">Selección de fragmento · Edición · Adaptación para redes</span>
+              <span class="arrow-link">Ver reel <span class="arrow-link__arrow">↗</span></span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  </div>
+
+
+  <!-- CONTENIDOS DE ORIGEN
+       Bloque propio (.sources-list / .source-item...), no reutiliza
+       .case-channels__list: ese layout está pensado para exactamente 3
+       filas por columna (título / descripción / media, ver "Desarrollo
+       de canales" en Andrés / Abuelas) y acá cada item solo tenía 2
+       hijos (sin media), lo que rompía el auto-placement de la grilla:
+       el título de "Odisea Argentina" terminaba encajado en la fila 3
+       de la primera columna y su descripción quedaba sola, flotando en
+       una segunda columna. Estructura nueva: dos filas apiladas, cada
+       una con su propio bloque de texto (título real + fuente/conductor
+       como metadato aparte -- ya no un <br> dentro del mismo heading) y
+       una captura 16:9 al lado. -->
+  <div class="case-dark-band">
+  <section class="case-section case-section--dark-hero fade-in">
+    <div class="grid">
+      <span class="eyebrow case-section__label">Contenidos de origen</span>
+      <div class="case-section__body">
+        <div class="sources-list">
+          <article class="source-item">
+            <div class="source-item__text">
+              <h3 class="source-item__title">Soñé que volaba</h3>
+              <p class="eyebrow source-item__meta">OLGA</p>
+              <p class="source-item__description">Intervenciones sobre historia, política y actualidad posteriormente adaptadas para redes.</p>
+            </div>
+            <div class="source-item__media">
+              <div class="source-media">
+                <img src="../../img/proyectos/camila-perochena/origen-olga.webp" alt="Captura del programa Soñé que volaba, OLGA" loading="lazy" onerror="this.style.display='none';">
+              </div>
+            </div>
+          </article>
+
+          <article class="source-item">
+            <div class="source-item__text">
+              <h3 class="source-item__title">Odisea Argentina</h3>
+              <p class="eyebrow source-item__meta">Carlos Pagni</p>
+              <p class="source-item__description">Participaciones de análisis histórico y político utilizadas como material de origen para nuevas piezas digitales.</p>
+            </div>
+            <div class="source-item__media">
+              <div class="source-media">
+                <img src="../../img/proyectos/camila-perochena/origen-odisea.webp" alt="Captura del programa Odisea Argentina, Carlos Pagni" loading="lazy" onerror="this.style.display='none';">
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <!-- MI ROL
+       Version interactiva (accordion): prueba del componente
+       .role-accordion, por ahora exclusiva de esta pagina. Andres y
+       Abuelas siguen usando .case-role__list sin cambios hasta confirmar
+       que esta version funciona bien -- las clases quedaron genericas a
+       proposito para poder reutilizar el mismo componente ahi despues.
+       Mismos 6 titulos de siempre, ahora cada uno es un <details>/<summary>
+       nativo con una descripcion desplegable: accesible por teclado,
+       funciona sin JS, sin accordion custom. -->
+  <section class="case-section fade-in">
+    <div class="grid">
+      <span class="eyebrow case-section__label">Mi rol</span>
+      <div class="case-section__body">
+        <div class="role-accordion-list">
+          <details class="role-accordion">
+            <summary class="role-accordion__summary">
+              <span class="role-accordion__title">Selección de fragmentos</span>
+              <span class="role-accordion__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="role-accordion__content">
+              <p class="role-accordion__description">Identifico, dentro de intervenciones extensas, las ideas o intercambios que pueden sostenerse como piezas independientes, priorizando lo que conserva sentido y contexto fuera de la conversación original.</p>
+            </div>
+          </details>
+
+          <details class="role-accordion">
+            <summary class="role-accordion__summary">
+              <span class="role-accordion__title">Edición audiovisual</span>
+              <span class="role-accordion__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="role-accordion__content">
+              <p class="role-accordion__description">Ritmo, cortes, subtítulos y recursos visuales para construir una pieza clara y dinámica, sin alterar el sentido de la intervención original.</p>
+            </div>
+          </details>
+
+          <details class="role-accordion">
+            <summary class="role-accordion__summary">
+              <span class="role-accordion__title">Construcción narrativa</span>
+              <span class="role-accordion__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="role-accordion__content">
+              <p class="role-accordion__description">Reorganizo y edito fragmentos extraídos de conversaciones largas para darles entrada, desarrollo y cierre propios, con el contexto necesario para comprenderse de forma autónoma.</p>
+            </div>
+          </details>
+
+          <details class="role-accordion">
+            <summary class="role-accordion__summary">
+              <span class="role-accordion__title">Adaptación de contenidos largos a formatos breves</span>
+              <span class="role-accordion__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="role-accordion__content">
+              <p class="role-accordion__description">Transformo intervenciones pensadas para streaming o televisión en piezas breves, sintetizando sin reducir el argumento a una frase aislada ni perder matices relevantes.</p>
+            </div>
+          </details>
+
+          <details class="role-accordion">
+            <summary class="role-accordion__summary">
+              <span class="role-accordion__title">Desarrollo de piezas para redes</span>
+              <span class="role-accordion__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="role-accordion__content">
+              <p class="role-accordion__description">Pienso cada pieza desde el entorno en el que va a circular —inicio, duración, encuadre, ritmo, subtítulos—, construida desde el lenguaje de la plataforma y no como un simple recorte vertical.</p>
+            </div>
+          </details>
+
+          <details class="role-accordion">
+            <summary class="role-accordion__summary">
+              <span class="role-accordion__title">Tratamiento de contenidos históricos y políticos</span>
+              <span class="role-accordion__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="role-accordion__content">
+              <p class="role-accordion__description">Los temas históricos y políticos requieren cuidado especial con el contexto y los argumentos: busco una edición atractiva y accesible que no sensacionalice ni simplifique lo que necesita conservar complejidad.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL DEL CASO
+       "Siguiente proyecto" sí queda conectado acá: a diferencia de
+       Andrés y Abuelas (donde no había una ruta confirmada al momento de
+       construir esas páginas), Camila es el proyecto 02 y Abuelas de
+       Plaza de Mayo (03) ya existe y está desarrollada -- ruta real y
+       confirmada, sin inventar nada. -->
+  <nav class="case-final container" aria-label="Navegación entre casos">
+    <a href="../../index.html#trabajo" class="back-link">← Todos los trabajos</a>
+    <a href="../abuelas/index.html" class="arrow-link">Siguiente proyecto <span class="arrow-link__arrow">→</span></a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <span class="site-footer__name">Germán Gómez Bonelli</span>
+    <a href="../../index.html#trabajo" class="back-link">← Volver a proyectos</a>
+  </div>
+</footer>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

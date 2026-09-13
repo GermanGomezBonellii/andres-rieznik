@@ -1,0 +1,473 @@
+/* ==========================================================================
+   COMPONENTES REUTILIZABLES — header, footer, media placeholders, botones,
+   tags, animaciones de aparición, lightbox.
+   ========================================================================== */
+
+/* -- Header --------------------------------------------------------------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: saturate(180%) blur(8px);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 18px;
+  min-height: var(--header-height);
+}
+
+.site-header__name {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700; /* marca textual del sitio -- enfasis, no el 400 editorial por defecto */
+  letter-spacing: -0.01em;
+}
+
+.site-header__name-mark {
+  color: var(--color-accent);
+}
+
+.site-header__nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 2.4vw, 32px);
+}
+
+.site-header__nav a {
+  font-size: var(--fs-small);
+  letter-spacing: 0.02em;
+  padding-bottom: 2px;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s var(--ease), color 0.2s var(--ease);
+  white-space: nowrap;
+}
+
+.site-header__nav a:hover,
+.site-header__nav a[aria-current="page"] {
+  border-bottom-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* -- Selector de idioma -----------------------------------------------------
+   Preparado para ES/EN/PT pero OCULTO hasta que existan traducciones reales
+   (ver README / i18n). No borrar: cuando se agregue assets/i18n/en.json,
+   basta con quitar [hidden] de .language-switcher en el header de cada
+   página para activarlo. */
+.language-switcher {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.language-switcher[hidden] {
+  display: none;
+}
+
+.language-switcher__sep {
+  color: var(--color-muted);
+}
+
+.language-switcher__item {
+  padding-bottom: 2px;
+  border-bottom: 1px solid transparent;
+}
+
+a.language-switcher__item {
+  color: var(--color-muted);
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+a.language-switcher__item:hover {
+  color: var(--color-text);
+  border-bottom-color: var(--color-text);
+}
+
+.language-switcher__item--active {
+  color: var(--color-text);
+  font-weight: 600;
+  border-bottom-color: var(--color-text);
+}
+
+/* -- Menú mobile ------------------------------------------------------- */
+.site-header__toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 28px;
+  height: 22px;
+}
+
+.site-header__toggle span {
+  display: block;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--color-text);
+  width: 100%;
+  transition: transform 0.2s var(--ease), opacity 0.2s var(--ease);
+}
+
+.nav-open .site-header__toggle span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.nav-open .site-header__toggle span:nth-child(2) {
+  opacity: 0;
+}
+.nav-open .site-header__toggle span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (max-width: 860px) {
+  .site-header__toggle {
+    display: flex;
+  }
+
+  .site-header__nav {
+    position: fixed;
+    inset: 0;
+    top: 65px;
+    background: var(--color-bg);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    padding: 8px var(--margin) 40px;
+    transform: translateY(-8px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
+  }
+
+  .nav-open .site-header__nav {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .site-header__nav a {
+    font-size: 1.3rem;
+    font-family: var(--font-body);
+    padding-block: 14px;
+    border-bottom: 1px solid var(--color-line);
+    width: 100%;
+  }
+}
+
+/* -- Footer --------------------------------------------------------------- */
+.site-footer {
+  border-top: 1px solid var(--color-line);
+  padding-block: clamp(40px, 6vw, 64px);
+  background: var(--color-ink);
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.site-footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px 40px;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.site-footer__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.site-footer__name {
+  font-family: var(--font-display);
+  font-weight: 700; /* mismo enfasis que la marca del header */
+  font-size: 1.1rem;
+  color: #ffffff;
+}
+
+.site-footer__meta {
+  font-size: var(--fs-small);
+  color: rgba(255, 255, 255, 0.6);
+  max-width: 40ch;
+}
+
+.site-footer__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 28px;
+}
+
+.site-footer__nav a {
+  font-size: var(--fs-small);
+  color: rgba(255, 255, 255, 0.75);
+  transition: color 0.2s var(--ease);
+}
+
+.site-footer__nav a:hover {
+  color: #ffffff;
+}
+
+.site-footer .back-link {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.site-footer .back-link:hover {
+  color: #ffffff;
+}
+
+/* -- Media placeholders --------------------------------------------------- */
+.media {
+  position: relative;
+  width: 100%;
+  background: var(--color-surface);
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  border-radius: var(--radius);
+}
+
+.media[data-label]::after {
+  content: attr(data-label);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted-2);
+  padding: 14px;
+}
+
+.media--16-9 { aspect-ratio: 16 / 9; }
+.media--9-16 { aspect-ratio: 9 / 16; }
+.media--square { aspect-ratio: 1 / 1; }
+.media--tall { aspect-ratio: 4 / 5; }
+.media--thumbnail { aspect-ratio: 4 / 3; }
+
+.media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* -- Miniatura de video con boton de play superpuesto -----------------------
+   Compartido entre Kalulu (mini documental) y Videos (todas las piezas):
+   thumbnail real + boton de play dibujado en CSS, sin reproductor
+   embebido -- el link abre el video original en YouTube en una pestaña
+   nueva. Movido acá desde kalulu.css para no duplicarlo al construir la
+   página de Videos. */
+.project-feature__media {
+  position: relative;
+  display: block;
+}
+
+.project-feature__thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-feature__play {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.project-feature__play::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 54%;
+  transform: translate(-50%, -50%);
+  border-style: solid;
+  border-width: 11px 0 11px 18px;
+  border-color: transparent transparent transparent var(--color-ink);
+}
+
+/* -- Tag / pill (categorías de Noticias, Videos, etc.) --------------------- */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-body);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  background: var(--color-accent-soft);
+  padding: 5px 12px;
+  border-radius: 999px;
+}
+
+.tag--pinned {
+  color: #a15b00;
+  background: #fff1de;
+}
+
+/* -- Link con flecha ------------------------------------------------------- */
+.arrow-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.arrow-link__arrow {
+  display: inline-block;
+  transition: transform 0.2s var(--ease);
+}
+
+a:hover .arrow-link__arrow {
+  transform: translateX(4px);
+}
+
+/* -- Breadcrumb / volver ---------------------------------------------------- */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--fs-small);
+  color: var(--color-muted);
+  transition: color 0.2s var(--ease);
+}
+
+.back-link:hover {
+  color: var(--color-accent);
+}
+
+/* -- Aparición suave -------------------------------------------------------- */
+.fade-in {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+
+.fade-in.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 700ms ease, transform 700ms ease;
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-on-scroll--delay {
+  transition-delay: 180ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-in,
+  .reveal-on-scroll,
+  .reveal-on-scroll--delay {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* -- Lightbox genérico (reutilizado en Kalulu: piezas gráficas) ------------- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(11, 31, 58, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--margin);
+}
+
+.lightbox[hidden] {
+  display: none;
+}
+
+.lightbox__img {
+  max-width: 90vw;
+  max-height: 85vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.lightbox__close,
+.lightbox__nav {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  font-size: 1.4rem;
+  line-height: 1;
+  transition: background-color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+.lightbox button:focus-visible {
+  outline-color: #fff;
+}
+
+.lightbox__close:hover,
+.lightbox__nav:hover {
+  border-color: var(--color-accent);
+}
+
+.lightbox__close {
+  top: var(--margin);
+  right: var(--margin);
+}
+
+.lightbox__nav--prev {
+  left: var(--margin);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lightbox__nav--next {
+  right: var(--margin);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+body.lightbox-open {
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .lightbox__close,
+  .lightbox__nav {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+/* -- Skip link (accesibilidad, navegación por teclado) ---------------------- */
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -60px;
+  background: var(--color-ink);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  z-index: 200;
+  transition: top 0.2s var(--ease);
+}
+
+.skip-link:focus {
+  top: 12px;
+}
