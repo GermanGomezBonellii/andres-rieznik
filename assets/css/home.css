@@ -9,7 +9,6 @@
   position: relative;
   overflow: hidden;
   background: linear-gradient(180deg, #f6f9fd 0%, #ffffff 65%);
-  border-bottom: 1px solid var(--color-line);
   /* height (no min-height): el hijo de la derecha necesita un alto definido
      del que calcular su height:100%, y así conservar su propia proporción
      en lugar de la del contenedor. */
@@ -21,6 +20,18 @@
 .hero__inner {
   flex: 1;
   min-width: 0;
+  /* Panel izquierdo del hero: fondo azul oscuro (mismo tono que las
+     secciones --dark), borde a borde bajo el header y a lo alto de todo el
+     hero. max-width/margin en 0 neutralizan acá el max-width:1440px y el
+     margin-inline:auto que trae .container, para que el color no deje un
+     borde blanco sin pintar en viewports muy anchos; el padding-inline de
+     .container se conserva (es lo que separa el texto del borde). */
+  max-width: none;
+  margin-inline: 0;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  background: var(--color-ink);
 }
 
 .hero__content {
@@ -29,7 +40,9 @@
 }
 
 .hero__eyebrow {
-  color: var(--color-accent);
+  /* Celeste claro directo (no vía --color-accent: esa variable también
+     define el fondo de .btn--primary, que debe quedar sin cambios). */
+  color: #7db7ff;
   margin-bottom: 18px;
 }
 
@@ -51,7 +64,65 @@
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: clamp(28px, 4vw, 40px);
+  margin-top: clamp(32px, 4.5vw, 44px);
+}
+
+/* Concepto rector del bloque izquierdo del hero: ya no es un acento menor
+   bajo el nombre (el <h1> con el nombre quedó oculto, ver arriba) sino el
+   foco visual principal, entre el descriptor pequeño y los botones. Una
+   regla fina arriba (detalle editorial, no un recuadro/card) la separa del
+   descriptor. */
+.hero__quote {
+  margin: clamp(24px, 3.5vw, 32px) 0 0;
+  padding-top: 20px;
+  /* Sin tope de ancho propio: usa todo el ancho de .hero__content (480px)
+     para que la primera línea ("«La voz de la razón es suave") entre sin
+     partirse -- el salto a la segunda línea lo da el <br> manual en el
+     markup, no el max-width. */
+  max-width: none;
+  position: relative;
+}
+
+.hero__quote::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.hero__quote p {
+  margin: 0;
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 700;
+  /* Tope algo más chico como margen de seguridad adicional (ver white-space
+     de abajo: el ancho real de .hero__content en desktop varía según el
+     ancho de la imagen del hero, así que no alcanza con calcular a partir
+     de los 480px del contenedor). */
+  font-size: clamp(1.5rem, 2.2vw, 1.85rem);
+  line-height: 1.3;
+  color: #ffffff;
+  /* El quiebre entre "suave" y "pero" lo da el <br> manual del markup, no
+     el ancho del contenedor: nowrap impide que el propio segmento previo al
+     <br> se parta solo si el contenedor es más angosto de lo esperado (el
+     <br> igual fuerza el salto de línea; nowrap solo bloquea el wrap
+     automático dentro de cada mitad). En mobile se restablece a "normal"
+     más abajo para permitir el reflow natural. */
+  white-space: nowrap;
+}
+
+.hero__quote cite {
+  display: block;
+  margin-top: 10px;
+  font-family: var(--font-body);
+  font-style: normal;
+  font-size: var(--fs-micro);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted-2);
 }
 
 .hero__media {
@@ -89,12 +160,34 @@
     height: 100%;
     object-fit: cover;
   }
+
+  .hero__quote {
+    margin-top: 20px;
+    padding-top: 16px;
+    max-width: none;
+  }
+
+  .hero__quote p {
+    font-size: clamp(1.3rem, 5vw, 1.6rem);
+    /* Acá sí puede reflowear libremente en más de 2 líneas si no entra. */
+    white-space: normal;
+  }
 }
 
 /* -- Secciones destacadas: cabecera común ----------------------------------- */
 .section {
   padding-block: var(--section-space);
   border-top: 1px solid var(--color-line);
+}
+
+/* Transición hero -> sección siguiente: sin línea divisoria dura (el hero ya
+   no tiene border-bottom y acá se anula el border-top general de .section)
+   -- la separación queda resuelta solo con espacio, algo más ajustado que el
+   padding-top estándar entre el resto de las secciones para que no quede un
+   salto vacío tan grande justo debajo del hero. */
+.hero + .section {
+  border-top: none;
+  padding-top: clamp(40px, 6vw, 72px);
 }
 
 .section__header {
@@ -381,6 +474,7 @@
 }
 
 .book-card__cover {
+  position: relative;
   aspect-ratio: 2 / 3;
   border-radius: 8px;
   background: var(--color-ink);
@@ -408,6 +502,65 @@
 .book-card__year {
   font-size: var(--fs-small);
   color: var(--color-muted);
+}
+
+/* -- Overlay interactivo sobre la tapa --------------------------------------
+   El markup del overlay lo genera assets/js/books.js para TODOS los usos de
+   [data-books-grid] (home y sobre-mi, misma fuente de datos), pero solo se
+   activa visualmente acá: sobre-mi/index.html reutiliza el mismo book-grid
+   sin la clase .book-grid--interactive, así que su tapa queda exactamente
+   igual que antes. */
+.book-card__overlay {
+  display: none;
+}
+
+.book-grid--interactive .book-card__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px;
+  /* Oscurece solo la parte de abajo (donde va el texto) -- la tapa se sigue
+     reconociendo arriba. Mismo azul oscuro del sitio (--color-ink), no negro
+     puro. */
+  background: linear-gradient(180deg, rgba(11, 31, 58, 0) 0%, rgba(11, 31, 58, 0.55) 45%, rgba(11, 31, 58, 0.9) 100%);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
+  pointer-events: none;
+}
+
+.book-grid--interactive .book-card__cover:hover .book-card__overlay,
+.book-grid--interactive .book-card__cover:focus-within .book-card__overlay,
+.book-grid--interactive .book-card__cover.is-active .book-card__overlay {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.book-grid--interactive .book-card__overlay-desc {
+  margin: 0;
+  color: #ffffff;
+  font-size: var(--fs-small);
+  line-height: 1.45;
+}
+
+.book-grid--interactive .book-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: #ffffff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.book-grid--interactive .book-card__cta:hover {
+  color: var(--color-accent-soft);
 }
 
 @media (max-width: 900px) {
@@ -517,3 +670,61 @@
    .contact-row de assets/css/contact.css (mismas que usaba la ex-subpágina
    contacto/), así que no hace falta un componente ".contact-band" propio
    acá. */
+
+/* -- Secciones con fondo oscuro (Últimos artículos, Videos, Sobre mí) -------
+   Franja puntual de tema oscuro dentro de la home: no cambia layout ni
+   estructura, solo recolorea texto/bordes para mantener contraste sobre el
+   fondo. Reutiliza los selectores ya existentes (.section__title,
+   .arrow-link, .article-preview*, .content-card*, .about-teaser*) -- ningún
+   componente nuevo, solo la clase modificadora .section--dark. */
+.section--dark {
+  /* Mismo azul oscuro que ya usa la banda de Kalulu (--color-ink, definida
+     en base.css) -- se reutiliza la variable existente en vez de duplicar
+     el valor #0B1F3A. */
+  background: var(--color-ink);
+  color: #ffffff;
+  border-top: none;
+  /* Mismo azul de acento del sitio, apenas más claro: el original
+     (#2f7fe0) baja de contraste suficiente sobre fondos tan oscuros como
+     --color-ink. Al ser una custom property, la heredan automáticamente
+     los estados (hover, etc.) que ya usan var(--color-accent) dentro de
+     la sección. */
+  --color-accent: #5fa0f0;
+}
+
+/* Evita que el borde superior claro de la sección siguiente quede
+   "cortando" justo en el límite oscuro/claro -- misma lógica que la
+   transición hero -> primera sección: la separación queda resuelta solo
+   por el cambio de fondo y el espaciado existente. */
+.section--dark + .section {
+  border-top: none;
+}
+
+.section--dark .section__title,
+.section--dark .article-preview__title,
+.section--dark .content-card__title,
+.section--dark .arrow-link {
+  color: #ffffff;
+}
+
+.section--dark .eyebrow,
+.section--dark .article-preview__excerpt,
+.section--dark .article-preview__arrow,
+.section--dark .content-card__meta,
+.section--dark .about-teaser__text {
+  color: #c7cfd9;
+}
+
+.section--dark .article-preview {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.section--dark .article-preview-list .article-preview:last-child {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* El hover de borde (.article-preview:hover) empata en especificidad con la
+   regla de arriba; se refuerza acá para que el acento siga ganando. */
+.section--dark .article-preview:hover {
+  border-color: var(--color-accent);
+}

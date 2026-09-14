@@ -1,12 +1,10 @@
 /* ==========================================================================
-   SUPABASE CONFIG — completar con los datos del proyecto de Supabase.
-   Es seguro exponer la URL y la ANON KEY en el frontend SIEMPRE que las
-   tablas tengan Row Level Security (RLS) activado con políticas de solo
-   lectura pública (ver supabase/schema.sql). Nunca poner acá la
-   service_role key.
+   SUPABASE CONFIG — proyecto que contiene la tabla public.andres_noticias
+   (RLS: lectura pública solo de filas con active = true). Es seguro exponer
+   la URL y la ANON KEY (publishable key) en el frontend porque esa tabla
+   tiene RLS activado. Nunca poner acá la service_role key ni ninguna
+   secret key.
    ========================================================================== */
 
-window.SUPABASE_CONFIG = {
-  url: 'https://TU-PROYECTO.supabase.co', // TODO: reemplazar por la URL real del proyecto
-  anonKey: 'TU-ANON-KEY-PUBLICA', // TODO: reemplazar por la anon/public key real
-};
+const SUPABASE_URL = 'https://radbpcxkzeejjqlxnxpx.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_Sx1smynM2fM10_mihrx_dg_UPBCqieN';

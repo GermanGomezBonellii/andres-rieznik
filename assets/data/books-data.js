@@ -1,4 +1,4 @@
-[
+window.BOOKS_DATA = [
   {
     "title": "Neuromagia",
     "subtitle": "Qué pueden enseñarnos los magos (y la ciencia) sobre el funcionamiento del cerebro",
@@ -49,4 +49,4 @@
     "description": "Por qué tantos chicos no logran aprender a leer y resolver operaciones básicas, y cómo la evidencia científica puede transformar la alfabetización.",
     "buy_url": "https://www.penguinlibros.com/ar/economia-politica-y-actualidad/618581-libro-ensenar-9789877805802"
   }
-]
+];

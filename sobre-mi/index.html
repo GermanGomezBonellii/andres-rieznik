@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sobre mí — Andrés Rieznik</title>
+<title>Andrés Rieznik / Sobre mí</title>
 <meta name="description" content="Perfil profesional de Andrés Rieznik: formación, investigación, docencia, divulgación científica y libros publicados.">
 <link rel="canonical" href="https://TU-DOMINIO.example/sobre-mi/index.html">
 
@@ -91,7 +91,12 @@
         </div>
       </div>
 
-      <!-- TRAYECTORIA -->
+    </div>
+  </section>
+
+  <!-- TRAYECTORIA -->
+  <section class="section section--dark">
+    <div class="container">
       <div class="timeline">
         <span class="eyebrow">Trayectoria</span>
         <div class="timeline__grid" style="margin-top: 24px;">
@@ -113,13 +118,16 @@
           </div>
         </div>
       </div>
+    </div>
+  </section>
 
-      <!-- LIBROS -->
+  <!-- LIBROS -->
+  <section class="section">
+    <div class="container">
       <div class="books" id="libros">
         <span class="eyebrow">Libros</span>
-        <div class="book-grid" data-books-grid data-books-src="../assets/data/books.json" style="margin-top: 24px;"></div>
+        <div class="book-grid book-grid--interactive" data-books-grid data-books-src="../assets/data/books.json" style="margin-top: 24px;"></div>
       </div>
-
     </div>
   </section>
 </main>
@@ -135,6 +143,7 @@
 </footer>
 
 <script src="../assets/js/main.js"></script>
+<script src="../assets/data/books-data.js"></script>
 <script src="../assets/js/books.js"></script>
 </body>
 </html>

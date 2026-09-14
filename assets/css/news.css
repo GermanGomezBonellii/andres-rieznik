@@ -42,17 +42,25 @@
 .news-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: clamp(16px, 2.4vw, 24px);
 }
 
+/* Variante compacta: solo la preview de 3 noticias en la home (misma
+   lógica de tarjeta que /noticias/, con menos padding/tipografía y la
+   descripción acotada a pocas líneas). */
+.news-list--compact {
+  gap: 14px;
+}
+
+/* -- Tarjeta ------------------------------------------------------------
+   Composición editorial pensada primero para el texto: la imagen (si
+   existe) es un bloque secundario aparte, nunca una columna fija que deja
+   un hueco cuando no hay image_url. */
 .news-card {
-  display: grid;
-  grid-template-columns: 96px 1fr auto;
-  gap: 18px;
-  align-items: center;
-  padding: 16px;
+  display: block;
+  padding: clamp(24px, 3vw, 32px);
   border: 1px solid var(--color-line);
-  border-radius: 16px;
+  border-radius: 20px;
   transition: border-color 0.2s var(--ease), transform 0.2s var(--ease);
 }
 
@@ -61,59 +69,106 @@
   transform: translateY(-1px);
 }
 
-.news-card__media {
-  width: 96px;
-  aspect-ratio: 1;
-  border-radius: 10px;
-  overflow: hidden;
-  background: var(--color-surface);
-}
-
-.news-card__media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+/* Con imagen: texto + imagen secundaria (~25-30% del ancho). */
+.news-card--media {
+  display: grid;
+  grid-template-columns: 1fr minmax(160px, 28%);
+  gap: clamp(20px, 3vw, 32px);
+  align-items: center;
 }
 
 .news-card__body {
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .news-card__top {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 6px;
+  justify-content: space-between;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
-.news-card__date {
+.news-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: var(--fs-micro);
   color: var(--color-muted-2);
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
 
+.news-card__category {
+  color: var(--color-accent);
+}
+
+.news-card__meta-sep {
+  color: var(--color-muted-2);
+}
+
 .news-card__title {
-  font-size: 1.02rem;
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.2rem, 1.8vw, 1.55rem);
+  line-height: 1.28;
+  color: var(--color-text);
 }
 
 .news-card__desc {
   color: var(--color-muted);
   font-size: var(--fs-small);
-  margin-top: 4px;
+  line-height: 1.55;
+  max-width: 68ch;
 }
 
-.news-card__arrow {
-  justify-self: end;
-  color: var(--color-muted-2);
-  transition: color 0.2s var(--ease), transform 0.2s var(--ease);
+.news-card__cta {
+  margin-top: 2px;
+  color: var(--color-text);
 }
 
-.news-card:hover .news-card__arrow {
+.news-card:hover .news-card__cta {
   color: var(--color-accent);
-  transform: translateX(3px);
+}
+
+.news-card__media {
+  border-radius: 14px;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+}
+
+.news-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Preview de home: misma tarjeta, algo más compacta y con la descripción
+   acotada a 3 líneas para que 3 noticias no se conviertan en cards
+   gigantes. */
+.news-list--compact .news-card {
+  padding: clamp(18px, 2.4vw, 24px);
+  border-radius: 16px;
+}
+
+.news-list--compact .news-card__title {
+  font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+}
+
+.news-list--compact .news-card__desc {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.news-list--compact .news-card--media {
+  grid-template-columns: 1fr minmax(120px, 26%);
+  gap: clamp(16px, 2.4vw, 24px);
 }
 
 .news-empty,
@@ -125,11 +180,18 @@
   border-radius: 16px;
 }
 
-@media (max-width: 560px) {
-  .news-card {
-    grid-template-columns: 64px 1fr;
+/* Mobile: con imagen, el texto queda arriba y la imagen debajo (ya es el
+   orden en el markup); sin imagen no hay nada que reservar. */
+@media (max-width: 640px) {
+  .news-card--media {
+    grid-template-columns: 1fr;
   }
-  .news-card__arrow {
-    display: none;
+
+  .news-card__media {
+    aspect-ratio: 16 / 9;
+  }
+
+  .news-card__top {
+    justify-content: flex-start;
   }
 }

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Andrés Rieznik — Física, neurociencia y divulgación científica</title>
+<title>Andrés Rieznik / Inicio</title>
 <meta name="description" content="Sitio personal de Andrés Rieznik: físico, neurocientífico, docente y divulgador científico. Artículos, papers, noticias, videos y el proyecto Kalulu de alfabetización.">
 <link rel="canonical" href="https://TU-DOMINIO.example/">
 <!-- TODO: reemplazar https://TU-DOMINIO.example por el dominio real (o la URL de GitHub Pages) una vez publicado, acá y en el resto de las páginas. -->
@@ -84,14 +84,19 @@
   <section class="hero">
     <div class="container hero__inner">
       <div class="hero__content">
-        <span class="eyebrow hero__eyebrow">Física · Neurociencia · Divulgación</span>
-        <h1 class="hero__title">Andrés Rieznik</h1>
-        <!-- Subtítulo provisional pedido por el usuario: fácil de reemplazar por
-             una frase definitiva más adelante, sin tocar estructura ni CSS. -->
-        <p class="hero__subtitle">Física, neurociencia, educación y divulgación científica.</p>
+        <!-- "Andrés Rieznik" ya aparece en el header (site-header__name); acá
+             queda solo como <h1> oculto visualmente (misma utilidad
+             .visually-hidden de base.css) para no perder el h1 semántico de
+             la página a efectos de SEO/accesibilidad, sin repetirlo como
+             título grande en el hero. -->
+        <h1 class="visually-hidden">Andrés Rieznik</h1>
+        <span class="eyebrow hero__eyebrow">Física · Neurociencia · Educación</span>
+        <blockquote class="hero__quote">
+          <p>«La voz de la razón es suave<br>pero persistente.»</p>
+        </blockquote>
         <div class="hero__actions">
           <a class="btn btn--primary" href="articulos/index.html">Ver artículos</a>
-          <a class="btn btn--outline" href="kalulu-y-alfabetizacion/index.html">Conocé Kalulu</a>
+          <a class="btn btn--outline-light" href="kalulu-y-alfabetizacion/index.html">Conocé Kalulu</a>
         </div>
       </div>
     </div>
@@ -121,7 +126,7 @@
 
   <!-- ÚLTIMOS ARTÍCULOS — misma fuente que articulos/index.html
        (assets/data/articles.json), en su variante compacta de previsualización. -->
-  <section class="section fade-in">
+  <section class="section section--dark fade-in">
     <div class="container">
       <div class="section__header">
         <h2 class="section__title">Últimos artículos</h2>
@@ -138,7 +143,7 @@
         <h2 class="section__title">Noticias y agenda</h2>
         <a class="arrow-link section__link" href="noticias/index.html">Ver todo <span class="arrow-link__arrow">→</span></a>
       </div>
-      <div class="news-list" data-news-list data-news-limit="4"></div>
+      <div class="news-list news-list--compact" data-news-list data-news-limit="3"></div>
     </div>
   </section>
 
@@ -148,7 +153,7 @@
        dinámica (YouTube API u otra), estos 3 <a class="video-card"> son los
        que hay que reemplazar por el render dinámico -- quedan identificados
        con el comentario "VIDEO 1/2/3 (fijo, reemplazar...)". -->
-  <section class="section fade-in">
+  <section class="section section--dark fade-in">
     <div class="container">
       <div class="section__header">
         <h2 class="section__title">Videos</h2>
@@ -162,7 +167,6 @@
             <span class="video-card__play" aria-hidden="true"></span>
           </div>
           <h3 class="content-card__title">En un solo semestre DUPLICARON la comprensión lectora de los chicos de Chaco</h3>
-          <span class="content-card__meta">74 K visualizaciones</span>
         </a>
         <!-- VIDEO 2 (fijo, reemplazar por render dinámico cuando exista la fuente de datos) -->
         <a class="content-card video-card" href="https://youtu.be/YIc5MWMdzBo?si=omm4KYBdsVRPTREX" target="_blank" rel="noopener noreferrer">
@@ -171,7 +175,6 @@
             <span class="video-card__play" aria-hidden="true"></span>
           </div>
           <h3 class="content-card__title">Esto es una tragedia porque sabemos como evitarlo y no lo estamos haciendo</h3>
-          <span class="content-card__meta">37 K visualizaciones</span>
         </a>
         <!-- VIDEO 3 (fijo, reemplazar por render dinámico cuando exista la fuente de datos) -->
         <a class="content-card video-card" href="https://youtu.be/y90xirpbj4s?si=vHhujKnnpmWKBsz6" target="_blank" rel="noopener noreferrer">
@@ -180,7 +183,6 @@
             <span class="video-card__play" aria-hidden="true"></span>
           </div>
           <h3 class="content-card__title">Estos experimentos solo se pueden explicar como fenómenos cuánticos macroscópicos</h3>
-          <span class="content-card__meta">19 K visualizaciones</span>
         </a>
       </div>
     </div>
@@ -193,7 +195,7 @@
         <h2 class="section__title">Libros</h2>
         <a class="arrow-link section__link" href="sobre-mi/index.html#libros">Ver todos <span class="arrow-link__arrow">→</span></a>
       </div>
-      <div class="book-grid" data-books-grid data-books-src="assets/data/books.json"></div>
+      <div class="book-grid book-grid--interactive" data-books-grid data-books-src="assets/data/books.json"></div>
     </div>
   </section>
 
@@ -213,13 +215,13 @@
   </section>
 
   <!-- SOBRE MÍ (breve) -->
-  <section class="section fade-in">
+  <section class="section section--dark fade-in">
     <div class="container">
       <div class="about-teaser">
         <div class="about-teaser__media" role="img" aria-label="Andrés Rieznik"></div>
         <div class="about-teaser__content">
           <span class="eyebrow">Sobre mí</span>
-          <h2 class="section__title" style="margin-top:14px;">Físico, docente y divulgador científico</h2>
+          <h2 class="section__title" style="margin-top:14px;">Físico, neurocientífico y docente</h2>
           <p class="about-teaser__text">Profesor full-time e investigador del Laboratorio de Neurociencia de la Universidad Torcuato Di Tella, dedicado además a la divulgación científica en medios y a proyectos de educación y alfabetización.</p>
           <a class="arrow-link" href="sobre-mi/index.html">Conocer más <span class="arrow-link__arrow">→</span></a>
         </div>
@@ -230,7 +232,7 @@
   <!-- CONTACTO — integrado directo en la home (no es una subpágina aparte);
        el link "Contacto" del header/footer apunta acá vía #contacto.
        scroll-margin-top compensa el header sticky al llegar por anchor. -->
-  <section id="contacto" class="container contact-page fade-in" style="scroll-margin-top: var(--header-height); border-top: 1px solid var(--color-line);">
+  <section id="contacto" class="container contact-page fade-in" style="scroll-margin-top: var(--header-height);">
     <div class="contact-page__header">
       <span class="eyebrow">Contacto</span>
       <h2 class="contact-page__title" style="margin-top:14px;">Redes y contacto</h2>
@@ -264,12 +266,9 @@
         <h3 class="contact-block__title">Si me querés contactar</h3>
         <p class="contact-block__note">Para consultas profesionales, prensa o propuestas.</p>
         <div class="contact-rows">
-          <!-- EMAIL: no se encontró un email de contacto público y verificado
-               de Andrés dentro del proyecto ni por fuentes públicas fiables.
-               Placeholder explícito — reemplazar por el email real. -->
-          <a class="contact-row" href="mailto:contacto@PENDIENTE-COMPLETAR.com">
+          <a class="contact-row" href="mailto:contactoandresrieznik@gmail.com">
             <span class="contact-row__label">Email</span>
-            <span class="contact-row__value">contacto@PENDIENTE-COMPLETAR.com ↗</span>
+            <span class="contact-row__value">contactoandresrieznik@gmail.com ↗</span>
           </a>
           <a class="contact-row" href="https://www.linkedin.com/in/andr%C3%A9s-rieznik-02163171/" target="_blank" rel="noopener noreferrer">
             <span class="contact-row__label">LinkedIn</span>
@@ -302,7 +301,9 @@
 <script src="assets/js/main.js"></script>
 <script src="assets/js/supabase-config.js"></script>
 <script src="assets/js/noticias.js"></script>
+<script src="assets/data/articles-data.js"></script>
 <script src="assets/js/articles.js?v=2"></script>
+<script src="assets/data/books-data.js"></script>
 <script src="assets/js/books.js?v=2"></script>
 </body>
 </html>

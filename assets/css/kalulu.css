@@ -8,6 +8,48 @@
   border-bottom: 1px solid var(--color-line);
 }
 
+/* Dos columnas: texto (título/bajada/CTA, sin cambios) a la izquierda, logo
+   de Kalulu a la derecha aprovechando el espacio vacío. align-items:center
+   centra verticalmente el logo respecto del bloque de texto, que es más
+   alto. */
+.kalulu-hero__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(32px, 6vw, 64px);
+}
+
+.kalulu-hero__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.kalulu-hero__media {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kalulu-hero__media-img {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 860px) {
+  .kalulu-hero__inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: clamp(28px, 6vw, 40px);
+  }
+
+  .kalulu-hero__media-img {
+    max-width: 200px;
+  }
+}
+
 .kalulu-hero__eyebrow {
   color: var(--color-accent);
   margin-bottom: 16px;

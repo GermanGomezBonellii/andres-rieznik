@@ -3,7 +3,10 @@
    ========================================================================== */
 
 .profile {
-  padding-block: clamp(40px, 6vw, 72px) var(--section-space);
+  /* El padding inferior queda en 0: la franja de Trayectoria que sigue es
+     ahora una sección propia (.section--dark) con su propio padding-block,
+     y así se evita duplicar el espaciado entre ambas. */
+  padding-block: clamp(40px, 6vw, 72px) 0;
 }
 
 .profile__grid {
@@ -115,13 +118,11 @@
   }
 }
 
-/* -- Trayectoria (docencia / investigación / divulgación / medios) ---------- */
-.timeline {
-  margin-top: var(--section-space);
-  border-top: 1px solid var(--color-line);
-  padding-top: clamp(32px, 5vw, 48px);
-}
-
+/* -- Trayectoria (docencia / investigación / divulgación / medios) ----------
+   Vive en su propia <section class="section section--dark"> (franja de
+   ancho completo, mismo azul oscuro que las secciones oscuras de la home) --
+   el espaciado y el borde superior ya los resuelve .section/.section--dark,
+   así que acá solo queda la grilla interna y el color del texto. */
 .timeline__grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -138,15 +139,21 @@
   font-size: var(--fs-small);
 }
 
+.section--dark .timeline__item h3 {
+  color: #ffffff;
+}
+
+.section--dark .timeline__item p {
+  color: #c7cfd9;
+}
+
 @media (max-width: 768px) {
   .timeline__grid {
     grid-template-columns: 1fr;
   }
 }
 
-/* -- Libros ------------------------------------------------------------------- */
-.books {
-  margin-top: var(--section-space);
-  border-top: 1px solid var(--color-line);
-  padding-top: clamp(32px, 5vw, 48px);
-}
+/* -- Libros -------------------------------------------------------------
+   También en su propia <section class="section"> (justo después de la
+   franja oscura de Trayectoria); .section--dark + .section ya suprime el
+   borde superior entre ambas, y .section aporta el padding-block. */
