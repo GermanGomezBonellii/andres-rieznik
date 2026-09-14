@@ -3,150 +3,156 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About — Germán Gómez Bonelli</title>
-<meta name="description" content="Profile of Germán Gómez Bonelli: communication, design, and technology.">
+<title>Andrés Rieznik / About</title>
+<meta name="description" content="Andrés Rieznik's professional profile: education, research, teaching, science communication and published books.">
+<link rel="canonical" href="https://TU-DOMINIO.example/en/about/index.html">
 
-<!-- Open Graph / Facebook, LinkedIn, WhatsApp, etc. -- misma imagen (img/logo.png)
-     y mismo titulo/descripcion que <title> y <meta name="description"> de arriba,
-     para no duplicar contenido a mano. og:image usa ruta relativa: funciona para
-     preview local, pero la mayoria de los crawlers (Facebook, LinkedIn, WhatsApp)
-     necesitan una URL absoluta para poder descargar la imagen -- una vez que el
-     sitio tenga dominio propio, cambiar aca (y en twitter:image si se agrega) a
-     algo como https://tu-dominio.com/img/logo.png. -->
-<meta property="og:type" content="website">
-<meta property="og:title" content="About — Germán Gómez Bonelli">
-<meta property="og:description" content="Profile of Germán Gómez Bonelli: communication, design, and technology.">
-<meta property="og:image" content="../../img/logo.png">
+<link rel="alternate" hreflang="es" href="https://TU-DOMINIO.example/sobre-mi/index.html">
+<link rel="alternate" hreflang="en" href="https://TU-DOMINIO.example/en/about/index.html">
+<link rel="alternate" hreflang="x-default" href="https://TU-DOMINIO.example/sobre-mi/index.html">
+
+<meta property="og:type" content="profile">
+<meta property="og:title" content="About — Andrés Rieznik">
+<meta property="og:description" content="Education, research, teaching, science communication and published books.">
+<meta property="og:image" content="https://TU-DOMINIO.example/img/andres.webp">
 <meta property="og:locale" content="en_US">
 
-<!-- Favicon / isotipo del portfolio -->
-<link rel="icon" type="image/png" href="../../img/logo.png">
-<link rel="apple-touch-icon" href="../../img/logo.png">
+<link rel="icon" type="image/svg+xml" href="../../img/favicon.svg">
 
-<!-- Merriweather: mismo criterio que el resto de las paginas internas
-     (titulos y headings principales, var(--font-display)). display=optional
-     (antes: swap) -- bugfix del "glitch" de resize al cambiar de idioma,
-     ver el comentario completo en proyectos/andres-rieznik/index.html;
-     mismo cambio replicado tal cual en los demas HTML del sitio que cargan
-     esta fuente. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=optional" rel="stylesheet">
 
 <link rel="stylesheet" href="../../assets/css/base.css">
 <link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/home.css">
 <link rel="stylesheet" href="../../assets/css/profile.css">
 </head>
 <body>
 
+<a class="skip-link" href="#main">Skip to content</a>
+
 <header class="site-header">
   <div class="container site-header__inner">
-    <a href="../index.html" class="site-header__name">Germán Gómez Bonelli</a>
-
+    <a href="../index.html" class="site-header__name">Andrés <span class="site-header__name-mark">Rieznik</span></a>
     <button class="site-header__toggle" data-nav-toggle aria-expanded="false" aria-label="Open menu">
       <span></span><span></span><span></span>
     </button>
-
     <nav class="site-header__nav" aria-label="Main navigation">
-      <a href="../index.html#trabajo">Work</a>
-      <a href="index.html">About</a>
-      <a href="../index.html#contacto">Contact</a>
+      <a href="../index.html">Home</a>
+      <a href="../articles/index.html">Articles</a>
+      <a href="../news/index.html">News</a>
+      <a href="../videos/index.html">Videos</a>
+      <a href="../kalulu/index.html">Kalulu</a>
+      <a href="index.html" aria-current="page">About</a>
+      <a href="../index.html#contact">Contact</a>
       <div class="language-switcher" aria-label="Language selector">
         <a class="language-switcher__item" href="../../sobre-mi/index.html">ES</a>
         <span class="language-switcher__sep">/</span>
         <span class="language-switcher__item language-switcher__item--active" aria-current="true">EN</span>
-        <span class="language-switcher__sep">/</span>
-        <a class="language-switcher__item" href="../../de/ueber-mich/index.html">DE</a>
       </div>
     </nav>
   </div>
 </header>
 
-<main>
-
-  <!-- ABOUT -- misma identidad visual que tenía la sección Perfil de la
-       home (mismo fondo hero.webp, mismas clases .profile / .profile__grid
-       / .profile__photo / .profile__title / .profile__text / .profile__facts,
-       ver assets/css/profile.css), ahora como página completa propia en
-       vez de una sección incrustada dentro de en/index.html. -->
-  <section class="profile" id="about">
+<main id="main">
+  <section class="profile">
     <div class="container">
-      <a href="../index.html" class="back-link about-page__back">← Back to home</a>
+      <a href="../index.html" class="back-link">← Back to home</a>
 
-      <div class="profile__grid grid">
-
+      <div class="profile__grid grid" style="margin-top: 32px;">
         <div class="profile__photo-col">
-          <!-- Foto de perfil: colocar el archivo en img/perfil.webp para que
-               aparezca automáticamente (ver comentario en assets/css/profile.css).
-               Mientras no exista, se muestra un placeholder gris claro, sin
-               íconos ni textos de "subir foto". -->
           <div class="profile__photo"></div>
         </div>
 
         <div class="profile__content-col">
           <span class="eyebrow profile__eyebrow">Profile</span>
-          <h1 class="profile__title">My background brings together <span class="no-break"><span class="profile-highlight">communication</span>,</span> <span class="no-break"><span class="profile-highlight">design</span>,</span> and <span class="no-break"><span class="profile-highlight">technology</span>.</span></h1>
+          <h1 class="profile__title">Physicist, <span class="profile-highlight">neuroscientist</span> and science communicator.</h1>
 
           <div class="profile__text">
-            <p>I earned a technical degree in Advertising Design and Communication and currently study Digital Technology at Universidad Torcuato Di Tella, a degree that combines programming, business, and design. That training broadened the way I think about communication: not only in terms of content production, but also through the tools, systems, and platforms through which content circulates.</p>
-            <p>At the same time, I work in a neuroscience lab at the university, maintaining a direct connection with research and the production of scientific knowledge.</p>
-            <p>I'm especially interested in the intersection of these areas, including how it connects to human rights and public policy: I believe decisions should be able to rely on scientific evidence that's accessible beyond specialized settings, and that communicating that knowledge expands who can access it, discuss it, and use it.</p>
+            <p>Andrés Rieznik holds a Bachelor's, Master's and PhD in Physics from Universidade Estadual de Campinas (Brazil). He is a full-time professor and researcher at the Neuroscience Laboratory of Universidad Torcuato Di Tella, where he works on topics related to neuroscience, human behavior and learning.</p>
+            <p>He combines research and teaching with an extensive track record in science communication. He is currently a science columnist for <em>Nadie Dice Nada</em> (Luzu TV) and Infobae. Between 2016 and 2022 he hosted <em>La Liga de la Ciencia</em> on Televisión Pública Argentina, a program recognized in 2019 with the Martín Fierro Award for Best Cultural Program and the FundTV Gold Award.</p>
+            <p>In recent years his work has focused especially on the neuroscience of learning and literacy. He is part of the Kalulu team, an evidence-based literacy project, and is the author of several popular-science books on neuroscience, cognition and education, including <em>Neuromagia</em>, <em>Atletismo mental</em>, <em>Retos asombrosos</em>, <em>Tabú</em> and <em>Enseñar</em>.</p>
           </div>
 
           <div class="profile__facts">
             <div class="profile__fact">
               <span class="profile__fact-label">Education</span>
-              <p class="profile__fact-value">Technical degree in Advertising Design and Communication</p>
-            </div>
-            <div class="profile__fact">
-              <span class="profile__fact-label">Currently</span>
-              <p class="profile__fact-value">Digital Technology</p>
-              <p class="profile__fact-detail">Universidad Torcuato Di Tella</p>
+              <p class="profile__fact-value">PhD in Physics</p>
+              <p class="profile__fact-detail">Universidade Estadual de Campinas (Brazil)</p>
             </div>
             <div class="profile__fact">
               <span class="profile__fact-label">Research</span>
-              <p class="profile__fact-value">Neuroscience lab</p>
+              <p class="profile__fact-value">Neuroscience Laboratory</p>
               <p class="profile__fact-detail">Universidad Torcuato Di Tella</p>
             </div>
+            <div class="profile__fact">
+              <span class="profile__fact-label">Teaching</span>
+              <p class="profile__fact-value">Full-time professor</p>
+              <p class="profile__fact-detail">Universidad Torcuato Di Tella</p>
+            </div>
+            <div class="profile__fact">
+              <span class="profile__fact-label">Science communication</span>
+              <p class="profile__fact-value">Media &amp; television</p>
+              <p class="profile__fact-detail">Nadie Dice Nada (Luzu TV) · Infobae</p>
+            </div>
           </div>
-        </div>
-
-      </div>
-
-      <!-- ARTICLES -- editorial subsection at the end of About. Lives
-           inside this same .profile (black background / white text),
-           after the main content and before the footer. Generic classes
-           (.profile-articles / .profile-article...) so new articles can
-           be added later just by adding another <article
-           class="profile-article"> inside .profile-articles__list, no
-           new CSS needed. id="artitulos" is the target of "Back to
-           Articles" from each individual article page (no accent on
-           purpose -- kept as-is so the existing anchor keeps working). -->
-      <div class="profile-articles" id="artitulos">
-        <div class="profile-articles__list">
-          <article class="profile-article">
-            <a class="profile-article__link" href="../articulos/autocensura-y-nueva-lengua/index.html">
-              <span class="eyebrow profile-article__label">Article 01</span>
-              <h3 class="profile-article__title">Self-censorship and Newspeak: the mechanism no one talks about</h3>
-              <p class="profile-article__excerpt">From “unaliving” to “the painter with the mustache,” the algorithm is changing our language. How can we prevent violence without talking about it?</p>
-            </a>
-          </article>
         </div>
       </div>
 
     </div>
   </section>
 
+  <!-- CAREER / TRAYECTORIA -->
+  <section class="section section--dark">
+    <div class="container">
+      <div class="timeline">
+        <span class="eyebrow">Career</span>
+        <div class="timeline__grid" style="margin-top: 24px;">
+          <div class="timeline__item">
+            <h3>Research</h3>
+            <p>Researcher at the Neuroscience Laboratory of Universidad Torcuato Di Tella, working on learning, memory and numerical cognition, with publications in international scientific journals (see Articles → Papers).</p>
+          </div>
+          <div class="timeline__item">
+            <h3>Teaching</h3>
+            <p>Full-time professor at Universidad Torcuato Di Tella.</p>
+          </div>
+          <div class="timeline__item">
+            <h3>Science communication &amp; media</h3>
+            <p>Between 2016 and 2022 he hosted <em>La Liga de la Ciencia</em> (Televisión Pública Argentina), a program recognized in 2019 with the Martín Fierro Award for Best Cultural Program and the FundTV Gold Award. He is currently a science columnist for <em>Nadie Dice Nada</em> (Luzu TV) and Infobae.</p>
+          </div>
+          <div class="timeline__item">
+            <h3>Literacy &amp; education</h3>
+            <p>Member of the Kalulu team, an evidence-based literacy project. See the <a href="../kalulu/index.html" style="color:var(--color-accent);">Kalulu</a> page.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIBROS -->
+  <section class="section">
+    <div class="container">
+      <div class="books" id="libros">
+        <span class="eyebrow">Books</span>
+        <div class="book-grid book-grid--interactive" data-books-grid data-books-src="../../assets/data/books.json" style="margin-top: 24px;"></div>
+      </div>
+    </div>
+  </section>
 </main>
 
 <footer class="site-footer">
   <div class="container site-footer__inner">
-    <span class="site-footer__name">Germán Gómez Bonelli</span>
-    <span class="site-footer__meta">Portfolio 2026</span>
+    <div class="site-footer__brand">
+      <span class="site-footer__name">Andrés Rieznik</span>
+      <span class="site-footer__meta">Physics, neuroscience, education and science communication.</span>
+    </div>
     <a href="../index.html" class="back-link">← Back to home</a>
   </div>
 </footer>
 
 <script src="../../assets/js/main.js"></script>
+<script src="../../assets/data/books-data.en.js"></script>
+<script src="../../assets/js/books.js?v=2"></script>
 </body>
 </html>

@@ -17,6 +17,29 @@
   var filtersEl = document.querySelector('[data-news-filters]');
   if (!listEl) return;
 
+  // Textos de interfaz (no el contenido de Supabase, que sigue mostrándose
+  // tal cual venga): switch mínimo por idioma según <html lang>, agregado
+  // para la versión /en/ sin duplicar este archivo ni tocar la lógica de
+  // fetch/filtrado. Con lang="es" el comportamiento es idéntico al de antes.
+  var isEN = document.documentElement.lang === 'en';
+  var L = isEN ? {
+    notConfigured: 'This section is not connected to Supabase yet. Fill in <code>assets/js/supabase-config.js</code> with the project URL and anon key (the <code>andres_noticias</code> table already exists in Supabase) so the board shows up here.',
+    empty: 'No updates in this category yet.',
+    loading: 'Loading updates…',
+    error: 'Updates could not be loaded. Please try again later.',
+    pinned: 'Featured',
+    viewMore: 'View more',
+    all: 'All'
+  } : {
+    notConfigured: 'Esta sección todavía no está conectada a Supabase. Completá <code>assets/js/supabase-config.js</code> con la URL y la anon key del proyecto (la tabla <code>andres_noticias</code> ya existe en Supabase) para que el tablón se muestre acá.',
+    empty: 'No hay novedades en esta categoría por ahora.',
+    loading: 'Cargando novedades…',
+    error: 'No se pudieron cargar las novedades. Intentá más tarde.',
+    pinned: 'Destacado',
+    viewMore: 'Ver más',
+    all: 'Todas'
+  };
+
   var isConfigured =
     typeof SUPABASE_URL !== 'undefined' && typeof SUPABASE_ANON_KEY !== 'undefined' &&
     SUPABASE_URL && SUPABASE_ANON_KEY &&
@@ -24,11 +47,7 @@
     SUPABASE_ANON_KEY.indexOf('TU-ANON-KEY') === -1;
 
   if (!isConfigured) {
-    listEl.innerHTML =
-      '<div class="news-empty">Esta sección todavía no está conectada a Supabase. ' +
-      'Completá <code>assets/js/supabase-config.js</code> con la URL y la anon key ' +
-      'del proyecto (la tabla <code>andres_noticias</code> ya existe en Supabase) ' +
-      'para que el tablón se muestre acá.</div>';
+    listEl.innerHTML = '<div class="news-empty">' + L.notConfigured + '</div>';
     return;
   }
 
@@ -49,7 +68,7 @@
     if (!dateStr) return '';
     try {
       var d = new Date(dateStr + 'T00:00:00');
-      return d.toLocaleDateString('es-AR', { day: '2-digit', month: 'short', year: 'numeric' });
+      return d.toLocaleDateString(isEN ? 'en-US' : 'es-AR', { day: '2-digit', month: 'short', year: 'numeric' });
     } catch (e) {
       return dateStr;
     }
@@ -64,7 +83,7 @@
     if (limit) items = items.slice(0, limit);
 
     if (!items.length) {
-      listEl.innerHTML = '<div class="news-empty">No hay novedades en esta categoría por ahora.</div>';
+      listEl.innerHTML = '<div class="news-empty">' + L.empty + '</div>';
       return;
     }
 
@@ -85,7 +104,7 @@
       var meta = metaParts.length
         ? '<span class="news-card__meta">' + metaParts.join('<span class="news-card__meta-sep" aria-hidden="true">·</span>') + '</span>'
         : '';
-      var pinnedBadge = item.pinned ? '<span class="tag tag--pinned">Destacado</span>' : '';
+      var pinnedBadge = item.pinned ? '<span class="tag tag--pinned">' + L.pinned + '</span>' : '';
       var top = (meta || pinnedBadge) ? '<span class="news-card__top">' + meta + pinnedBadge + '</span>' : '';
 
       // La imagen es opcional: si no hay image_url, no se genera ningún
@@ -96,7 +115,7 @@
 
       // El CTA solo aparece si hay url; si no, la tarjeta no es un link.
       var cta = hasUrl
-        ? '<span class="arrow-link news-card__cta">Ver más <span class="arrow-link__arrow">&#8599;</span></span>'
+        ? '<span class="arrow-link news-card__cta">' + L.viewMore + ' <span class="arrow-link__arrow">&#8599;</span></span>'
         : '';
 
       var body =
@@ -128,7 +147,7 @@
       return (
         '<button type="button" class="news-filter" data-category="' + escapeHtml(cat) + '" ' +
         'aria-pressed="' + (cat === activeCategory ? 'true' : 'false') + '">' +
-        escapeHtml(cat === 'todas' ? 'Todas' : cat) + '</button>'
+        escapeHtml(cat === 'todas' ? L.all : cat) + '</button>'
       );
     }).join('');
 
@@ -143,7 +162,7 @@
     });
   }
 
-  listEl.innerHTML = '<div class="news-empty">Cargando novedades…</div>';
+  listEl.innerHTML = '<div class="news-empty">' + L.loading + '</div>';
 
   fetch(endpoint, {
     headers: {
@@ -161,7 +180,6 @@
     })
     .catch(function (err) {
       console.error('Error cargando noticias (' + endpoint + '):', err);
-      listEl.innerHTML =
-        '<div class="news-error">No se pudieron cargar las novedades. Intentá más tarde.</div>';
+      listEl.innerHTML = '<div class="news-error">' + L.error + '</div>';
     });
 })();

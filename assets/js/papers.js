@@ -13,6 +13,18 @@
   var listEl = document.querySelector('[data-papers-list]');
   if (!listEl) return;
 
+  // Mismo switch mínimo por <html lang> que noticias.js/articles.js/books.js.
+  var isEN = document.documentElement.lang === 'en';
+  var L = isEN ? {
+    empty: 'No publications yet.',
+    error: 'The list of publications could not be loaded.',
+    viewDoi: 'View DOI'
+  } : {
+    empty: 'Todavía no hay publicaciones cargadas.',
+    error: 'No se pudo cargar el listado de publicaciones.',
+    viewDoi: 'Ver DOI'
+  };
+
   function escapeHtml(str) {
     return String(str || '').replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
@@ -23,7 +35,7 @@
     var papers = window.PAPERS_DATA;
 
     if (!Array.isArray(papers) || !papers.length) {
-      listEl.innerHTML = '<div class="news-empty">Todavía no hay publicaciones cargadas.</div>';
+      listEl.innerHTML = '<div class="news-empty">' + L.empty + '</div>';
       return;
     }
 
@@ -36,13 +48,13 @@
             '<p class="paper-card__meta">' + escapeHtml(p.journal) + (p.year ? ' · ' + p.year : '') + '</p>' +
           '</div>' +
           '<a class="arrow-link paper-card__doi" href="' + escapeHtml(p.url) + '" target="_blank" rel="noopener noreferrer">' +
-            'Ver DOI <span class="arrow-link__arrow">&#8599;</span>' +
+            L.viewDoi + ' <span class="arrow-link__arrow">&#8599;</span>' +
           '</a>' +
         '</article>'
       );
     }).join('');
   } catch (error) {
     console.error('Error cargando papers (window.PAPERS_DATA):', error);
-    listEl.innerHTML = '<div class="news-error">No se pudo cargar el listado de publicaciones.</div>';
+    listEl.innerHTML = '<div class="news-error">' + L.error + '</div>';
   }
 })();

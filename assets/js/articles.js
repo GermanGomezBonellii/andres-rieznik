@@ -24,6 +24,19 @@
   var variant = listEl.getAttribute('data-articles-variant') || 'row';
   var limit = parseInt(listEl.getAttribute('data-articles-limit'), 10);
 
+  // Mismo switch mínimo por <html lang> que noticias.js/papers.js/books.js:
+  // solo los textos de interfaz de este archivo, sin duplicarlo para /en/.
+  var isEN = document.documentElement.lang === 'en';
+  var L = isEN ? {
+    empty: 'No articles published yet.',
+    error: 'The list of articles could not be loaded.',
+    readArticle: 'Read article'
+  } : {
+    empty: 'Todavía no hay artículos publicados.',
+    error: 'No se pudo cargar el listado de artículos.',
+    readArticle: 'Leer artículo'
+  };
+
   function escapeHtml(str) {
     return String(str || '').replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
@@ -34,7 +47,7 @@
     var articles = window.ARTICLES_DATA;
 
     if (!Array.isArray(articles) || !articles.length) {
-      listEl.innerHTML = '<div class="news-empty">Todavía no hay artículos publicados.</div>';
+      listEl.innerHTML = '<div class="news-empty">' + L.empty + '</div>';
       return;
     }
 
@@ -61,13 +74,13 @@
               '<span class="article-row__title">' + escapeHtml(a.title) + '</span>' +
               '<span class="article-row__excerpt">' + escapeHtml(a.excerpt) + '</span>' +
             '</span>' +
-            '<span class="arrow-link article-row__cta">Leer artículo <span class="arrow-link__arrow">&#8594;</span></span>' +
+            '<span class="arrow-link article-row__cta">' + L.readArticle + ' <span class="arrow-link__arrow">&#8594;</span></span>' +
           '</a>'
         );
       }).join('');
     }
   } catch (error) {
     console.error('Error cargando artículos (window.ARTICLES_DATA):', error);
-    listEl.innerHTML = '<div class="news-error">No se pudo cargar el listado de artículos.</div>';
+    listEl.innerHTML = '<div class="news-error">' + L.error + '</div>';
   }
 })();

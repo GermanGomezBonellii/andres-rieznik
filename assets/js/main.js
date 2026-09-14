@@ -290,3 +290,78 @@
     });
   });
 })();
+
+/* -- Efecto de escritura en la frase del hero (solo home) -----------------
+   Bloque aparte y autocontenido: no toca nada de arriba. Busca
+   [data-typewriter] (la <p> de la cita del hero, ver index.html), que solo
+   existe en esa página -- en el resto simplemente no hace nada.
+
+   Reserva de espacio: el texto real de las dos líneas (tomado del propio
+   HTML, no duplicado en JS) se envuelve en spans -- uno por caracter -- que
+   se insertan TODOS de entrada; solo se anima su opacidad. El párrafo queda
+   con su ancho/alto final desde el primer render, así que no hay layout
+   shift ni movimiento de los botones mientras "escribe". Si el texto no
+   tiene el <br> esperado, no se toca nada (fallback: se ve la frase
+   completa, estática, tal como ya estaba en el HTML). */
+(function () {
+  'use strict';
+
+  var quote = document.querySelector('[data-typewriter]');
+  if (!quote) return;
+
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion) return; // deja la frase completa tal cual, sin animar
+
+  var br = quote.querySelector('br');
+  var line1 = br && br.previousSibling ? br.previousSibling.textContent : '';
+  var line2 = br && br.nextSibling ? br.nextSibling.textContent : '';
+  if (!br || !line1 || !line2) return;
+
+  function wrapChars(text) {
+    var chars = [];
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < text.length; i++) {
+      var span = document.createElement('span');
+      span.className = 'hero__quote-char';
+      span.textContent = text[i];
+      frag.appendChild(span);
+      chars.push(span);
+    }
+    return { frag: frag, chars: chars };
+  }
+
+  var l1 = wrapChars(line1);
+  var l2 = wrapChars(line2);
+
+  // Misma composición final que antes: línea 1 + <br> + línea 2, dentro del
+  // mismo <p>. Solo cambia cómo se revela cada caracter.
+  quote.textContent = '';
+  quote.appendChild(l1.frag);
+  quote.appendChild(document.createElement('br'));
+  quote.appendChild(l2.frag);
+
+  var cursor = document.createElement('span');
+  cursor.className = 'hero__quote-cursor';
+  cursor.setAttribute('aria-hidden', 'true');
+  // Arranca ANTES del primer caracter (posición inicial de escritura), no al
+  // final del texto -- si no, se ve un salto del cursor al primer tick.
+  quote.insertBefore(cursor, quote.firstChild);
+
+  var chars = l1.chars.concat(l2.chars);
+  var TOTAL_MS = 1500; // 1.2-1.8s pedido; character por character, sin loop
+  var stepMs = TOTAL_MS / chars.length;
+  var i = 0;
+
+  function tick() {
+    if (i >= chars.length) {
+      cursor.remove(); // termina la frase: el cursor no queda visible
+      return;
+    }
+    chars[i].classList.add('is-visible');
+    chars[i].insertAdjacentElement('afterend', cursor);
+    i++;
+    setTimeout(tick, stepMs);
+  }
+
+  setTimeout(tick, stepMs);
+})();

@@ -114,6 +114,38 @@
   white-space: nowrap;
 }
 
+/* Efecto de escritura de la cita (ver main.js, bloque [data-typewriter]):
+   cada caracter arranca invisible y se revela con un fade muy corto -- el
+   texto entero ya está en el DOM desde el primer render (misma línea 1/línea
+   2 y mismo <br> de siempre), así que esto no cambia el ancho ni el alto del
+   bloque en ningún momento. Si prefers-reduced-motion está activo, main.js
+   no llega a envolver los caracteres y esta regla queda sin efecto (se ve
+   la frase completa y estática, como antes). */
+.hero__quote-char {
+  opacity: 0;
+  transition: opacity 0.08s linear;
+}
+
+.hero__quote-char.is-visible {
+  opacity: 1;
+}
+
+.hero__quote-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 0.85em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  background: #ffffff;
+  animation: hero-quote-cursor-blink 0.5s step-end infinite;
+}
+
+@keyframes hero-quote-cursor-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
 .hero__quote cite {
   display: block;
   margin-top: 10px;

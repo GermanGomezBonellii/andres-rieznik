@@ -13,6 +13,18 @@
   var gridEl = document.querySelector('[data-books-grid]');
   if (!gridEl) return;
 
+  // Mismo switch mínimo por <html lang> que noticias.js/articles.js/papers.js
+  // -- la descripción de cada libro ya viene traducida en window.BOOKS_DATA
+  // (books-data.en.js en /en/), acá solo el CTA y el alt de la tapa.
+  var isEN = document.documentElement.lang === 'en';
+  var L = isEN ? {
+    cta: 'Get the book',
+    coverAlt: 'Cover of '
+  } : {
+    cta: 'Conseguilo acá',
+    coverAlt: 'Portada de '
+  };
+
   function escapeHtml(str) {
     return String(str || '').replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
@@ -32,7 +44,7 @@
 
     gridEl.innerHTML = books.map(function (b) {
       var cover = b.cover
-        ? '<img src="' + escapeHtml(base + b.cover) + '" alt="Portada de ' + escapeHtml(b.title) + '" loading="lazy">'
+        ? '<img src="' + escapeHtml(base + b.cover) + '" alt="' + L.coverAlt + escapeHtml(b.title) + '" loading="lazy">'
         : escapeHtml(b.title);
 
       // Overlay con descripción breve + CTA opcional (solo si hay buy_url).
@@ -41,7 +53,7 @@
       // tiene la clase .book-grid--interactive (ver home.css) -- en
       // sobre-mi queda inerte y la tapa se ve exactamente igual que antes.
       var cta = b.buy_url
-        ? '<a class="book-card__cta" href="' + escapeHtml(b.buy_url) + '" target="_blank" rel="noopener noreferrer">Conseguilo acá <span aria-hidden="true">↗</span></a>'
+        ? '<a class="book-card__cta" href="' + escapeHtml(b.buy_url) + '" target="_blank" rel="noopener noreferrer">' + L.cta + ' <span aria-hidden="true">↗</span></a>'
         : '';
       var overlay = b.description
         ? '<div class="book-card__overlay">' +
