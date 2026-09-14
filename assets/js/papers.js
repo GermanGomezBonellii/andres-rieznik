@@ -16,7 +16,12 @@
   }
 
   fetch(dataPath)
-    .then(function (res) { return res.json(); })
+    .then(function (res) {
+      if (!res.ok) {
+        throw new Error('HTTP ' + res.status + ' cargando ' + res.url);
+      }
+      return res.json();
+    })
     .then(function (papers) {
       if (!Array.isArray(papers) || !papers.length) {
         listEl.innerHTML = '<div class="news-empty">Todavía no hay publicaciones cargadas.</div>';
@@ -38,7 +43,8 @@
         );
       }).join('');
     })
-    .catch(function () {
+    .catch(function (error) {
+      console.error('Error cargando papers (' + dataPath + '):', error);
       listEl.innerHTML = '<div class="news-error">No se pudo cargar el listado de publicaciones.</div>';
     });
 })();

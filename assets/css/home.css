@@ -9,16 +9,23 @@
   position: relative;
   overflow: hidden;
   background: linear-gradient(180deg, #f6f9fd 0%, #ffffff 65%);
-  padding-block: clamp(48px, 8vw, 96px);
   border-bottom: 1px solid var(--color-line);
-}
-
-.hero__grid {
+  /* height (no min-height): el hijo de la derecha necesita un alto definido
+     del que calcular su height:100%, y así conservar su propia proporción
+     en lugar de la del contenedor. */
+  height: calc(100vh - var(--header-height));
+  display: flex;
   align-items: center;
 }
 
+.hero__inner {
+  flex: 1;
+  min-width: 0;
+}
+
 .hero__content {
-  grid-column: 1 / span 7;
+  max-width: 480px;
+  padding-block: clamp(48px, 8vw, 96px);
 }
 
 .hero__eyebrow {
@@ -48,27 +55,39 @@
 }
 
 .hero__media {
-  grid-column: 8 / span 5;
+  height: 100%;
+  width: auto;
+  flex-shrink: 0;
 }
 
-.hero__photo {
-  aspect-ratio: 4 / 5;
-  border-radius: 20px;
-  background-image: url('../../img/andres.webp');
-  background-size: cover;
-  background-position: center top;
-  box-shadow: 0 24px 60px -20px rgba(11, 31, 58, 0.35);
+.hero__media-img {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  display: block;
 }
 
 @media (max-width: 900px) {
-  .hero__content,
-  .hero__media {
-    grid-column: 1 / -1;
+  .hero {
+    height: auto;
+    display: block;
+  }
+
+  .hero__content {
+    max-width: none;
+    padding-block: clamp(40px, 8vw, 64px) clamp(32px, 6vw, 40px);
   }
 
   .hero__media {
-    margin-top: clamp(32px, 8vw, 48px);
-    max-width: 380px;
+    height: auto;
+    width: auto;
+    aspect-ratio: 4 / 5;
+  }
+
+  .hero__media-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 }
 
@@ -100,6 +119,73 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
+  }
+}
+
+/* -- Últimos artículos: previsualización compacta ---------------------------
+   Misma fuente de datos que /articulos (assets/data/articles.json, vía
+   assets/js/articles.js), renderizada acá en una variante liviana de filas
+   con línea divisoria -- no las cards anchas de la página de listado. */
+.article-preview-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.article-preview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-block: clamp(20px, 3vw, 28px);
+  border-top: 1px solid var(--color-line);
+  transition: border-color 0.2s var(--ease);
+}
+
+.article-preview-list .article-preview:last-child {
+  border-bottom: 1px solid var(--color-line);
+}
+
+.article-preview:hover {
+  border-color: var(--color-accent);
+}
+
+.article-preview__body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.article-preview__title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--color-text);
+  transition: color 0.2s var(--ease);
+}
+
+.article-preview:hover .article-preview__title {
+  color: var(--color-accent);
+}
+
+.article-preview__excerpt {
+  color: var(--color-muted);
+  font-size: var(--fs-small);
+  max-width: 56ch;
+}
+
+.article-preview__arrow {
+  flex-shrink: 0;
+  font-size: 1.3rem;
+  color: var(--color-muted);
+  transition: color 0.2s var(--ease);
+}
+
+.article-preview:hover .article-preview__arrow {
+  color: var(--color-accent);
+}
+
+@media (max-width: 640px) {
+  .article-preview {
+    align-items: flex-start;
   }
 }
 
@@ -266,6 +352,21 @@
   margin-left: 3px;
 }
 
+/* Hover sutil: la miniatura escala levemente y el título pasa a color de
+   acento -- mismo criterio que .article-preview:hover más arriba. */
+.video-card__media img {
+  transition: transform 0.3s var(--ease);
+}
+
+.video-card:hover .video-card__media img {
+  transform: scale(1.03);
+}
+
+.video-card:hover .content-card__title {
+  color: var(--color-accent);
+  transition: color 0.2s var(--ease);
+}
+
 /* -- Libros ------------------------------------------------------------------- */
 .book-grid {
   display: grid;
@@ -357,7 +458,7 @@
   grid-column: 9 / -1;
   aspect-ratio: 1;
   border-radius: 16px;
-  background-image: url('../../img/proyectos/andres-rieznik/3.jpeg');
+  background-image: url('../../img/kalulu.png');
   background-size: cover;
   background-position: center;
 }

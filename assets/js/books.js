@@ -15,7 +15,12 @@
   }
 
   fetch(dataPath)
-    .then(function (res) { return res.json(); })
+    .then(function (res) {
+      if (!res.ok) {
+        throw new Error('HTTP ' + res.status + ' cargando ' + res.url);
+      }
+      return res.json();
+    })
     .then(function (books) {
       if (!Array.isArray(books) || !books.length) return;
 
@@ -35,5 +40,10 @@
         );
       }).join('');
     })
-    .catch(function () { /* silencioso: la sección simplemente no se rellena */ });
+    .catch(function (error) {
+      // Antes era silencioso y ocultaba la causa real; ahora queda registrado
+      // en consola (URL intentada + status HTTP) para poder diagnosticar sin
+      // adivinar. La sección sigue sin romperse: simplemente no se rellena.
+      console.error('Error cargando libros (' + dataPath + '):', error);
+    });
 })();

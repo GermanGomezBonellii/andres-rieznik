@@ -22,6 +22,7 @@
 <link rel="stylesheet" href="../assets/css/base.css">
 <link rel="stylesheet" href="../assets/css/components.css">
 <link rel="stylesheet" href="../assets/css/article.css">
+<link rel="stylesheet" href="../assets/css/news.css">
 </head>
 <body>
 
@@ -59,35 +60,11 @@
 
   <div class="container">
     <section id="panel-ensayos" class="articles-panel" data-articles-panel="ensayos" role="tabpanel">
-      <!-- Cada ensayo nuevo se agrega acá como un .article-card, con su propia
-           subpágina en articulos/<slug>/index.html (ver la plantilla en
-           articulos/ejemplo-de-articulo/, no enlazada, solo de referencia). -->
-      <div class="article-list">
-        <a class="article-card fade-in" href="otra-forma-de-ensenar-matematica-es-posible/index.html">
-          <div class="article-card__body">
-            <span class="article-card__meta">Ensayo</span>
-            <h2 class="article-card__title">Otra forma de enseñar matemática es posible</h2>
-            <p class="article-card__excerpt">Un estudio comparativo entre el método C.R.A y el enfoque psicogenético en la enseñanza de la matemática en primer grado, con Victoria Zorraquin, Luca Ciatti y Chiara Loggia.</p>
-            <span class="arrow-link">Leer artículo <span class="arrow-link__arrow">→</span></span>
-          </div>
-        </a>
-        <a class="article-card fade-in" href="ensenamos-mal-a-alfabetizar/index.html">
-          <div class="article-card__body">
-            <span class="article-card__meta">Ensayo</span>
-            <h2 class="article-card__title">Enseñamos mal a alfabetizar</h2>
-            <p class="article-card__excerpt">Y la evidencia es contundente: una guía de lectura con la evidencia científica sobre cómo se aprende a leer y escribir.</p>
-            <span class="arrow-link">Leer artículo <span class="arrow-link__arrow">→</span></span>
-          </div>
-        </a>
-        <a class="article-card fade-in" href="esta-prohibido-ensenar-el-sonido-de-las-letras/index.html">
-          <div class="article-card__body">
-            <span class="article-card__meta">Ensayo</span>
-            <h2 class="article-card__title">¿Está prohibido enseñar el sonido de las letras?</h2>
-            <p class="article-card__excerpt">Respuesta a Federico Milman y Vanesa Giordano sobre la prohibición de facto de enseñar el sonido de las letras al alfabetizar.</p>
-            <span class="arrow-link">Leer artículo <span class="arrow-link__arrow">→</span></span>
-          </div>
-        </a>
-      </div>
+      <!-- Cada ensayo nuevo se agrega en assets/data/articles.json (título,
+           bajada, categoría, href a su subpágina en articulos/<slug>/), sin
+           tocar este HTML. La plantilla de subpágina está en
+           articulos/ejemplo-de-articulo/, no enlazada, solo de referencia. -->
+      <div class="article-list" data-articles-list data-articles-src="../assets/data/articles.json"></div>
     </section>
 
     <section id="panel-papers" class="articles-panel" data-articles-panel="papers" role="tabpanel" hidden>
@@ -107,6 +84,7 @@
 </footer>
 
 <script src="../assets/js/main.js"></script>
+<script src="../assets/js/articles.js?v=2"></script>
 <script src="../assets/js/papers.js"></script>
 </body>
 </html>

@@ -5,6 +5,9 @@
    ========================================================================== */
 
 .article-page {
+  /* Ancho de lectura compartido por header, portada, acciones, cuerpo y notas
+     al pie -- un solo número para mantener todo centrado y alineado. */
+  --article-max: min(100% - 48px, 980px);
   padding-block: clamp(32px, 6vw, 56px) clamp(64px, 10vw, 120px);
 }
 
@@ -13,7 +16,8 @@
 }
 
 .article-page__header {
-  max-width: 860px;
+  max-width: var(--article-max);
+  margin-inline: auto;
   margin-bottom: clamp(32px, 5vw, 48px);
 }
 
@@ -46,11 +50,14 @@
 }
 
 .article-page__cover {
-  max-width: 860px;
+  max-width: var(--article-max);
+  margin-inline: auto;
   margin-bottom: clamp(32px, 5vw, 48px);
 }
 
 .article-page__actions {
+  max-width: var(--article-max);
+  margin-inline: auto;
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
@@ -58,18 +65,22 @@
 }
 
 .article-body {
-  max-width: 740px;
+  max-width: var(--article-max);
+  margin-inline: auto;
 }
 
 .article-body p {
   font-family: var(--font-body);
-  font-size: clamp(1.05rem, 1.1vw, 1.15rem);
-  line-height: 1.7;
+  font-size: clamp(1.08rem, 1.2vw, 1.2rem);
+  line-height: 1.75;
   color: var(--color-text);
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
 }
 
 .article-body p + p {
-  margin-top: 1.3em;
+  margin-top: 1.4em;
 }
 
 .article-body h2 {
@@ -142,6 +153,15 @@
   margin-top: 8px;
 }
 
+/* Pie de una figura de imagen única: acompaña el nuevo ancho acotado de la
+   imagen (ver .article-body figure img). Los figure-row no matchean acá
+   porque su figcaption sigue a un <div class="figure-row">, no a un <img>. */
+.article-body img + figcaption {
+  max-width: 70%;
+  margin-inline: auto;
+  text-align: center;
+}
+
 .article-body .figure-row {
   display: flex;
   flex-wrap: wrap;
@@ -156,12 +176,28 @@
   object-fit: contain;
   background: var(--color-surface);
   border-radius: 8px;
+  margin: 0;
 }
 
+/* Las fotos/imágenes comunes ya no ocupan todo el ancho del cuerpo: se ven
+   más chicas, centradas y con aire alrededor. Para tablas convertidas en
+   imagen, gráficos o diagramas que necesiten más espacio para ser legibles,
+   agregar la clase .article-image--wide al <figure>. */
 .article-body figure img {
-  width: 100%;
+  width: auto;
+  max-width: 70%;
+  margin-inline: auto;
   border-radius: 8px;
   display: block;
+  height: auto;
+}
+
+.article-body figure.article-image--wide img {
+  max-width: 100%;
+}
+
+.article-body figure.article-image--wide img + figcaption {
+  max-width: 100%;
 }
 
 /* -- Autoría (varios autores) ------------------------------------------------ */
@@ -246,6 +282,7 @@
 .article-body th p {
   font-size: inherit;
   margin: 0;
+  text-align: left;
 }
 
 .article-body td p + p,
@@ -264,7 +301,8 @@
 }
 
 .article-footnotes {
-  max-width: 740px;
+  max-width: var(--article-max);
+  margin-inline: auto;
   margin-top: clamp(56px, 8vw, 80px);
   padding-top: 24px;
   border-top: 1px solid var(--color-line);
@@ -338,56 +376,67 @@
   display: none;
 }
 
+/* Listado editorial de una sola columna: filas anchas separadas por líneas,
+   sin cards ni sombras -- misma lógica visual que .paper-card más abajo. */
 .article-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.article-row {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: clamp(32px, 4vw, 48px);
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 24px;
+  row-gap: 6px;
+  align-items: start;
+  padding-block: clamp(28px, 4vw, 40px);
+  border-top: 1px solid var(--color-line);
+  transition: border-color 0.2s var(--ease);
 }
 
-.article-card {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius);
-  overflow: hidden;
-  transition: border-color 0.2s var(--ease), transform 0.2s var(--ease);
+.article-list .article-row:last-child {
+  border-bottom: 1px solid var(--color-line);
 }
 
-.article-card:hover {
+.article-row:hover {
   border-color: var(--color-accent);
-  transform: translateY(-2px);
 }
 
-.article-card__media {
-  aspect-ratio: 16/9;
+.article-row:hover .article-row__title {
+  color: var(--color-accent);
 }
 
-.article-card__body {
-  padding: 22px 22px 26px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  flex: 1;
-}
-
-.article-card__meta {
-  display: flex;
-  gap: 10px;
-  align-items: center;
+.article-row__meta {
+  grid-column: 1;
   font-size: var(--fs-micro);
   color: var(--color-muted);
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
 
-.article-card__title {
-  font-size: var(--fs-h3);
+.article-row__body {
+  grid-column: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 62ch;
 }
 
-.article-card__excerpt {
+.article-row__title {
+  font-size: var(--fs-h3);
+  transition: color 0.2s var(--ease);
+}
+
+.article-row__excerpt {
   color: var(--color-muted);
   font-size: var(--fs-small);
-  flex: 1;
+}
+
+.article-row__cta {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+  white-space: nowrap;
 }
 
 /* -- Papers ------------------------------------------------------------------ */
@@ -472,15 +521,41 @@
     padding-block: clamp(24px, 6vw, 40px) clamp(48px, 10vw, 72px);
   }
 
-  .article-list {
-    grid-template-columns: 1fr;
-  }
-
   .paper-card {
     grid-template-columns: 1fr;
   }
 
   .paper-card__doi {
     justify-self: start;
+  }
+
+  .article-row {
+    grid-template-columns: 1fr;
+  }
+
+  .article-row__meta,
+  .article-row__body,
+  .article-row__cta {
+    grid-column: 1;
+  }
+
+  .article-row__cta {
+    grid-row: auto;
+    justify-self: start;
+    margin-top: 4px;
+  }
+
+  /* El justificado puede generar ríos de espacio feos en columnas angostas. */
+  .article-body p {
+    text-align: left;
+    hyphens: none;
+  }
+
+  .article-body figure img {
+    max-width: 100%;
+  }
+
+  .article-body img + figcaption {
+    max-width: 100%;
   }
 }

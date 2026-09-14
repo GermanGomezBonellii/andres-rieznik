@@ -4,28 +4,32 @@
     "subtitle": "Qué pueden enseñarnos los magos (y la ciencia) sobre el funcionamiento del cerebro",
     "year": 2015,
     "publisher": "Siglo XXI Editores",
-    "coauthors": "con Mariano Sigman y Marcelo Insúa"
+    "coauthors": "con Mariano Sigman y Marcelo Insúa",
+    "cover": "img/neuromagia.jpg"
   },
   {
     "title": "Atletismo mental",
     "subtitle": "Técnicas para entrenar el cerebro y mejorar la memoria",
     "year": 2016,
     "publisher": "Sudamericana",
-    "coauthors": ""
+    "coauthors": "",
+    "cover": "img/atletismo_mental.jpg"
   },
   {
     "title": "Retos asombrosos",
     "subtitle": "",
     "year": 2018,
     "publisher": "Sudamericana",
-    "coauthors": "con T. Rieznik"
+    "coauthors": "con T. Rieznik",
+    "cover": "img/retos_asombrosos.webp"
   },
   {
     "title": "Tabú",
     "subtitle": "",
     "year": 2020,
     "publisher": "El Gato y La Caja",
-    "coauthors": ""
+    "coauthors": "",
+    "cover": "img/tabu.webp"
   },
   {
     "title": "Enseñar",
@@ -33,6 +37,6 @@
     "year": 2026,
     "publisher": "Ediciones B",
     "coauthors": "",
-    "cover": "img/ensenar.jpg"
+    "cover": "img/enseñar.jpg"
   }
 ]
