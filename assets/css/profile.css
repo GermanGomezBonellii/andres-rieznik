@@ -3,10 +3,12 @@
    ========================================================================== */
 
 .profile {
-  /* El padding inferior queda en 0: la franja de Trayectoria que sigue es
-     ahora una sección propia (.section--dark) con su propio padding-block,
-     y así se evita duplicar el espaciado entre ambas. */
-  padding-block: clamp(40px, 6vw, 72px) 0;
+  /* Padding inferior propio (además del padding-top que ya aporta la
+     franja de Trayectoria vía .section--dark): sin esto, el bloque blanco
+     terminaba pegado al fondo azul. clamp(48px, 6vw, 72px) da entre 48px y
+     72px en desktop (dentro de 40-80px pedido) y se reduce en mobile por
+     el término vw, sin quedar en 0. */
+  padding-block: clamp(40px, 6vw, 72px) clamp(48px, 6vw, 72px);
 }
 
 .profile__grid {
