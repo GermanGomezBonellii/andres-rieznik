@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https: data: blob:; connect-src https://api.github.com; style-src 'self'; script-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'">
+<title>Andrés Rieznik · Panel de administración</title>
+<link rel="stylesheet" href="panel.css">
+</head>
+<body>
+<header class="top">
+  <strong class="logo-texto">Andrés Rieznik</strong>
+  <span class="top-title">Panel de administración</span>
+  <span class="top-user" id="top-user"></span>
+  <button type="button" id="btn-logout" class="btn btn-ghost" hidden>Cerrar sesión</button>
+</header>
+
+<main id="app">
+  <section id="login" class="card login" hidden>
+    <h1>Ingresar</h1>
+    <p>Pegá tu token personal de GitHub para editar el sitio. Solo se guarda en esta pestaña y se borra al cerrarla.</p>
+    <form id="login-form" autocomplete="off">
+      <label class="campo"><span>Token de GitHub</span>
+        <input type="password" id="login-token" required autocomplete="off" spellcheck="false"></label>
+      <details>
+        <summary>Repositorio (avanzado)</summary>
+        <label class="campo"><span>Usuario/organización</span><input id="login-owner" required></label>
+        <label class="campo"><span>Repositorio</span><input id="login-repo" required></label>
+        <label class="campo"><span>Rama</span><input id="login-branch" required></label>
+      </details>
+      <p id="login-error" class="error" hidden></p>
+      <button class="btn btn-primary" type="submit">Entrar</button>
+    </form>
+    <details class="ayuda">
+      <summary>¿Cómo obtengo el token?</summary>
+      <ol>
+        <li>En GitHub: Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token.</li>
+        <li>Repository access: <em>Only select repositories</em> y elegí solo el repo del sitio.</li>
+        <li>Permissions → Repository permissions → <em>Contents: Read and write</em>.</li>
+        <li>Elegí un vencimiento, generalo y pegalo acá. Se puede revocar cuando quieras.</li>
+      </ol>
+    </details>
+  </section>
+
+  <section id="panel" hidden>
+    <nav id="tabs" class="tabs" aria-label="Secciones"></nav>
+    <div id="vista"></div>
+  </section>
+</main>
+
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+<script src="panel.js"></script>
+</body>
+</html>

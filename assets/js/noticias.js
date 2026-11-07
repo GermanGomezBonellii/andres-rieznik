@@ -1,16 +1,5 @@
-/* ==========================================================================
-   NOTICIAS — lee la tabla "andres_noticias" de Supabase vía REST (PostgREST)
-   y renderiza el tablón (acá y en la preview de la home: misma tabla, mismo
-   query, solo cambia data-news-limit). No usa el SDK de supabase-js (evita
-   una dependencia extra sólo para un GET de lectura pública): un fetch
-   simple con la anon key alcanza porque RLS permite lectura pública de
-   filas con active = true.
-
-   Requiere que assets/js/supabase-config.js defina SUPABASE_URL y
-   SUPABASE_ANON_KEY reales (constantes globales, cargado antes que este
-   script). Mientras no estén definidas, se muestra un estado explícito en
-   vez de intentar pegarle a una URL inexistente.
-   ========================================================================== */
+/* NOTICIAS — lee data/noticias.json (administrado desde /admin/) y renderiza
+   el tablón y la preview de la home (cambia solo data-news-limit). */
 
 (function () {
   var listEl = document.querySelector('[data-news-list]');
@@ -49,20 +38,11 @@
     all: 'Todas'
   };
 
-  var isConfigured =
-    typeof SUPABASE_URL !== 'undefined' && typeof SUPABASE_ANON_KEY !== 'undefined' &&
-    SUPABASE_URL && SUPABASE_ANON_KEY &&
-    SUPABASE_URL.indexOf('TU-PROYECTO') === -1 &&
-    SUPABASE_ANON_KEY.indexOf('TU-ANON-KEY') === -1;
-
-  if (!isConfigured) {
-    listEl.innerHTML = '<div class="news-empty">' + L.notConfigured + '</div>';
-    return;
-  }
-
-  var endpoint =
-    SUPABASE_URL.replace(/\/$/, '') +
-    '/rest/v1/andres_noticias?select=*&active=eq.true&order=pinned.desc,date.desc,sort_order.asc';
+  // Los datos viven en data/noticias.json (se editan desde /admin/, sin base
+  // de datos). La ruta se resuelve a partir de este mismo script para que
+  // funcione igual desde /, /en/ y /pt/.
+  var me = document.querySelector('script[src*="noticias.js"]');
+  var endpoint = new URL('../../data/noticias.json', me ? me.src : location.href).href;
 
   var allItems = [];
   var activeCategory = 'todas';
@@ -173,17 +153,18 @@
 
   listEl.innerHTML = '<div class="news-empty">' + L.loading + '</div>';
 
-  fetch(endpoint, {
-    headers: {
-      apikey: SUPABASE_ANON_KEY,
-    },
-  })
+  fetch(endpoint, { cache: 'no-cache' })
     .then(function (res) {
-      if (!res.ok) throw new Error('Supabase respondió ' + res.status);
+      if (!res.ok) throw new Error('Respuesta ' + res.status);
       return res.json();
     })
     .then(function (data) {
-      allItems = Array.isArray(data) ? data : [];
+      allItems = (Array.isArray(data) ? data : [])
+        .filter(function (i) { return i.active !== false; })
+        .sort(function (a, b) {
+          if (!!a.pinned !== !!b.pinned) return a.pinned ? -1 : 1;
+          return String(b.date || '').localeCompare(String(a.date || ''));
+        });
       renderFilters();
       render();
     })
