@@ -48,8 +48,26 @@
     });
   }
 
-  try {
-    var articles = window.ARTICLES_DATA;
+  var me = document.querySelector('script[src*="articles.js"]');
+  var siteRoot = new URL('../../', me ? me.src : location.href).href;
+  var dataUrl = new URL('data/articulos.json', siteRoot).href;
+
+  // Destino de cada artículo: link externo (url), PDF subido desde el panel
+  // (pdf, ruta desde la raíz del sitio) o página propia (href, relativa a articulos/).
+  function linkOf(a) {
+    if (a.url) return { href: a.url, ext: true };
+    if (a.pdf) return { href: siteRoot + a.pdf, ext: true };
+    return { href: base + a.href, ext: false };
+  }
+  function attrs(l) { return 'href="' + escapeHtml(l.href) + '"' + (l.ext ? ' target="_blank" rel="noopener noreferrer"' : ''); }
+
+  fetch(dataUrl, { cache: 'no-cache' }).then(function (res) {
+    if (!res.ok) throw new Error('Respuesta ' + res.status);
+    return res.json();
+  }).then(function (articles) {
+    articles = (Array.isArray(articles) ? articles : [])
+      .filter(function (a) { return a.active !== false; })
+      .sort(function (a, b) { return (a.orden || 0) - (b.orden || 0); });
 
     if (!Array.isArray(articles) || !articles.length) {
       listEl.innerHTML = '<div class="news-empty">' + L.empty + '</div>';
@@ -61,7 +79,7 @@
     if (variant === 'preview') {
       listEl.innerHTML = items.map(function (a) {
         return (
-          '<a class="article-preview" href="' + base + escapeHtml(a.href) + '">' +
+          '<a class="article-preview" ' + attrs(linkOf(a)) + '>' +
             '<span class="article-preview__body">' +
               '<span class="article-preview__title">' + escapeHtml(a.title) + '</span>' +
               '<span class="article-preview__excerpt">' + escapeHtml(a.excerpt) + '</span>' +
@@ -73,7 +91,7 @@
     } else {
       listEl.innerHTML = items.map(function (a) {
         return (
-          '<a class="article-row" href="' + base + escapeHtml(a.href) + '">' +
+          '<a class="article-row" ' + attrs(linkOf(a)) + '>' +
             '<span class="article-row__meta">' + escapeHtml(a.category) + '</span>' +
             '<span class="article-row__body">' +
               '<span class="article-row__title">' + escapeHtml(a.title) + '</span>' +
@@ -84,8 +102,8 @@
         );
       }).join('');
     }
-  } catch (error) {
-    console.error('Error cargando artículos (window.ARTICLES_DATA):', error);
+  }).catch(function (error) {
+    console.error('Error cargando artículos (' + dataUrl + '):', error);
     listEl.innerHTML = '<div class="news-error">' + L.error + '</div>';
-  }
+  });
 })();

@@ -23,6 +23,35 @@
             { k: 'url', l: 'Link (opcional)', t: 'url' },
             { k: 'pinned', l: 'Destacada (aparece primero)', t: 'bool', def: false },
             { k: 'active', l: 'Publicada', t: 'bool', def: true }
+          ] },
+        { id: 'articulos', label: 'Artículos', archivo: 'articulos', modo: 'lista', titulo: 'title', orden: { k: 'orden' }, publ: 'active', mover: true,
+          nota: 'Ensayos y artículos. Para uno nuevo cargá un link externo o subí un PDF. Los que ya tienen página propia usan el campo "Página propia".',
+          campos: [
+            { k: 'category', l: 'Categoría (ej.: Ensayo)', t: 'text', def: 'Ensayo' },
+            { k: 'title', l: 'Título', t: 'text', req: true },
+            { k: 'excerpt', l: 'Bajada / resumen', t: 'textarea' },
+            { k: 'url', l: 'Link externo (opcional)', t: 'url' },
+            { k: 'pdf', l: 'PDF (opcional)', t: 'file', dir: 'articulos/pdf/' },
+            { k: 'href', l: 'Página propia (solo artículos que ya tienen carpeta en articulos/)', t: 'text' },
+            { k: 'active', l: 'Publicado', t: 'bool', def: true }
+          ] },
+        { id: 'papers', label: 'Papers', archivo: 'papers', modo: 'lista', titulo: 'title', orden: { k: 'year', desc: true }, publ: 'active',
+          nota: 'Papers académicos. Se muestran ordenados por año.',
+          campos: [
+            { k: 'title', l: 'Título', t: 'text', req: true },
+            { k: 'authors', l: 'Autores', t: 'text' },
+            { k: 'year', l: 'Año', t: 'text', req: true },
+            { k: 'journal', l: 'Revista', t: 'text' },
+            { k: 'doi', l: 'DOI (ej.: 10.3389/fnhum.2017.00287)', t: 'text' },
+            { k: 'url', l: 'Link (por lo general https://doi.org/...)', t: 'url', req: true },
+            { k: 'active', l: 'Publicado', t: 'bool', def: true }
+          ] },
+        { id: 'videos', label: 'Videos destacados', archivo: 'videos-destacados', modo: 'lista', titulo: 'title', orden: { k: 'orden' }, publ: 'active', mover: true,
+          nota: 'Videos de la sección "Videos destacados". Pegá el link de YouTube; la miniatura se obtiene sola. Los últimos 3 videos del canal se actualizan aparte (botón de arriba).',
+          campos: [
+            { k: 'title', l: 'Título', t: 'text', req: true },
+            { k: 'url', l: 'Link de YouTube', t: 'url', req: true },
+            { k: 'active', l: 'Publicado', t: 'bool', def: true }
           ] }
     ];
 
@@ -142,7 +171,7 @@
 
     // ---------- Sesión ----------
     function mostrarLogin(msg) {
-        $('panel').hidden = true; $('login').hidden = false; $('btn-logout').hidden = true; $('top-user').textContent = '';
+        $('panel').hidden = true; $('login').hidden = false; $('btn-logout').hidden = true; $('btn-videos').hidden = true; $('top-user').textContent = '';
         var c = estado.cfg || DEFAULT_REPO;
         $('login-owner').value = c.owner; $('login-repo').value = c.repo; $('login-branch').value = c.branch;
         $('login-token').value = '';
@@ -160,7 +189,7 @@
                     estado.usuario = u.login || '';
                     sessionStorage.setItem('rieznik_token', token);
                     try { localStorage.setItem('rieznik_repo', JSON.stringify(cfg)); } catch (e) { /* ignorar */ }
-                    $('login').hidden = true; $('panel').hidden = false; $('btn-logout').hidden = false;
+                    $('login').hidden = true; $('panel').hidden = false; $('btn-logout').hidden = false; $('btn-videos').hidden = false;
                     $('top-user').textContent = (estado.usuario ? estado.usuario + ' · ' : '') + cfg.owner + '/' + cfg.repo;
                     armarTabs(); abrirSeccion('noticias');
                 });
@@ -300,7 +329,7 @@
                         var m = /\.([a-z0-9]+)$/i.exec(f.name); return { bytes: new Uint8Array(b), ext: m ? m[1].toLowerCase() : 'bin' };
                     });
                     carga.then(function (r) {
-                        var base = c.t === 'image' ? 'img/uploads/' : 'materiales/archivos/';
+                        var base = c.dir || (c.t === 'image' ? 'img/uploads/' : 'materiales/archivos/');
                         var ruta = base + slug(f.name.replace(/\.[^.]+$/, '')) + '-' + Date.now().toString(36) + '.' + r.ext;
                         pendientes[c.k] = { ruta: ruta, b64: b64DeBytes(r.bytes) };
                         inp.value = ruta;
@@ -375,6 +404,14 @@
         }).then(function () { btn.disabled = false; });
     });
     $('btn-logout').addEventListener('click', function () { cerrarSesion(); });
+    $('btn-videos').addEventListener('click', function () {
+        var b = this; b.disabled = true;
+        gh('POST', '/actions/workflows/actualizar-videos.yml/dispatches', { ref: estado.cfg.branch }).then(function () {
+            toast('Actualización de últimos videos en marcha. En 1-2 minutos se ven en el sitio (si hay videos nuevos).');
+        }).catch(function (e) {
+            toast('No se pudo lanzar: ' + e.message + ' (el token necesita el permiso Actions: Read and write).', true);
+        }).then(function () { b.disabled = false; });
+    });
 
     var guardado = null;
     try { guardado = JSON.parse(localStorage.getItem('rieznik_repo')); } catch (e) { /* ignorar */ }

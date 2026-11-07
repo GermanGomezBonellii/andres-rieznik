@@ -36,8 +36,16 @@
     });
   }
 
-  try {
-    var papers = window.PAPERS_DATA;
+  var me = document.querySelector('script[src*="papers.js"]');
+  var dataUrl = new URL('../../data/papers.json', me ? me.src : location.href).href;
+
+  fetch(dataUrl, { cache: 'no-cache' }).then(function (res) {
+    if (!res.ok) throw new Error('Respuesta ' + res.status);
+    return res.json();
+  }).then(function (papers) {
+    papers = (Array.isArray(papers) ? papers : [])
+      .filter(function (x) { return x.active !== false; })
+      .sort(function (a, b) { return Number(b.year || 0) - Number(a.year || 0); });
 
     if (!Array.isArray(papers) || !papers.length) {
       listEl.innerHTML = '<div class="news-empty">' + L.empty + '</div>';
@@ -58,8 +66,8 @@
         '</article>'
       );
     }).join('');
-  } catch (error) {
-    console.error('Error cargando papers (window.PAPERS_DATA):', error);
+  }).catch(function (error) {
+    console.error('Error cargando papers (' + dataUrl + '):', error);
     listEl.innerHTML = '<div class="news-error">' + L.error + '</div>';
-  }
+  });
 })();

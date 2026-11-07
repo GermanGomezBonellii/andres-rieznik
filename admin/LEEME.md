@@ -7,8 +7,8 @@ GitHub Pages republica en 1–2 minutos.
 ## Token
 GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens:
 - Repositorio: solo `GermanGomezBonellii/andres-rieznik`
-- Permiso: Contents → Read and write
+- Permisos: Contents → Read and write, y Actions → Read and write (para el botón "Actualizar últimos videos")
 - Se pega al ingresar; queda solo en la pestaña (sessionStorage).
 
 ## Agregar otra sección
-Sumar un objeto a `SECCIONES` en `admin/panel.js` y crear `data/<archivo>.json`.
+Secciones actuales: Noticias, Artículos, Papers y Videos destacados. Sumar un objeto a `SECCIONES` en `admin/panel.js` y crear `data/<archivo>.json`.
