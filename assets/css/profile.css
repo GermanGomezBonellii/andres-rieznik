@@ -40,10 +40,10 @@
   color: var(--color-accent);
 }
 
+/* Palabra destacada del título: sin subrayado (se mantiene la clase en el
+   HTML por si se quiere volver a darle algún énfasis). */
 .profile-highlight {
-  display: inline-block;
-  border-bottom: 3px solid var(--color-accent);
-  padding-bottom: 2px;
+  border-bottom: 0;
 }
 
 .profile__title {

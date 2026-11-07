@@ -17,9 +17,13 @@
   // -- la descripción de cada libro ya viene traducida en window.BOOKS_DATA
   // (books-data.en.js en /en/), acá solo el CTA y el alt de la tapa.
   var isEN = document.documentElement.lang === 'en';
+  var isPT = document.documentElement.lang.indexOf('pt') === 0;
   var L = isEN ? {
     cta: 'Get the book',
     coverAlt: 'Cover of '
+  } : isPT ? {
+    cta: 'Compre o livro',
+    coverAlt: 'Capa de '
   } : {
     cta: 'Conseguilo acá',
     coverAlt: 'Portada de '

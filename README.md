@@ -72,6 +72,7 @@ Por ahora todo el contenido visible está solo en español, pero la arquitectura
 - El selector de idioma (`.language-switcher`, en el header de cada página) existe en el markup y el CSS, pero queda oculto con el atributo `hidden` hasta que haya traducciones reales.
 - Cuando haya contenido en inglés o portugués, el enfoque recomendado es centralizar los textos traducibles en archivos de datos (ej. `assets/i18n/en.json`, `assets/i18n/pt.json`) en vez de crear una copia completa de cada página HTML por idioma (que es lo que hacía el proyecto anterior, con carpetas `en/` y `de/` completas) — eso es difícil de mantener a mediano plazo.
 - Recién en ese momento quitar `hidden` del selector de idioma.
+- **Estado actual de idiomas:** el selector ES / EN / POR está activo. Hay páginas completas en `en/` (inglés) y `pt/` (portugués de Brasil: `pt/artigos`, `pt/noticias`, `pt/videos`, `pt/kalulu`, `pt/sobre-mim`, contacto dentro de la home). Los textos de interfaz de los scripts (`articles.js`, `noticias.js`, `books.js`, `papers.js`) se eligen según `<html lang>`, y los libros tienen un archivo de datos por idioma (`books-data.js`, `books-data.en.js`, `books-data.pt.js`). Los ensayos siguen solo en español y las noticias (Supabase) se muestran como vengan de la base.
 
 ## Pendientes conocidos (ver informe de auditoría para el detalle completo)
 

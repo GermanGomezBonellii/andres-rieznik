@@ -27,10 +27,15 @@
   // Mismo switch mínimo por <html lang> que noticias.js/papers.js/books.js:
   // solo los textos de interfaz de este archivo, sin duplicarlo para /en/.
   var isEN = document.documentElement.lang === 'en';
+  var isPT = document.documentElement.lang.indexOf('pt') === 0;
   var L = isEN ? {
     empty: 'No articles published yet.',
     error: 'The list of articles could not be loaded.',
     readArticle: 'Read article'
+  } : isPT ? {
+    empty: 'Ainda não há artigos publicados.',
+    error: 'Não foi possível carregar a lista de artigos.',
+    readArticle: 'Ler artigo'
   } : {
     empty: 'Todavía no hay artículos publicados.',
     error: 'No se pudo cargar el listado de artículos.',

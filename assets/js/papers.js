@@ -15,10 +15,15 @@
 
   // Mismo switch mínimo por <html lang> que noticias.js/articles.js/books.js.
   var isEN = document.documentElement.lang === 'en';
+  var isPT = document.documentElement.lang.indexOf('pt') === 0;
   var L = isEN ? {
     empty: 'No publications yet.',
     error: 'The list of publications could not be loaded.',
     viewDoi: 'View DOI'
+  } : isPT ? {
+    empty: 'Ainda não há publicações carregadas.',
+    error: 'Não foi possível carregar a lista de publicações.',
+    viewDoi: 'Ver DOI'
   } : {
     empty: 'Todavía no hay publicaciones cargadas.',
     error: 'No se pudo cargar el listado de publicaciones.',

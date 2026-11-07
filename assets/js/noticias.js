@@ -22,6 +22,7 @@
   // para la versión /en/ sin duplicar este archivo ni tocar la lógica de
   // fetch/filtrado. Con lang="es" el comportamiento es idéntico al de antes.
   var isEN = document.documentElement.lang === 'en';
+  var isPT = document.documentElement.lang.indexOf('pt') === 0;
   var L = isEN ? {
     notConfigured: 'This section is not connected to Supabase yet. Fill in <code>assets/js/supabase-config.js</code> with the project URL and anon key (the <code>andres_noticias</code> table already exists in Supabase) so the board shows up here.',
     empty: 'No updates in this category yet.',
@@ -30,6 +31,14 @@
     pinned: 'Featured',
     viewMore: 'View more',
     all: 'All'
+  } : isPT ? {
+    notConfigured: 'Esta seção ainda não está conectada ao Supabase. Preencha <code>assets/js/supabase-config.js</code> com a URL e a anon key do projeto (a tabela <code>andres_noticias</code> já existe no Supabase) para que o mural apareça aqui.',
+    empty: 'Não há novidades nesta categoria por enquanto.',
+    loading: 'Carregando novidades…',
+    error: 'Não foi possível carregar as novidades. Tente novamente mais tarde.',
+    pinned: 'Destaque',
+    viewMore: 'Ver mais',
+    all: 'Todas'
   } : {
     notConfigured: 'Esta sección todavía no está conectada a Supabase. Completá <code>assets/js/supabase-config.js</code> con la URL y la anon key del proyecto (la tabla <code>andres_noticias</code> ya existe en Supabase) para que el tablón se muestre acá.',
     empty: 'No hay novedades en esta categoría por ahora.',
@@ -68,7 +77,7 @@
     if (!dateStr) return '';
     try {
       var d = new Date(dateStr + 'T00:00:00');
-      return d.toLocaleDateString(isEN ? 'en-US' : 'es-AR', { day: '2-digit', month: 'short', year: 'numeric' });
+      return d.toLocaleDateString(isEN ? 'en-US' : isPT ? 'pt-BR' : 'es-AR', { day: '2-digit', month: 'short', year: 'numeric' });
     } catch (e) {
       return dateStr;
     }
