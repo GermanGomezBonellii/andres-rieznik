@@ -42,14 +42,23 @@
 .hero__eyebrow {
   /* Celeste claro directo (no vía --color-accent: esa variable también
      define el fondo de .btn--primary, que debe quedar sin cambios). */
-  color: #7db7ff;
+  color: #4f86bd;
+  font-family: var(--font-sans);
+  font-size: clamp(0.95rem, 1.55vw, 1.3rem);
+  font-weight: 300;
+  letter-spacing: 0;
+  white-space: nowrap;
   margin-bottom: 18px;
 }
 
 .hero__title {
-  font-size: var(--fs-hero);
+  font-family: var(--font-sans);
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
   font-weight: 700;
   line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin-top: 8px;
 }
 
 .hero__subtitle {
@@ -61,6 +70,7 @@
 }
 
 .hero__actions {
+  font-family: var(--font-sans);
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
@@ -95,14 +105,15 @@
 
 .hero__quote p {
   margin: 0;
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-style: normal;
-  font-weight: 700;
+  font-weight: 400;
+  letter-spacing: -0.015em;
   /* Tope algo más chico como margen de seguridad adicional (ver white-space
      de abajo: el ancho real de .hero__content en desktop varía según el
      ancho de la imagen del hero, así que no alcanza con calcular a partir
      de los 480px del contenedor). */
-  font-size: clamp(1.5rem, 2.2vw, 1.85rem);
+  font-size: clamp(1.4rem, 2.1vw, 1.8rem);
   line-height: 1.3;
   color: #ffffff;
   /* El quiebre entre "suave" y "pero" lo da el <br> manual del markup, no
@@ -609,7 +620,7 @@
 
 /* -- Kalulu (bloque resumen en home) ------------------------------------------ */
 .kalulu-band {
-  background: var(--color-ink);
+  background: var(--color-kalulu);
   color: #fff;
   border-radius: 24px;
   padding: clamp(32px, 5vw, 56px);
@@ -624,7 +635,7 @@
 }
 
 .kalulu-band__eyebrow {
-  color: #9cc4f7;
+  color: #e8cdf0;
   margin-bottom: 14px;
 }
 
@@ -643,7 +654,7 @@
   grid-column: 9 / -1;
   aspect-ratio: 1;
   border-radius: 16px;
-  background-image: url('../../img/kalulu.png');
+  background-image: url('../../img/kalulu-logo.png');
   background-size: cover;
   background-position: center;
 }
@@ -759,4 +770,15 @@
    regla de arriba; se refuerza acá para que el acento siga ganando. */
 .section--dark .article-preview:hover {
   border-color: var(--color-accent);
+}
+
+.hero__actions .btn {
+  font-family: var(--font-sans);
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .hero__eyebrow {
+    white-space: normal;
+  }
 }

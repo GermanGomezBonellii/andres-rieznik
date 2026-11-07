@@ -33,7 +33,7 @@
 
 .kalulu-hero__media-img {
   width: 100%;
-  max-width: 320px;
+  max-width: 460px;
   height: auto;
   display: block;
 }
@@ -46,7 +46,8 @@
   }
 
   .kalulu-hero__media-img {
-    max-width: 200px;
+    max-width: 280px;
+    margin-inline: auto;
   }
 }
 

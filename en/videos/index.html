@@ -21,7 +21,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=optional" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;600;700&display=optional" rel="stylesheet">
 
 <link rel="stylesheet" href="../../assets/css/base.css">
 <link rel="stylesheet" href="../../assets/css/components.css">
@@ -63,6 +63,19 @@
       <p class="videos-intro__lead">A selection of series, experiments, interviews and productions that bring complex ideas to diverse audiences.</p>
       <a class="btn btn--outline videos-intro__cta" href="https://www.youtube.com/@AndresRieznikVideos" target="_blank" rel="noopener noreferrer">Visit the YouTube channel ↗</a>
     </div>
+
+    <!-- ÚLTIMAS NOVEDADES — los 3 videos más recientes del canal. Se cargan
+         desde assets/data/latest-videos.json, que se actualiza solo desde el
+         feed RSS del canal (ver .github/workflows/actualizar-videos.yml). -->
+    <section class="videos-section videos-latest">
+      <div class="videos-section__header">
+        <span class="eyebrow videos-section__eyebrow">From the channel</span>
+        <h2 class="videos-section__title">Latest videos</h2>
+      </div>
+      <div class="video-featured-grid" data-latest-videos data-src="../../assets/data/latest-videos.json" data-limit="3" data-locale="en-US" data-cta="Watch on YouTube">
+        <noscript><a class="arrow-link" href="https://www.youtube.com/@AndresRieznikVideos" target="_blank" rel="noopener noreferrer">Watch the latest videos on YouTube <span class="arrow-link__arrow">↗</span></a></noscript>
+      </div>
+    </section>
 
     <!-- Re-Renacimiento: mismos IDs/thumbnails de YouTube que la versión ES;
          sin título propio por capítulo más allá del número, no se inventa
@@ -186,5 +199,6 @@
 </footer>
 
 <script src="../../assets/js/main.js"></script>
+<script src="../../assets/js/latest-videos.js"></script>
 </body>
 </html>

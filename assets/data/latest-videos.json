@@ -1,0 +1,35 @@
+{
+  "channel": "https://www.youtube.com/@AndresRieznikVideos",
+  "videos": [
+    {
+      "id": "jhF8wTtKN5Y",
+      "title": "La Patagonia puede explicar cómo se extinguieron los dinosaurios",
+      "published": "2026-10-28T16:39:59+00:00",
+      "url": "https://www.youtube.com/watch?v=jhF8wTtKN5Y"
+    },
+    {
+      "id": "BxK2M2NKQM0",
+      "title": "El Niño viene más fuerte que nunca: qué puede pasar en Argentina",
+      "published": "2026-10-27T20:50:40+00:00",
+      "url": "https://www.youtube.com/watch?v=BxK2M2NKQM0"
+    },
+    {
+      "id": "M_fOjvAksow",
+      "title": "6 de cada 10 chicos no entienden lo que leen",
+      "published": "2026-10-16T22:19:38+00:00",
+      "url": "https://www.youtube.com/watch?v=M_fOjvAksow"
+    },
+    {
+      "id": "vz4uaRGzLac",
+      "title": "EDUCACIÓN: el peor resultado en 20 años",
+      "published": "2026-10-15T15:49:42+00:00",
+      "url": "https://www.youtube.com/watch?v=vz4uaRGzLac"
+    },
+    {
+      "id": "2GFEcoCN6k0",
+      "title": "Un problema antiguo, pero precioso",
+      "published": "2026-10-14T14:53:47+00:00",
+      "url": "https://www.youtube.com/watch?v=2GFEcoCN6k0"
+    }
+  ]
+}
