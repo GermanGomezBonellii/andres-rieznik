@@ -367,6 +367,28 @@
   }
 }
 
+/* Cartel "Último video" (debajo del cartel del libro, mismo estilo). Se pinta
+   desde assets/js/latest-video-feature.js; oculto hasta que hay datos. */
+.feature + .feature {
+  margin-top: clamp(20px, 3vw, 32px);
+}
+.feature--video[hidden] {
+  display: none;
+}
+.feature--video .feature__title {
+  font-size: var(--fs-h3);
+  line-height: 1.25;
+}
+.feature--video .feature__excerpt {
+  margin-bottom: 16px;
+}
+.feature--video .video-thumb .project-feature__thumb {
+  transition: transform 0.35s var(--ease);
+}
+.feature--video .video-thumb:hover .project-feature__thumb {
+  transform: scale(1.03);
+}
+
 /* -- Últimos artículos: 3 columnas ------------------------------------------ */
 .card-grid {
   display: grid;

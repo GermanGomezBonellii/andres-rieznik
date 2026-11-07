@@ -1,8 +1,9 @@
 /* Últimas novedades de YouTube: pinta los 3 videos más recientes a partir de
-   assets/data/latest-videos.json (lo actualiza solo el workflow
+   assets/data/latest-videos.js (window.LATEST_VIDEOS; lo actualiza solo el workflow
    .github/workflows/actualizar-videos.yml leyendo el feed RSS del canal).
-   Uso: <div data-latest-videos data-src="../assets/data/latest-videos.json"
-        data-limit="3" data-locale="es-AR" data-cta="Ver en YouTube"></div> */
+   Uso: cargar antes assets/data/latest-videos.js y poner
+        <div data-latest-videos data-limit="3" data-locale="es-AR"
+        data-cta="Ver en YouTube"></div> */
 (function () {
   var cont = document.querySelector('[data-latest-videos]');
   if (!cont) return;
@@ -55,17 +56,14 @@
     return a;
   }
 
-  fetch(cont.getAttribute('data-src'), { cache: 'no-cache' })
-    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-    .then(function (data) {
-      var videos = (data.videos || []).slice(0, limite);
-      if (!videos.length) throw new Error('sin videos');
-      cont.textContent = '';
-      videos.forEach(function (v) { cont.appendChild(tarjeta(v)); });
-    })
-    .catch(function () {
-      // Si falla la carga se oculta la sección entera: nada de huecos vacíos.
-      var seccion = cont.closest('section');
-      if (seccion) seccion.hidden = true;
-    });
+  var data = window.LATEST_VIDEOS;
+  var videos = data && data.videos ? data.videos.slice(0, limite) : [];
+  if (!videos.length) {
+    // Sin datos: se oculta la sección entera, nada de huecos vacíos.
+    var seccion = cont.closest('section');
+    if (seccion) seccion.hidden = true;
+    return;
+  }
+  cont.textContent = '';
+  videos.forEach(function (v) { cont.appendChild(tarjeta(v)); });
 })();

@@ -1,4 +1,4 @@
-{
+window.LATEST_VIDEOS = {
   "channel": "https://www.youtube.com/@AndresRieznikVideos",
   "videos": [
     {
@@ -32,4 +32,4 @@
       "url": "https://www.youtube.com/watch?v=2GFEcoCN6k0"
     }
   ]
-}
+};

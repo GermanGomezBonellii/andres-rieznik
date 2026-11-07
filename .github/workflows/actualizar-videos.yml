@@ -1,7 +1,7 @@
 name: Actualizar últimos videos de YouTube
 
 # Lee el feed RSS público del canal (sin API ni claves) y, si hay videos
-# nuevos, actualiza assets/data/latest-videos.json y lo sube al repo.
+# nuevos, actualiza assets/data/latest-videos.js y lo sube al repo.
 # GitHub Pages se republica solo con ese commit.
 on:
   schedule:
@@ -27,12 +27,12 @@ jobs:
         run: node scripts/actualizar-videos.mjs
       - name: Guardar cambios (si los hay)
         run: |
-          if git diff --quiet -- assets/data/latest-videos.json; then
+          if git diff --quiet -- assets/data/latest-videos.js; then
             echo "Sin videos nuevos."
           else
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add assets/data/latest-videos.json
+            git add assets/data/latest-videos.js
             git commit -m "Actualizar últimos videos de YouTube"
             git push
           fi

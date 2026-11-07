@@ -1,4 +1,4 @@
-// Actualiza assets/data/latest-videos.json con los últimos videos del canal
+// Actualiza assets/data/latest-videos.js con los últimos videos del canal
 // de YouTube de Andrés Rieznik, leyendo el feed RSS público del canal.
 // Sin API de YouTube, sin claves, sin dependencias (solo Node 18+).
 //
@@ -9,7 +9,7 @@ import { writeFile } from 'node:fs/promises';
 
 const CHANNEL_ID = 'UCy4ZbwwhC5hnFH5QjXRnWZg'; // @AndresRieznikVideos
 const FEED_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
-const OUT = new URL('../assets/data/latest-videos.json', import.meta.url);
+const OUT = new URL('../assets/data/latest-videos.js', import.meta.url);
 
 // El feed mezcla videos y Shorts. Poné true para incluir también los Shorts.
 const INCLUIR_SHORTS = false;
@@ -41,5 +41,8 @@ const videos = [...xml.matchAll(/<entry>[\s\S]*?<\/entry>/g)]
 // Si el feed viene vacío o roto, NO se pisa el JSON anterior.
 if (videos.length < 3) throw new Error(`Solo se encontraron ${videos.length} videos; no se actualiza.`);
 
-await writeFile(OUT, JSON.stringify({ channel: 'https://www.youtube.com/@AndresRieznikVideos', videos }, null, 2) + '\n');
+// Se guarda como .js (window.LATEST_VIDEOS) y no como .json para que la página
+// también funcione abierta con doble clic (file://), igual que articles-data.js.
+const datos = { channel: 'https://www.youtube.com/@AndresRieznikVideos', videos };
+await writeFile(OUT, 'window.LATEST_VIDEOS = ' + JSON.stringify(datos, null, 2) + ';\n');
 console.log(`OK: ${videos.length} videos. Último: ${videos[0].title}`);
