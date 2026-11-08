@@ -215,3 +215,5 @@ button:focus-visible,
     --section-space: clamp(48px, 12vw, 88px);
   }
 }
+
+[hidden] { display: none !important; }

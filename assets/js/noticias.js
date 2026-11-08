@@ -44,6 +44,11 @@
   var me = document.querySelector('script[src*="noticias.js"]');
   var endpoint = new URL('../../data/noticias.json', me ? me.src : location.href).href;
 
+  // En la home (preview con data-news-limit) la sección entera queda oculta
+  // hasta que haya noticias publicadas; si no hay ninguna, no se muestra.
+  var previewSection = listEl.hasAttribute('data-news-limit') ? listEl.closest('section') : null;
+  if (previewSection) previewSection.hidden = true;
+
   var allItems = [];
   var activeCategory = 'todas';
 
@@ -167,6 +172,7 @@
         });
       renderFilters();
       render();
+      if (previewSection && allItems.length) previewSection.hidden = false;
     })
     .catch(function (err) {
       console.error('Error cargando noticias (' + endpoint + '):', err);
