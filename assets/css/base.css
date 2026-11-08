@@ -71,7 +71,7 @@ button {
   --color-ink: #0b1f3a;          /* azul muy oscuro, alternativa al negro puro en fondos oscuros */
 
   --font-display: var(--font-sans); /* Títulos: sans serif (Inter) en todo el sitio */
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; /* tipografía de todo el sitio */
+  --font-sans: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; /* tipografía de todo el sitio */
   --color-header-bg: #0a1b33; /* azul oscuro del header */
   --font-body: var(--font-sans);
 
