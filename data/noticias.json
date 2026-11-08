@@ -1,1 +1,13 @@
-[]
+[
+  {
+    "title": "Ciencia Ciudadana con Kalulu",
+    "description": "Psicopedagoga: ¡te necesitamos!\n¿Un mayor espaciado en el texto favorece el aprendizaje de la lectura en niños con dificultades? ¡Queremos investigarlo junto a vos! Te invitamos a participar implementando el método fónico Kalulu y evaluando los avances de los niños y niñas. Compararemos dos versiones de los cuadernillos: una con espaciado habitual y otra con espaciado aumentado.\nSi te interesa ser parte de esta investigación colaborativa, ¡completá el siguiente formulario!",
+    "category": "Convocatoria",
+    "date": "2026-11-08",
+    "image_url": "img/uploads/imagen-10-mw8g09vz.jpg",
+    "url": "https://kalulu.excellolab.org/cienciaciudadana-argentina/",
+    "pinned": false,
+    "active": true,
+    "id": 1
+  }
+]
