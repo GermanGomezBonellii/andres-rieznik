@@ -790,17 +790,19 @@
   /* En celular el pizarrón es el fondo de la propia foto (tarjeta), así el
      recorte queda apoyado en el borde de abajo y no flota. */
   .about-band::before { display: none; }
-  .about-band { padding-top: 24px; }
+  .about-band { padding-top: 0; }
   .about-teaser__media,
   .about-teaser__content {
     grid-column: 1 / -1;
   }
   .about-teaser__media {
     max-width: none;
-    margin: 0;
+    /* A sangre: ocupa todo el ancho de la pantalla, pegado al borde de arriba. */
+    width: 100vw;
+    margin: 0 0 0 calc(50% - 50vw);
     aspect-ratio: 1 / 1;
     overflow: hidden;
-    border-radius: 16px;
+    border-radius: 0;
     background: url('../../img/andres-pizarra.webp') center / cover no-repeat;
   }
   .about-band .about-teaser__media img {
