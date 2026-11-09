@@ -67,7 +67,7 @@
         : '';
 
       return (
-        '<div class="book-card">' +
+        '<div class="book-card" data-book="' + escapeHtml(b.title) + '">' +
           // tabindex hace la tapa enfocable por teclado (revela el overlay
           // vía :focus-within en CSS) y es lo que permite que, en touch,
           // el primer tap también la enfoque y muestre la descripción sin
