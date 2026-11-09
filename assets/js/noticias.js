@@ -42,7 +42,16 @@
   // de datos). La ruta se resuelve a partir de este mismo script para que
   // funcione igual desde /, /en/ y /pt/.
   var me = document.querySelector('script[src*="noticias.js"]');
-  var endpoint = new URL('../../data/noticias.json', me ? me.src : location.href).href;
+  var siteRoot = new URL('../../', me ? me.src : location.href).href;
+  var endpoint = siteRoot + 'data/noticias.json';
+
+  // Las imágenes/links subidos desde el panel se guardan como ruta desde la
+  // raíz del sitio (ej. img/uploads/foto.jpg): se resuelven contra siteRoot.
+  function resolveUrl(u) {
+    u = String(u || '').trim();
+    if (!u || /^([a-z][a-z0-9+.-]*:|\/\/)/i.test(u)) return u;
+    return siteRoot + u.replace(/^\//, '');
+  }
 
   // En la home (preview con data-news-limit) la sección entera queda oculta
   // hasta que haya noticias publicadas; si no hay ninguna, no se muestra.
@@ -104,7 +113,7 @@
       // La imagen es opcional: si no hay image_url, no se genera ningún
       // elemento .news-card__media (ni placeholder ni espacio reservado).
       var media = hasMedia
-        ? '<span class="news-card__media"><img src="' + escapeHtml(item.image_url) + '" alt="" loading="lazy"></span>'
+        ? '<span class="news-card__media"><img src="' + escapeHtml(resolveUrl(item.image_url)) + '" alt="" loading="lazy"></span>'
         : '';
 
       // El CTA solo aparece si hay url; si no, la tarjeta no es un link.
@@ -124,7 +133,7 @@
       var inner = body + media;
 
       return hasUrl
-        ? '<a class="' + cardClass + '" href="' + escapeHtml(item.url) + '" target="_blank" rel="noopener noreferrer">' + inner + '</a>'
+        ? '<a class="' + cardClass + '" href="' + escapeHtml(resolveUrl(item.url)) + '" target="_blank" rel="noopener noreferrer">' + inner + '</a>'
         : '<article class="' + cardClass + '">' + inner + '</article>';
     }).join('');
   }
