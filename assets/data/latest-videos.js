@@ -24,12 +24,6 @@ window.LATEST_VIDEOS = {
       "title": "EDUCACIÓN: el peor resultado en 20 años",
       "published": "2026-10-15T15:49:42+00:00",
       "url": "https://www.youtube.com/watch?v=vz4uaRGzLac"
-    },
-    {
-      "id": "2GFEcoCN6k0",
-      "title": "Un problema antiguo, pero precioso",
-      "published": "2026-10-14T14:53:47+00:00",
-      "url": "https://www.youtube.com/watch?v=2GFEcoCN6k0"
     }
   ]
 };
