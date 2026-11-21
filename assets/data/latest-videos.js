@@ -18,12 +18,6 @@ window.LATEST_VIDEOS = {
       "title": "6 de cada 10 chicos no entienden lo que leen",
       "published": "2026-10-16T22:19:38+00:00",
       "url": "https://www.youtube.com/watch?v=M_fOjvAksow"
-    },
-    {
-      "id": "vz4uaRGzLac",
-      "title": "EDUCACIÓN: el peor resultado en 20 años",
-      "published": "2026-10-15T15:49:42+00:00",
-      "url": "https://www.youtube.com/watch?v=vz4uaRGzLac"
     }
   ]
 };
